@@ -11,9 +11,12 @@
   "author": "JohnLim",
   "license": "MIT",
   "dependencies": {
+    "@material-ui/core": "^4.4.3",
     "next": "^9.0.7",
+    "next-redux-saga": "^4.0.2",
     "react": "^16.10.1",
     "react-dom": "^16.10.1",
+    "react-redux": "^7.1.1",
     "redux": "^4.0.4",
     "redux-saga": "^1.1.1"
   },
