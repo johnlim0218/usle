@@ -1,20 +1,45 @@
 import React from 'react';
 import Link from 'next/link';
 import { Menu, Input } from 'antd';
+
+import Breadcrumbs from '@material-ui/core/Breadcrumbs';
+import HomeIcon from '@material-ui/icons/Home';
+import WhatshotIcon from '@material-ui/icons/Whatshot';
+import GrainIcon from '@material-ui/icons/Grain';
+
 import styled from 'styled-components';
  
+const StyledHomeIcon = styled(HomeIcon)`
+    &&{ 
+        width: 10px;
+        height: 15px; 
+    }
+`;
+const StyledWhatshotIcon = styled(WhatshotIcon)`
+    &&{ 
+        width: 10px;
+        height: 15px; 
+    }
+`;
+const StyledGrainIcon = styled(GrainIcon)`
+    &&{ 
+        width: 10px;
+        height: 15px; 
+    }
+`;
 
 const HeaderMenu = () => {
     return(
-        <div>
-           <Menu mode="horizontal">
-                <Menu.Item key="home"><Link href="/index"><a>노드버드</a></Link></Menu.Item>
-                <Menu.Item key="profile"><Link href="/profile"><a>프로필</a></Link></Menu.Item>
-                <Menu.Item key="mail">
-                    <Input.Search enterButton style={{ verticalAlign: 'middle' }}/>
-                </Menu.Item> 
-            </Menu>
-        </div> 
+        <>
+          <Breadcrumbs aria-label="breadcrumb">
+            <StyledHomeIcon/>
+                Material-UI
+            <StyledWhatshotIcon/>
+                Core
+            <StyledGrainIcon/>
+                Breadcrumb
+          </Breadcrumbs>
+        </> 
     )
 }
 

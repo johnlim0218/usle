@@ -1,0 +1,79 @@
+*{
+    margin: 0;
+    box-sizing: border-box;
+}
+
+.align-center{
+    width: 1080px;
+    margin: 0 auto;
+}
+
+header .infobarWrapper{
+    background-color: #fcf2e0;
+    color: #656565;
+    padding-top: 5px;
+    min-height: 30px;
+}
+
+header .infobarWrapper nav{
+    position: relative;
+    text-align: center;
+}
+
+header .infobarMenuList{
+    display: inline-block;
+}
+
+header .mypage {
+    position: absolute;
+    left: 5px;
+}
+
+header .announcement{
+    padding: 0 25px;
+}
+
+header .wishlist{
+    position: absolute;
+    right: 70px;
+}
+
+header .search{
+    position: absolute;
+    right: 5px;
+}
+
+header .upperMenuWrapper{
+    background-color: #f8e7c9;
+    border-bottom: 1px solid #fcf2e0;
+}
+
+header .upperMenuList{
+    display: inline-block;
+    padding-top: 50px;
+    padding-bottom: 50px;
+}
+
+header .upperMenuList a {
+    margin-left: 60px;
+    margin-right: 10px;
+}
+
+.upperMenuWrapper .display{
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.upperMenuWrapper .display h1{
+    display: none;
+}
+
+.upperMenuWrapper .bi{
+    max-height: 80px;
+}
+
+.upperMenuWrapper nav{
+    text-align: center;
+}
+
+
