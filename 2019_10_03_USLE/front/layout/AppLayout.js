@@ -1,4 +1,5 @@
 import React from 'react';
+import Container from '@material-ui/core/Container';
 
 import HeaderMenu from '../components/HeaderMenu';
 import MainMenu from '../components/MainMenu';
@@ -9,14 +10,13 @@ const AppLayout = ({ children }) => {
         <div>
             <header>
                 <HeaderMenu/> 
-            
                 <MainMenu/>
             </header>
             <main>
                  {children}
             </main>
             <footer>
-                 Footer
+                <Footer/>
             </footer>
             
         </div>
