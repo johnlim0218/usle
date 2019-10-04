@@ -1,6 +1,5 @@
 import React from 'react';
 
-
 import HeaderMenu from '../components/HeaderMenu';
 import MainMenu from '../components/MainMenu';
 import Footer from '../components/Footer';

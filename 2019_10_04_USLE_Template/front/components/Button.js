@@ -23,11 +23,10 @@ const styles = (theme) => ({
       },
     });
 
-const StyledButton = styled(Button)`
+const ModifiedButton = styled(Button)`
     &.MuiButton-root{
         ${({ theme }) => {
             const classes = styles(theme);
-            console.log("root");
             return{
                 ...classes.root,
             }
@@ -36,7 +35,6 @@ const StyledButton = styled(Button)`
     &.MuiButton-sizeLarge {
         ${({ theme }) => {
             const classes = styles(theme);
-            console.log("sizeLarge");
             return{
                 ...classes.sizeLarge,
             }
@@ -45,7 +43,6 @@ const StyledButton = styled(Button)`
     &.MuiButton-sizeSmall {
         ${({ theme }) => {
             const classes = styles(theme);
-            console.log("sizeSmall");
             return{
                 ...classes.sizeSmall,
             }
@@ -53,18 +50,4 @@ const StyledButton = styled(Button)`
     };
 `;
 
-const ThisButton = () => {
-
-    return (
-        <>
-        <StyledButton 
-            color="secondary"
-            variant="contained"
-            size="large"
-            component="a">Button</StyledButton>
-        <Button size="small">Button2</Button>
-        </>
-    )
-}
-
-export default ThisButton;
+export default ModifiedButton;

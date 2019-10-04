@@ -5,7 +5,7 @@ import AppLayout from '../layout/AppLayout';
 import { StylesProvider } from '@material-ui/styles';
 import { ThemeProvider } from 'styled-components';
 import theme from '../theme/theme';
-import themeBreakPoint from '../theme/breakpoints'
+
 
 const Usle = ({ Component, pageProps }) => {
     useEffect(() => {

@@ -1,13 +1,11 @@
 import React from 'react';
 import IndexImage from '../views/IndexImage';
-import ThisButton from '../components/Button';
-
+import ModifiedButton from '../components/Button';
 const Home = ({ props }) => {
     
     return (
         <>
-            <IndexImage/>
-            <ThisButton/>
+            <IndexImage/>            
         </>
     );
 }

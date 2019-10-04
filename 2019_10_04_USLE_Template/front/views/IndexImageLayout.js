@@ -4,61 +4,125 @@ import styled from 'styled-components';
 import breakpoint from 'styled-components-breakpoint';
 import Container from '@material-ui/core/Container';
 
-const Section = styled.section`
-    color: white;
-    position: relative;
-    display: flex;
-    align-items: center;
+export const backgroundImage =
+  'https://images.unsplash.com/photo-1534854638093-bada1813ca19?auto=format&fit=crop&w=1400&q=80';
+
+  const styles = theme => ({
+    root: {
+      color: theme.palette.common.white,
+      position: 'relative',
+      display: 'flex',
+      alignItems: 'center',
+    },
+    rootsm: {
+        height: '80vh',
+        minHeight: 500,
+        maxHeight: 1300,
+    },
+    container: {
+      marginTop: theme.spacing(3),
+      marginBottom: theme.spacing(14),
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+    },
+    backdrop: {
+      position: 'absolute',
+      left: 0,
+      right: 0,
+      top: 0,
+      bottom: 0,
+      backgroundColor: theme.palette.common.black,
+      opacity: 0.5,
+      zIndex: -1,
+    },
+    background: {
+      position: 'absolute',
+      left: 0,
+      right: 0,
+      top: 0,
+      bottom: 0,
+      backgroundSize: 'cover',
+      backgroundRepeat: 'no-repeat',
+      zIndex: -2,
+    },
+    arrowDown: {
+      position: 'absolute',
+      bottom: theme.spacing(4),
+    },
+  });
+
+const StyledSection = styled.section`
+   &&{
+    ${({ theme }) => {
+       const classes = styles(theme);
+       return{
+           ...classes.root,
+       }
+    }};
     ${breakpoint('sm')`
-        height: 80vh;
-        min-height: 500px;
-        max-height: 1300px;
+        ${({ theme }) => {
+            const classes = styles(theme);
+            return{
+                ...classes.rootsm,
+            }
+        }}
     `};
+    }
 `;
-const Backdrop = styled.div`
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 0;
-    bottom: 0;
-    background-color: black;
-    opacity: 0.5;
-    z-index: -1;
+const StyledContainer = styled(Container)`
+    ${({ theme }) => {
+        const classes = styles(theme);
+        return{
+            ...classes.container,
+        }
+    }}
 `;
-const Backgroud = styled.div`
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 0;
-    bottom: 0;
-    background-size: cover;
-    background-repeat: no-repeat;
-    z-index: -2;
+const StyledBackdrop = styled.div`
+    ${({ theme }) => {
+        const classes = styles(theme);
+        return{
+            ...classes.backdrop,
+        }
+    }}
+`;
+const Background = styled.div`
+    ${({ theme }) => {
+        const classes = styles(theme);
+        return{
+            ...classes.background,
+        }
+    }}
 `
-const SpaceImage = styled.img`
+const StyledBackground = styled(Background)`
+    background-image: url(${backgroundImage});
+    background-color: #7fc7d9;
+    background-position: center;
+`;
+const StyledSpaceImage = styled.img`
     width: 147px;
     height: 80px;
 `;
-const ArrowDownImage = styled.img`
-    position: absolute;
-    bottom: 32px;
-    width: 12px;
-    height: 16px;
+const StyledArrowDownImage = styled.img`
+    ${({ theme }) => {
+        const classes = styles(theme);
+        return{
+            ...classes.arrowDown,
+        }
+    }}
 `;
 
 const IndexImageLayout = ({ children }) => {
-    
     return(
-        <Section>
-            <Container>
-                <SpaceImage/>
-                {'INDEX'}
-                {children}
-                <Backdrop/>
-                <Backgroud/>
-                <ArrowDownImage/>
-            </Container>
-        </Section>
+        <StyledSection>
+            <StyledContainer>
+                <StyledSpaceImage src="https://material-ui.com/static/themes/onepirate/productHeroWonder.png"/>
+                     {children}
+                <StyledBackdrop/>
+                <StyledBackground/>
+                <StyledArrowDownImage src="https://material-ui.com/static/themes/onepirate/productHeroArrowDown.png"/>
+            </StyledContainer>
+        </StyledSection>
     )
 }
 
