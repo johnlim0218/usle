@@ -3,23 +3,34 @@ import styled from 'styled-components';
 import breakpoint from 'styled-components-breakpoint';
 import Toolbar from '@material-ui/core/Toolbar';
 
-const StyledToolBar = styled(Toolbar)`
+const styles = theme => ({
+    root: {
+      height: 64,
+    },
+    rootsm: {
+        height: 70,
+    }
+  });
+
+const ModifiedToolBar = styled(Toolbar)`
     &&{
-        height: 64px
+        ${({ theme }) => {
+            const classes = styles(theme);
+            return{
+                ...classes.root
+            }
+        }}
         ${breakpoint('sm')`
-        height: 70px
+            ${({ theme }) => {
+                const classes = styles(theme);
+                return {
+                    ...classes.rootsm
+                }
+            }}
         `}
         
     }
 `;
 
-const ToolBar = () => {
-    
-    return(
-        <StyledToolBar />
-    );
-
-}
-
-export default ToolBar;
+export default ModifiedToolBar;
 

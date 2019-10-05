@@ -7,64 +7,123 @@ import breakpoint from 'styled-components-breakpoint';
 import MuiAppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 
-import AppBar from '../components/AppBar';
-import ToolBar, { styles as toolbarStyles } from '../components/Toolbar';
+import ModifiedAppBar from '../components/AppBar';
+import ModifiedToolBar from '../components/Toolbar';
 
-const LeftDiv = styled.div`
-    flex: 1;
+const styles = theme => ({
+    title: {
+      fontSize: 24,
+    },
+    toolbar: {
+      justifyContent: 'space-between',
+    },
+    left: {
+      flex: 1,
+    },
+    leftLinkActive: {
+      color: theme.palette.common.white,
+    },
+    right: {
+      flex: 1,
+      display: 'flex',
+      justifyContent: 'flex-end',
+    },
+    rightLink: { 
+      fontSize: 16,
+      color: theme.palette.common.white,
+      marginLeft: theme.spacing(3),
+    },
+    linkSecondary: {
+      color: theme.palette.secondary.main,
+    },
+    // placeholder: toolbarStyles(theme).root,
+  });
+
+const StyledLeftDiv = styled.div`
+    ${({ theme }) => {
+        const classses = styles(theme);
+        return{
+            ...classses.left,
+        }
+    }}
 `;
 
-const RightDiv = styled.div`
-    flex: 1;
-    display: flex,;
-    justify-content: flex-end;
+const StyledRightDiv = styled.div`
+    ${({ theme }) => {
+        const classses = styles(theme);
+        return{
+            ...classses.right,
+        }
+    }}
 `;
 
 const StyledTitle = styled.a`
-    font-size: 24px
+    ${({ theme }) => {
+        const classses = styles(theme);
+        return{
+            ...classses.title,
+        }
+    }}
+`;
+const StyledSignin = styled.a`
+    ${({ theme }) => {
+        const classses = styles(theme);
+        return{
+            ...classses.rightLink,
+        }
+    }};
 `;
 
-const StyledText = styled.a`
-    font-size: 16px;
-    margin-left: 24px;
+const StyledSignup = styled.a`
+    ${({ theme }) => {
+        const classses = styles(theme);
+        return{
+            ...classses.rightLink,
+        }
+    }};
+    ${({ theme }) => {
+        const classses = styles(theme);
+        return{
+            ...classses.linkSecondary,
+        }
+    }};
 `;
 
-const StyledToolBar = styled(Toolbar)`
-    &&{
-        height: 100px;
-        ${breakpoint('sm')`
-        height: 70px
-        `};
-        justify-content: space-between;
-    }
+const StyledToolBar = styled(ModifiedToolBar)`
+    ${({ theme }) => {
+        const classses = styles(theme);
+        return{
+            ...classses.toolbar,
+        }
+    }}
 `;
 
 const AppAppBar = ({ props }) => {
     
     return(
         <div>
-            <MuiAppBar color='white' elevation={0} position='static' {...props}>
+            <ModifiedAppBar color='white' elevation={0} position='static' {...props}>
                 <StyledToolBar>
-                    <LeftDiv/>
+                    <StyledLeftDiv/>
                     <Link>
                         <StyledTitle>
                             {'USLE'}
                         </StyledTitle>
                     </Link>
-                    <RightDiv>
+                    <StyledRightDiv>
                         <Link>
-                            <StyledText>
+                            <StyledSignin>
                                 {'SignIn'}
-                            </StyledText>
+                            </StyledSignin>
                         </Link>
                         <Link>
-                            <StyledText>
+                            <StyledSignup>
                                 {'SignUp'}
-                            </StyledText>
+                            </StyledSignup>
                         </Link>
-                    </RightDiv>
+                    </StyledRightDiv>
                 </StyledToolBar>
-            </MuiAppBar>
+            </ModifiedAppBar>
         </div>
     )
 }

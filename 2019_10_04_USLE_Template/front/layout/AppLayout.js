@@ -9,8 +9,8 @@ import AppAppBar from '../views/AppAppBar';
 const AppLayout = ({ children }) => {
     return(
         <div>
-            <AppAppBar/>
             <header>
+                <AppAppBar/>
                 <HeaderMenu/> 
                 <MainMenu/>
             </header>

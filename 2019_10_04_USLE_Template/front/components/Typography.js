@@ -53,15 +53,24 @@ const variantMapping = {
     h6: 'h2',
     subtitle1: 'h3',
   };
-  
+
+const ModifiedTypography = styled(MuiTypography)`
+  ${({ theme, variant }) => {
+        return{
+            ...theme.typography[variant]
+        }
+  }}
+`  
+
 const Typography = ({ children, color, variant, marked=false, ...props }) => {
+        
     return(
-        <MuiTypography variantMapping={variantMapping} variant={variant} {...props}>
+        <ModifiedTypography variantMapping={variantMapping} variant={variant} {...props}>
             {children}
             {marked &&
             <StyledSpan className={`marked${capitalize(variant) + capitalize(marked)}`}></StyledSpan>
             }
-        </MuiTypography>
+        </ModifiedTypography>
     )
 }
 
