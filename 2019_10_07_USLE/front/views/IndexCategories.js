@@ -58,6 +58,7 @@ const StyledTypographyImageTitle = styled(Typography)`
         }
     }};
     position: relative;
+    color: white;
 `
 const StyledDivImageButton = styled.div`
     ${({ theme }) => {
