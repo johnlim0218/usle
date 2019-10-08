@@ -35,6 +35,7 @@ const StyledSignup = styled.a`
 
 const StyledToolBar = styled(ModifiedToolBar)`
     justify-content: space-between;
+    background-color: #f8e7c9;
 `;
 
 const AppAppBar = ({ ...props }) => {
