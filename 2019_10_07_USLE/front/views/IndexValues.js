@@ -6,37 +6,27 @@ import Container from '@material-ui/core/Container';
 import Typography from '../components/Typography';
 
 const StyledSection = styled.section`
-    ${({ theme }) => {
-        return{
-            backgroundColor: theme.palette.secondary.light,
-        }
-    }};
+    background-color: ${props => props.theme.palette.secondary.light};
     display: flex;
     overflow: hidden;
 `;
 const StyledContainer = styled(Container)`
-    &&{
-        ${({ theme }) => {
-            return{
-                marginTop: theme.spacing(15),
-                marginBottom: theme.spacing(30),
-            }
-        }};
-        display: flex;
-        position: relative;
-    }
+    margin-top: ${props => props.theme.spacing(15)}px;
+    margin-bottom: ${props => props.theme.spacing(30)}px;
+    display: flex;
+    position: relative;
+
 `
 const StyledDivItem = styled.div`
-    ${({ theme }) => {
-        return{
-            padding: theme.spacing(0, 5),
-        }
-    }};
+    padding: ${props => props.theme.spacing(0, 5)};
     display: flex;
     flex-direction: column;
     align-items: center;
 `
-const StyledCurvyBackground = styled.img`
+const StyledCurvyBackground = styled.img.attrs((props) => ({
+    src: "https://material-ui.com/static/themes/onepirate/productCurvyLines.png",
+    alt: "curvy lines",
+}))`
     pointer-events: none;
     position: absolute;
     top: -180px;
@@ -44,25 +34,23 @@ const StyledCurvyBackground = styled.img`
 const StyledImage = styled.img`
     height: 55px;
 `;
-const StyledTypographyTitle = styled(Typography)`
-    ${({ theme }) => {
-        return {
-            marginTop: theme.spacing(5),
-            marginBottom: theme.spacing(5),
-        }
-    }}
+const StyledTypographyTitle = styled(Typography).attrs((props) => ({
+    variant: 'h6',
+}))`
+    margin-top: ${props => props.theme.spacing(5)}px;
+    margin-bottom: ${props => props.theme.spacing(5)}px;
 `
 const IndexValues = () => {
 
     return(
         <StyledSection>
             <StyledContainer>
-                <StyledCurvyBackground src="https://material-ui.com/static/themes/onepirate/productCurvyLines.png" alt="curvy lines"/>
+                <StyledCurvyBackground/>
                 <Grid container spacing={5}>
                     <Grid item xs={12} md={4}>
                         <StyledDivItem>
                             <StyledImage src="https://material-ui.com/static/themes/onepirate/productValues1.svg" alt="suitcase"/>
-                            <StyledTypographyTitle variant="h6">
+                            <StyledTypographyTitle>
                                 The best luxury hotels
                             </StyledTypographyTitle>
                             <Typography variant="h5">

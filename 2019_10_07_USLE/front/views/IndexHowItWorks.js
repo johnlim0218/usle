@@ -20,13 +20,20 @@ const StyledContainer = styled(Container)`
     flex-direction: column;
     align-items: center;
 `;
-const StyledCurvyBackground = styled.img`
+const StyledCurvyBackground = styled.img.attrs((props) => ({
+    src: "https://material-ui.com/static/themes/onepirate/productCurvyLines.png",
+    alt: "curvy lines",
+}))`
     pointer-events: none;
     position: absolute;
     top: -180px;
     opacity: 0.7;
 `;
-const StyledTypographyTitle = styled(Typography)`
+const StyledTypographyTitle = styled(Typography).attrs((props) => ({
+    variant: "h4",
+    marked: "center",
+    component: "h2",
+}))`
     margin-bottom: ${props => props.theme.spacing(14)}px;
 `;
 const StyledDivItem = styled.div`
@@ -42,7 +49,7 @@ const StyledDivNumer = styled.div`
     font-weight: ${props => props.theme.typography.fontWeightMedium};
 `;
 const StyledImg = styled.img`
-    height: 55px;
+    height: 55px; 
     margin-top: ${props => props.theme.spacing(4)}px;
     margin-bottom: ${props => props.theme.spacing(4)}px;
 `;
@@ -58,8 +65,8 @@ const IndexHowItWorks = () => {
     return(
         <StyledSection>
             <StyledContainer>
-                <StyledCurvyBackground src="https://material-ui.com/static/themes/onepirate/productCurvyLines.png" alt="curvy lines"/>
-                <StyledTypographyTitle variant="h4" marked="center" component="h2">
+                <StyledCurvyBackground/>
+                <StyledTypographyTitle>
                     How it works
                 </StyledTypographyTitle>
                 <Grid container spacing={5}>

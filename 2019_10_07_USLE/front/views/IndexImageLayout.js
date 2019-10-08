@@ -8,39 +8,25 @@ export const backgroundImage =
   'https://images.unsplash.com/photo-1534854638093-bada1813ca19?auto=format&fit=crop&w=1400&q=80';
 
 const StyledSection = styled.section`
-    ${({ theme }) => {
-       return{
-        color: theme.palette.common.white,
-       }
-    }};
+    color: ${props => props.theme.palette.common.white};
     position: relative;
     display: flex;
     align-items: center;
-    
     ${breakpoint('sm')`
         height: 80vh;
         min-height: 500px;
         max-height: 1300px;
     `};
-    
 `;
 const StyledContainer = styled(Container)`
-    ${({ theme }) => {
-        return{
-            marginTop: theme.spacing(3),
-            marginBottom: theme.spacing(14),
-        }
-    }};
+    margin-top: ${props => props.theme.spacing(3)}px;
+    margin-bottom: ${props => props.theme.spacing(14)}px;
     display: flex;
     flex-direction: column;
     align-items: center;
 `;
 const StyledBackdrop = styled.div`
-    ${({ theme }) => {
-        return{
-            backgroundColor: theme.palette.common.black,
-        }
-    }}
+    background-color: ${props => props.theme.palette.common.black};
     position: absolute;
     left: 0;
     right: 0;
@@ -64,16 +50,16 @@ const StyledBackground = styled(Background)`
     background-color: #7fc7d9;
     background-position: center;
 `;
-const StyledSpaceImage = styled.img`
+const StyledSpaceImage = styled.img.attrs((props) => ({
+    src: "https://material-ui.com/static/themes/onepirate/productHeroWonder.png",
+}))`
     width: 147px;
     height: 80px;
 `;
-const StyledArrowDownImage = styled.img`
-    ${({ theme }) => {
-        return{
-            bottom: theme.spacing(4),
-        }
-    }};
+const StyledArrowDownImage = styled.img.attrs((prosp) => ({
+    src: "https://material-ui.com/static/themes/onepirate/productHeroArrowDown.png",
+}))`
+    bottom: ${props => props.theme.spacing(4)}px;
     position: absolute;
 `;
 
@@ -81,11 +67,11 @@ const IndexImageLayout = ({ children }) => {
     return(
         <StyledSection>
             <StyledContainer>
-                <StyledSpaceImage src="https://material-ui.com/static/themes/onepirate/productHeroWonder.png"/>
+                <StyledSpaceImage/>
                      {children}
                 <StyledBackdrop/>
                 <StyledBackground/>
-                <StyledArrowDownImage src="https://material-ui.com/static/themes/onepirate/productHeroArrowDown.png"/>
+                <StyledArrowDownImage/>
             </StyledContainer>
         </StyledSection>
     )

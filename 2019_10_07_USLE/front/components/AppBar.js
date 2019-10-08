@@ -5,11 +5,7 @@ import MuiAppBar from '@material-ui/core/AppBar';
 
 const StyledMuiAppBar = styled(MuiAppBar)`
     &.MuiToolbar-root {
-        ${({ theme }) => {
-            return{
-                color: theme.palette.common.white,
-            }
-        }};
+        color: ${props => props.theme.palette.common.white};
     }
 `;
 

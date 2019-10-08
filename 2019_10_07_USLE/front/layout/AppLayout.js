@@ -5,6 +5,7 @@ import MainMenu from '../components/MainMenu';
 import Footer from '../components/Footer';
 
 import AppAppBar from '../views/AppAppBar';
+import AppFooter from '../views/AppFooter';
 
 const AppLayout = ({ children }) => {
     return(
@@ -19,7 +20,7 @@ const AppLayout = ({ children }) => {
             </main>
             
             <footer>
-                <Footer/>
+                <AppFooter/>
             </footer>
             
         </div>

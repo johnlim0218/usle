@@ -9,60 +9,62 @@ import ModifiedButton from '../components/Button';
 
 import backgroundImage from '../views/IndexImageLayout';
 
-const StyledBackgroundImage = styled.img`
+const StyledBackgroundImage = styled.img.attrs((props) => ({
+    src:{backgroundImage},
+    alt: "increase priority" 
+}))`
     display: none;
 `;
-const StyledTypographyTitle = styled(Typography)`
+const StyledTypographyTitle = styled(Typography).attrs((props) => ({
+    color: "inherit",
+    align: "center", 
+    variant: "h2",
+    marked:"center"
+}))`
     color: white;
 `
-const StyledTypographySub = styled(Typography)`
-    ${({ theme }) => {
-        return{
-            marginBottom: theme.spacing(4),
-            marginTop: theme.spacing(4),
-        }
-    }}
+const StyledTypographySub = styled(Typography).attrs((props) => ({
+    color: "inherit", 
+    align: "center", 
+    variant:"h5"
+}))`
+    margin-bottom: ${props => props.theme.spacing(4)}px;
+    margin-top: ${props => props.theme.spacing(4)}px;
     ${breakpoint('sm')`
-        ${({ theme }) => {
-            return{
-                marginTop: theme.spacing(10), 
-            }
-        }}
+        margin-top: ${props => props.theme.spacing(10)}px;
     `};
     color: white;
 `;
-const StyledModifiedButteon = styled(ModifiedButton)`
-        min-width: 200px;
+const StyledModifiedButton = styled(ModifiedButton).attrs((props) => ({
+    color: "secondary",
+    variant: "contained",
+    size: "large",
+    component: 'a',
+}))`
+    min-width: 200px;
 `;
-const StyledTypographyMore = styled(Typography)`
-       ${({ theme }) => {
-           return {
-                marginTop: theme.spacing(2),
-           }
-       }}
+const StyledTypographyMore = styled(Typography).attrs((props) => ({
+    variant: "body2", 
+    color: "inherit",
+}))`
+    margin-top: ${props => props.theme.spacing(2)}px;
 `;  
 
 const IndexImage = () => {
     
     return(
         <IndexImageLayout>
-            <StyledBackgroundImage style={{ display: 'none' }} src={backgroundImage} alt="increase priority" />
-            <StyledTypographyTitle color="inherit" align="center" variant="h2" marked="center"
-            >
+            <StyledBackgroundImage/>
+            <StyledTypographyTitle>
                 Upgrade your Sundays
             </StyledTypographyTitle>
-            <StyledTypographySub color="inherit" align="center" variant="h5">
+            <StyledTypographySub>
                 Enjoy secret offers up to -70% off the best luxury hotels every Sunday.
             </StyledTypographySub>
-            <StyledModifiedButteon
-                color="secondary"
-                variant="contained"
-                size="large"
-                component='a'
-            >
+            <StyledModifiedButton>
                 Register
-            </StyledModifiedButteon>
-            <StyledTypographyMore variant="body2" color="inherit">
+            </StyledModifiedButton>
+            <StyledTypographyMore>
                 Discover the experience
             </StyledTypographyMore>
         </IndexImageLayout>
