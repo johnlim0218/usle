@@ -6,8 +6,20 @@ import MuiTextField from '@material-ui/core/TextField';
 import { capitalize } from '@material-ui/core/utils';
 
 const ModifiedTextField = styled(MuiTextField).attrs((props) => ({
-    
+    InputProps : {
+        disableUnderline: true,
+    },
+    InputLabelProps : {
+        shrink: true,
+    }
 }))`
+    ${props => (props.noBorder === true || props.noBorder === undefined)  &&`
+        border: 1px solid #e9ddd0;
+        :focus, :hover {
+            border-color: ${props.theme.palette.secondary.main}
+        }
+    `}
+
     .MuiInputLabel-root {
         font-size: 18px;
     }
@@ -20,7 +32,7 @@ const ModifiedTextField = styled(MuiTextField).attrs((props) => ({
             width: calc(100% - ${props.theme.spacing(2)}px);
         `};
         ${props => (props.size === 'medium' || props.size === undefined) && `
-            font-size: 106px;
+            font-size: 16px;
             padding: ${props.theme.spacing(2)}px;
             width: calc(100% - ${props.theme.spacing(4)}px);
         `};

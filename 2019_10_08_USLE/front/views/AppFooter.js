@@ -35,7 +35,7 @@ const StyledaTagIcon = styled.a`
     align-items: center;
     background-color: ${props => props.theme.palette.warning.main};
     margin-right: ${props => props.theme.spacing(1)}px;
-    &:hover: {
+    &:hover {
         background-color: ${props => props.theme.palette.warning.dark};
     }
 `
