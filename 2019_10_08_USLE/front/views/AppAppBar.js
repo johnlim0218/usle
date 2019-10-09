@@ -1,12 +1,18 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import Link from 'next/link';
 import styled from 'styled-components';
 import breakpoint from 'styled-components-breakpoint';
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
-import Search from "@material-ui/icons/Search";
 import Button from "@material-ui/core/Button";
+import Search from "@material-ui/icons/Search";
+import Input from "@material-ui/core/Input";
+import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
+
+import { Field, Form, FormSpy } from 'react-final-form';
+import { email, required } from '../form/validation';
+import RFTextField from '../form/RFTextField';
 
 import ModifiedAppBar from '../components/AppBar';
 
@@ -55,7 +61,7 @@ const StyledButton = styled(Button)`
         color: inherit;
         background: rgba(200, 200, 200, 0.2)
     },
-    ${breakpoint("sm")` 
+    ${breakpoint('md')` 
         width: calc(100% - 30px);
         margin-left: 15px;
         margin-bottom: 8px;
@@ -67,10 +73,22 @@ const StyledButton = styled(Button)`
     `};
 `;
 
-console.log(breakpoint);
-
 const AppAppBar = ({ ...props }) => {
-    
+    const [sent, setSent] = useState(false);
+    const validate = (values) => {
+        const errors = required(['firstName', 'lastName', 'email', 'password'], values);
+        if (!errors.email) {
+          const emailError = email(values.email, values);
+          if (emailError) {
+            errors.email = email(values.email, values);
+          }
+        }
+        return errors;
+    };
+    const handleSubmit = () => {
+        setSent(true);
+    };
+
     return(
         <ModifiedAppBar
             leftLinks={
@@ -106,6 +124,8 @@ const AppAppBar = ({ ...props }) => {
             }
             rightLinks={
               <div>
+                  <Input
+                    />
             {/* <CustomInput
               white
               inputRootCustomClasses={classes.inputRootCustomClasses}
@@ -120,9 +140,37 @@ const AppAppBar = ({ ...props }) => {
                 }
               }}
             /> */}
-                 <Button justIcon round color="white">
-              <Search/>
-            </Button>
+
+            <Form onSubmit={handleSubmit} subscription={{ submitting: true }} validate={validate}>
+            {({ handleSubmit2, submitting }) =>(     
+                <form>
+                    <Field
+                        autoComplete="email"
+                        component={RFTextField}
+                        disabled={submitting || sent}
+                        fullWidth
+                        label="Email"
+                        margin="normal"
+                        name="email"
+                        required
+                    />
+                    <FormSpy subscription={{ submitError: true }}>
+                    {({ submitError }) =>
+                        submitError ? (
+                            <FormFeedback error>
+                              {submitError}
+                            </FormFeedback>
+                        ) : null
+                    }
+                    </FormSpy>
+                </form>
+            )}
+            </Form>
+              
+                <Button justIcon>
+                    <Search/>
+                </Button>
+                
           </div>
         }
       />

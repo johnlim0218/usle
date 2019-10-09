@@ -15,6 +15,7 @@ const appBar = css`
     border: 0;
     border-radius: 3px;
     padding: 0.625rem 0;
+    margin-top: 20px;
     margin-bottom: 20px;
     color: #555;
     width: 100%;

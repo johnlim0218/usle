@@ -34,7 +34,6 @@ const rawTheme = createMuiTheme({
     fontWeightRegular: 400, // Work Sans
     fontWeightMedium: 700, // Roboto Condensed
     fontFamilySecondary: "'Roboto Condensed', sans-serif",
-    
   },
 });
 
@@ -54,16 +53,16 @@ const conatinerFluid = {
 };
 const container = {
   ...conatinerFluid,
-  "@media (min-width: 576px)": {
+  "@media (min-width: 600px)": {
     maxWidth: 540
   },
-  "@media (min-width: 768px)": {
+  "@media (min-width: 960px)": {
     maxWidth: 720
   },
-  "@media (min-width: 992px)": {
+  "@media (min-width: 1280px)": {
     maxWidth: 960
   },
-  "@media (min-width: 1200px)": {
+  "@media (min-width: 1920px)": {
     maxWidth: 1140
   }
 };
@@ -75,10 +74,10 @@ const theme = {
 
   breakpoints: { 
     xs: 0,
-    sm: 576,
-    md: 768,
-    lg: 992,
-    xl: 1200
+    sm: 600,
+    md: 960,
+    lg: 1280,
+    xl: 1920
   },
   container : {
     ...container

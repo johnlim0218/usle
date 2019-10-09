@@ -1,6 +1,5 @@
 import React from 'react';
 import Link from 'next/link';
-import { Menu, Input } from 'antd';
 
 import Breadcrumbs from '@material-ui/core/Breadcrumbs';
 import PersonIcon from '@material-ui/icons/Person';
@@ -64,8 +63,6 @@ const HeaderMenu = () => {
                             MyAccount
                         <StyledFavoriteIcon/>
                             Favorite
-                        <StyledSearchIcon/>
-                            Search
                     </StyledBreadCrumbs>
                 </InlineBlock>
             </AlignCenter>
