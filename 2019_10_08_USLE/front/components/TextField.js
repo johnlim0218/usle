@@ -13,7 +13,7 @@ const ModifiedTextField = styled(MuiTextField).attrs((props) => ({
         shrink: true,
     }
 }))`
-    ${props => (props.noBorder === true || props.noBorder === undefined)  &&`
+    ${props => (!props.noBorder) &&`
         border: 1px solid #e9ddd0;
         :focus, :hover {
             border-color: ${props.theme.palette.secondary.main}

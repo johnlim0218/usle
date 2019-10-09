@@ -12,6 +12,7 @@ import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 
 import { Field, Form, FormSpy } from 'react-final-form';
 import { email, required } from '../form/validation';
+import TextField from '../components/TextField';
 import RFTextField from '../form/RFTextField';
 
 import ModifiedAppBar from '../components/AppBar';
@@ -123,9 +124,8 @@ const AppAppBar = ({ ...props }) => {
                 </StyledList>
             }
             rightLinks={
-              <div>
-                  <Input
-                    />
+                <div>
+                  
             {/* <CustomInput
               white
               inputRootCustomClasses={classes.inputRootCustomClasses}
@@ -141,7 +141,7 @@ const AppAppBar = ({ ...props }) => {
               }}
             /> */}
 
-            <Form onSubmit={handleSubmit} subscription={{ submitting: true }} validate={validate}>
+            {/* <Form onSubmit={handleSubmit} subscription={{ submitting: true }} validate={validate}>
             {({ handleSubmit2, submitting }) =>(     
                 <form>
                     <Field
@@ -165,15 +165,16 @@ const AppAppBar = ({ ...props }) => {
                     </FormSpy>
                 </form>
             )}
-            </Form>
-              
-                <Button justIcon>
-                    <Search/>
-                </Button>
-                
-          </div>
-        }
-      />
+            </Form> */}
+                    <form style={{display: 'flex'}}>
+                        <TextField noBorder placeholder="Search"/>
+                        <Button justIcon>
+                            <Search/>
+                        </Button>
+                    </form> 
+                </div>
+            }
+        />
     )
 }
 

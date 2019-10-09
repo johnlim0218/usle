@@ -128,8 +128,8 @@ const ModifiedAppBar = ({ leftLinks, rightLinks, ...props }) => {
                     onClose={handleDrawerToggle}
                     >
                     <StyledDivAppResponsive>
-                        {leftLinks}
                         {rightLinks}
+                        {leftLinks}
                     </StyledDivAppResponsive>
                 </StyledDrawer>
             </Hidden>
