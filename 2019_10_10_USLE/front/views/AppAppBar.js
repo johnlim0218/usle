@@ -23,10 +23,13 @@ import ModifiedAppBar from '../components/AppBar';
 
 const StyeldDivInfoBar = styled.div`
     display: flex;
+    
 `;
 const StyledBreadCrumbs = styled(Breadcrumbs)`
-    display: flex;
-    padding-left: 100px;
+    padding-left: 16px;
+    ${breakpoint('md')` 
+        padding-left: 100px;
+    `};
 `;
 const StyledPersonIcon = styled(PersonIcon)`
     width: 20px;
@@ -86,7 +89,6 @@ const StyledButton = styled(Button)`
         background: rgba(200, 200, 200, 0.2)
     };
     ${breakpoint('md')` 
-        width: calc(100% - 30px);
         margin-left: 15px;
         margin-bottom: 8px;
         margin-top: 8px;
@@ -129,13 +131,15 @@ const AppAppBar = ({ ...props }) => {
             leftLinks={
                 <StyledList>
                     <StyledListItem>
-                        <StyledButton
-                            href="#pablo"
-                            onClick={e => e.preventDefault()}
-                            color="transparent"
-                        >
-                            Link
-                        </StyledButton>
+                        <Link>
+                            <StyledButton
+                                href="/shopAll"
+                                onClick={e => e.preventDefault()}
+                                color="transparent"
+                            >
+                                Shop All 
+                            </StyledButton>
+                        </Link>
                     </StyledListItem>
                     <StyledListItem>
                         <StyledButton

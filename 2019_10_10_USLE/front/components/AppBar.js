@@ -10,10 +10,12 @@ import Hidden from "@material-ui/core/Hidden";
 import Drawer from "@material-ui/core/Drawer";
 import Menu from "@material-ui/icons/Menu";
 
-const StyledInfoAppBar = styled(AppBar)`
+const StyledInfoAppBar = styled(AppBar).attrs(props => ({
+    position: 'relative',
+}))`
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-end;
     background-color: #fcf2e0;
     color: #656565;
     min-height: 30px;
@@ -43,6 +45,7 @@ const fixed = css`
 `;
 const StyledAppBar = styled(AppBar)`
     ${appBar}
+}
 `
 
 const StyledToolBar = styled(Toolbar)`
@@ -96,57 +99,54 @@ const StyledDivAppResponsive = styled.div`
 `;
 
 const ModifiedAppBar = ({ infoBar, leftLinks, rightLinks, ...props }) => {
-    
     const [ mobileOpen, setMobileOpen ] = useState(false);
-   
     const handleDrawerToggle = useCallback(() => {
         setMobileOpen(!mobileOpen);
     }, [mobileOpen]);
 
-
     return(
         <>
-        <StyledInfoAppBar elevation={0}>
-            <Hidden smDown implementation="css">
-                {infoBar}
-            </Hidden>
-        </StyledInfoAppBar>
-        <StyledAppBar elevation={0}>
-            <StyledToolBar>
-                <StyledTitle>USLE</StyledTitle>
-                <StyledDivLeftLink>
+            <StyledInfoAppBar elevation={0}>
                 <Hidden smDown implementation="css">
-                    {leftLinks}
+                    {infoBar}
                 </Hidden>
-                </StyledDivLeftLink>
-                <Hidden smDown implementation="css">
-                    {rightLinks}
-                </Hidden>
-                <Hidden mdUp>
-                    <IconButton
-                        color="inherit"
-                        aria-label="open drawer"
-                        onClick={handleDrawerToggle}
-                    >
-                        <Menu />
-                    </IconButton>
-                </Hidden>
-            </StyledToolBar>
-            <Hidden mdUp implementation="js">
-                <StyledDrawer
-                    variant="temporary"
-                    anchor={"right"}
-                    open={mobileOpen}
-                    onClose={handleDrawerToggle}
-                    >
-                    <StyledDivAppResponsive>
-                        {infoBar}
-                        {rightLinks}
+            </StyledInfoAppBar>
+            <StyledAppBar elevation={0}>
+                <StyledToolBar>
+                    <StyledTitle>USLE</StyledTitle>
+                    <StyledDivLeftLink>
+                    <Hidden smDown implementation="css">
                         {leftLinks}
-                    </StyledDivAppResponsive>
-                </StyledDrawer>
-            </Hidden>
-        </StyledAppBar>
+                    </Hidden>
+                    </StyledDivLeftLink>
+                    <Hidden smDown implementation="css">
+                        {rightLinks}
+                    </Hidden>
+                    <Hidden mdUp>
+                        <IconButton
+                            color="inherit"
+                            aria-label="open drawer"
+                            onClick={handleDrawerToggle}
+                        >
+                            <Menu />
+                        </IconButton>
+                    </Hidden>
+                </StyledToolBar>
+                <Hidden mdUp implementation="js">
+                    <StyledDrawer
+                        variant="temporary"
+                        anchor={"right"}
+                        open={mobileOpen}
+                        onClose={handleDrawerToggle}
+                        >
+                        <StyledDivAppResponsive>
+                            {infoBar.props.children[1]}
+                            {rightLinks}
+                            {leftLinks}
+                        </StyledDivAppResponsive>
+                    </StyledDrawer>
+                </Hidden>
+            </StyledAppBar>
         </>
     )
 }
