@@ -10,6 +10,15 @@ import Hidden from "@material-ui/core/Hidden";
 import Drawer from "@material-ui/core/Drawer";
 import Menu from "@material-ui/icons/Menu";
 
+const StyledInfoAppBar = styled(AppBar)`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #fcf2e0;
+    color: #656565;
+    min-height: 30px;
+`
+
 const appBar = css`
     display: flex;
     border: 0;
@@ -86,7 +95,7 @@ const StyledDivAppResponsive = styled.div`
     margin: 20px 10px;
 `;
 
-const ModifiedAppBar = ({ leftLinks, rightLinks, ...props }) => {
+const ModifiedAppBar = ({ infoBar, leftLinks, rightLinks, ...props }) => {
     
     const [ mobileOpen, setMobileOpen ] = useState(false);
    
@@ -96,7 +105,13 @@ const ModifiedAppBar = ({ leftLinks, rightLinks, ...props }) => {
 
 
     return(
-        <StyledAppBar elevation={0} {...props}>
+        <>
+        <StyledInfoAppBar elevation={0}>
+            <Hidden smDown implementation="css">
+                {infoBar}
+            </Hidden>
+        </StyledInfoAppBar>
+        <StyledAppBar elevation={0}>
             <StyledToolBar>
                 <StyledTitle>USLE</StyledTitle>
                 <StyledDivLeftLink>
@@ -125,12 +140,14 @@ const ModifiedAppBar = ({ leftLinks, rightLinks, ...props }) => {
                     onClose={handleDrawerToggle}
                     >
                     <StyledDivAppResponsive>
+                        {infoBar}
                         {rightLinks}
                         {leftLinks}
                     </StyledDivAppResponsive>
                 </StyledDrawer>
             </Hidden>
         </StyledAppBar>
+        </>
     )
 }
 

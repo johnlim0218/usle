@@ -10,12 +10,32 @@ import Search from "@material-ui/icons/Search";
 import Input from "@material-ui/core/Input";
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 
+import Breadcrumbs from '@material-ui/core/Breadcrumbs';
+import PersonIcon from '@material-ui/icons/Person';
+import FavoriteIcon from '@material-ui/icons/Favorite';
+
 import { Field, Form, FormSpy } from 'react-final-form';
 import { email, required } from '../form/validation';
 import TextField from '../components/TextField';
 import RFTextField from '../form/RFTextField';
 
 import ModifiedAppBar from '../components/AppBar';
+
+const StyeldDivInfoBar = styled.div`
+    display: flex;
+`;
+const StyledBreadCrumbs = styled(Breadcrumbs)`
+    display: flex;
+    padding-left: 100px;
+`;
+const StyledPersonIcon = styled(PersonIcon)`
+    width: 20px;
+    height: 20px; 
+`;
+const StyledFavoriteIcon = styled(FavoriteIcon)`
+    width: 20px;
+    height: 20px;
+`;
 
 // ul tag
 const StyledList = styled(List)`
@@ -95,7 +115,17 @@ const AppAppBar = ({ ...props }) => {
 
     return(
         <ModifiedAppBar
-            testprops={1}
+            infoBar={
+                <StyeldDivInfoBar>
+                    <a>FREE ZERO WASTE + PLASTIC FREE SHIPPING ON ALL USA ORDERS OVER $25*</a>
+                    <StyledBreadCrumbs aria-label="breadcrumb">
+                        <StyledPersonIcon/>
+                            MyAccount
+                        <StyledFavoriteIcon/>
+                            Favorite
+                    </StyledBreadCrumbs>
+                </StyeldDivInfoBar>
+            }
             leftLinks={
                 <StyledList>
                     <StyledListItem>
