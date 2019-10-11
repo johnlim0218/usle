@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import propTypes from 'prop-types';
+import Link from 'next/link';
 import styled, { css } from 'styled-components';
 
 import AppBar from "@material-ui/core/AppBar";
@@ -113,7 +114,9 @@ const ModifiedAppBar = ({ infoBar, leftLinks, rightLinks, ...props }) => {
             </StyledInfoAppBar>
             <StyledAppBar elevation={0}>
                 <StyledToolBar>
-                    <StyledTitle>USLE</StyledTitle>
+                    <Link href="/">
+                        <StyledTitle>USLE</StyledTitle>
+                    </Link>
                     <StyledDivLeftLink>
                     <Hidden smDown implementation="css">
                         {leftLinks}

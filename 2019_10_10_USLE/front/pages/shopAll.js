@@ -12,7 +12,7 @@ const StyledContainer = styled(Container)`
     padding-bottom: ${props => props.theme.spacing(8)}px;
 `
 
-const ShowAll = () => {
+const ShopAll = () => {
     return(
         <StyledContainer>
             <Grid container spacing={4}>
@@ -28,4 +28,4 @@ const ShowAll = () => {
     )
 }
 
-export default ShowAll;
+export default ShopAll;

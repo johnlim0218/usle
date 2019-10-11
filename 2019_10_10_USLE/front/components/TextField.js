@@ -7,25 +7,29 @@ import { capitalize } from '@material-ui/core/utils';
 
 const ModifiedTextField = styled(MuiTextField).attrs((props) => ({
     InputProps : {
+        ...props,
         disableUnderline: true,
     },
     InputLabelProps : {
         shrink: true,
     }
 }))`
-    ${props => (!props.noBorder) &&`
-        border: 1px solid #e9ddd0;
-        :focus, :hover {
-            border-color: ${props.theme.palette.secondary.main}
-        }
-    `}
 
-    .MuiInputLabel-root {
-        font-size: 18px;
+    ${props => (!props.noBorder) &&`
+    border: 1px solid #e9ddd0;
+    :focus, :hover {
+        border-color: ${props.theme.palette.secondary.main}
     }
+    `}
 
     .MuiInput-root {
         padding: 0;
+        label +  {
+            margin-top: ${props => props.theme.spacing(3)}px;
+        }
+    }
+
+    .MuiInput-input {
         ${props => (props.size === 'small') && `
             font-size: 14px;
             padding: ${props.theme.spacing(1)}px;
@@ -48,6 +52,10 @@ const ModifiedTextField = styled(MuiTextField).attrs((props) => ({
         `};
     }
 
+    .MuiInputLabel-root {
+        font-size: 18px;
+    }
+    
     .MuiSelect-select {
         height: auto;
         border-radius: 0;
@@ -58,7 +66,7 @@ const ModifiedTextField = styled(MuiTextField).attrs((props) => ({
     }
 `;
 
-const TextField = ({ ...props }) => {
+const TextField = (props) => {
     return (
         <ModifiedTextField
             {...props}

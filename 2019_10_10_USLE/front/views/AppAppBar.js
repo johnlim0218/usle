@@ -39,6 +39,10 @@ const StyledFavoriteIcon = styled(FavoriteIcon)`
     width: 20px;
     height: 20px;
 `;
+const StyledShoppingCartIcon = styled(ShoppingCartIcon)`
+    width: 20px;
+    height: 20px;
+`;
 
 // ul tag
 const StyledList = styled(List)`
@@ -125,16 +129,24 @@ const AppAppBar = ({ ...props }) => {
                             MyAccount
                         <StyledFavoriteIcon/>
                             Favorite
+                        <StyledShoppingCartIcon/>
+                            ShoppingCart    
                     </StyledBreadCrumbs>
                 </StyeldDivInfoBar>
             }
             leftLinks={
                 <StyledList>
                     <StyledListItem>
-                        <Link>
+                        <StyledButton
+                            href="#pablo"
+                            color="transparent"
+                        >
+                         About
+                        </StyledButton>
+                    </StyledListItem>
+                    <StyledListItem>
+                        <Link href='/shopAll'>
                             <StyledButton
-                                href="/shopAll"
-                                onClick={e => e.preventDefault()}
                                 color="transparent"
                             >
                                 Shop All 
@@ -144,7 +156,6 @@ const AppAppBar = ({ ...props }) => {
                     <StyledListItem>
                         <StyledButton
                             href="#pablo"
-                            onClick={e => e.preventDefault()}
                             color="transparent"
                         >
                          Link
@@ -153,7 +164,6 @@ const AppAppBar = ({ ...props }) => {
                     <StyledListItem>
                         <StyledButton
                             href="#pablo"
-                            onClick={e => e.preventDefault()}
                             color="transparent"
                         >
                          Link

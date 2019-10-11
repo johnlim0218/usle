@@ -7,7 +7,7 @@ import TextField from '../components/TextField';
 const StyledTextField = styled(TextField)`
 `;
 
-const RFTextField = ({ ...props }) => {
+const RFTextField = (props) => {
     const {
       autoComplete,
       input,
@@ -23,7 +23,7 @@ const RFTextField = ({ ...props }) => {
             inputProps: {
               autoComplete
             },
-            InputProps,
+            ...InputProps,
           }}
           helperText={touched ? error || submitError : ''}
           {...input}
@@ -31,5 +31,16 @@ const RFTextField = ({ ...props }) => {
         
     )
 }
+
+RFTextField.propTypes = {
+  autoComplete: PropTypes.string,
+  input: PropTypes.object.isRequired,
+  InputProps: PropTypes.object,
+  meta: PropTypes.shape({
+    error: PropTypes.string,
+    touched: PropTypes.bool.isRequired,
+  }).isRequired,
+};
+
 
 export default RFTextField;
