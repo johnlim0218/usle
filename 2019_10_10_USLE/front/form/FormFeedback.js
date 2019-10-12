@@ -7,7 +7,7 @@ import Typography from '../components/Typography';
 const FormFeedback = (props) => {
     console.log(props);
     return(
-        <div></div>
+        <div>123</div>
     )
 }
 

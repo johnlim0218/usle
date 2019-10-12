@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import styled from 'styled-components';
 import Link from 'next/link';
 import { Field, Form, FormSpy } from 'react-final-form';
@@ -19,6 +19,7 @@ const StyledFormButton = styled(FormButton)`
 
 const SignIn = () => {
     const [sent, setSent] = useState(false);
+    const [submitErrorTest, setSubmitErrorTest] = useState(false);
     
     const validate = (values) => {
         const errors = required(['email', 'password'], values);
@@ -31,9 +32,13 @@ const SignIn = () => {
         return errors;
     }
     
-    const onSubmit = () => {
+    const onSubmit = useCallback(() => {
         setSent(true);
-    };
+        // submitError 발생
+        setSubmitErrorTest(true);
+        setSent(false);
+    }, [sent, submitErrorTest]);
+
 
     return(
         <AppForm>
@@ -48,15 +53,14 @@ const SignIn = () => {
             </Typography>
             <Form 
                 onSubmit={onSubmit}
-                // subscription 속성은 true로 설정한 대상을 바라보게 한다.
+                // subscriptrion - true로 설정한 Field의 속성 값이 바뀔 때 마다 렌더링 해준다.
                 subscription={{ submitting: true }}
                 validate={validate}
-                render= {({ handleSubmit, submitting }) => (
-                    
+                render={({ handleSubmit, submitting }) => (
                     <StyledForm 
                         onSubmit={handleSubmit}
                         noValidate>
-                        <Field 
+                        <Field
                             autoComplete="email"
                             autoFocus
                             component={RFTextField}
@@ -82,19 +86,19 @@ const SignIn = () => {
                             type="password"
                             noBorder
                         />
-                        
+                        {/* FormSpy는 기본적으로 form을 subscript하고 있다? */}
                         <FormSpy
-                            subscription={{ submitError: true}}
-                        >
-                            {({ submitError }) => (
-                                
+                            subscription={{ submitError : true }}
+                            render={({ submitError, ...other }) => (
+                                console.log(submitError),
+                                console.log(other),
                                 submitError ? (
                                 <FormFeedback error>
                                     {submitError}
                                 </FormFeedback>
                                 ) : null
-                            )}
-                        </FormSpy>
+                            )}/>
+                        
                         <StyledFormButton
                             type="submit"
                             disabled={submitting || sent}
@@ -106,7 +110,13 @@ const SignIn = () => {
                         </StyledFormButton>
                     </StyledForm>
                 )}/>
-                
+                <Typography align="center">
+                    <Link href='/forgotpassword'>
+                        <a>
+                            Forgot Password?
+                        </a>
+                    </Link>
+                </Typography>
             
         </AppForm>
     )
