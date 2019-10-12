@@ -89,9 +89,7 @@ const SignIn = () => {
                         {/* FormSpy는 기본적으로 form을 subscript하고 있다? */}
                         <FormSpy
                             subscription={{ submitError : true }}
-                            render={({ submitError, ...other }) => (
-                                console.log(submitError),
-                                console.log(other),
+                            render={({ submitError }) => (
                                 submitError ? (
                                 <FormFeedback error>
                                     {submitError}
