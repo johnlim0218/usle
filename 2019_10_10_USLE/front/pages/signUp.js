@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import styled from 'styled-components';
 import Link from 'next/link';
 import Grid from '@material-ui/core/Grid';
@@ -20,17 +20,18 @@ const StyledFormButton = styled(FormButton)`
 
 const SignUp = () => {
     const [sent, setSent] = React.useState(false);
+    
     const validate = values => {
-    const errors = required(['firstName', 'lastName', 'email', 'password'], values);
-        if (!errors.email) {
-            const emailError = email(values.email, values);
-            if (emailError) {
-                errors.email = email(values.email, values);
+        const errors = required(['firstName', 'lastName', 'email', 'password'], values);
+            if (!errors.email) {
+                const emailError = email(values.email, values);
+                if (emailError) {
+                    errors.email = email(values.email, values);
+                }
             }
-        }
         return errors;
     };
-  
+
     const onSubmit = useCallback(() => {
         setSent(true);
         // submitError 발생
