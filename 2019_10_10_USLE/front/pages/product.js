@@ -18,43 +18,60 @@ const product2 = "https://demos.creative-tim.com/material-kit-pro-react/static/m
 const product3 = "https://demos.creative-tim.com/material-kit-pro-react/static/media/product3.17b8d773.jpg";
 const product4 = "https://demos.creative-tim.com/material-kit-pro-react/static/media/product4.aeca8662.jpg";
 
+const images = [
+    {
+        original: product3,
+        thumbnail: product3
+      },
+      {
+        original: product4,
+        thumbnail: product4
+      },
+      {
+        original: product1,
+        thumbnail: product1
+      },
+      {
+        original: product2,
+        thumbnail: product2
+      }
+]
 
 const StyledDivProductPage = styled.div`
     & .image-gallery-slide img {
         border-radius: 3px;
         max-width: 300px;
         height: auto;
-    },
+    };
     & .image-gallery-swipe {
         margin: 30px 0px;
         overflow: hidden;
         width: 100%;
         height: auto;
         text-align: center;
-    },
+    };
     & .image-gallery-thumbnails > .image-gallery-thumbnails-container a {
         &.active > div {
             opacity: 1;
-            border-color: #e5e5e5;
-        },
-    & > div {
-      width: 80%;
-      max-width: 85px;
-      margin: 0 auto;
-      padding: 8px;
-      display: block;
-      border: 1px solid transparent;
-      background: transparent;
-      border-radius: 3px;
-      opacity: .8;
-    },
-    & > div img {
-      border-radius: 3px;
-      width: 100%;
-      height: auto;
-      text-align: center;
+            border-color: gray;
+        & > div {
+            width: 80%;
+            max-width: 85px;
+            margin: 0 auto;
+            padding: 8px;
+            display: block;
+            border: 1px solid transparent;
+            background: transparent;
+            border-radius: 3px;
+            opacity: .8;
+        };
+        & > div img {
+            border-radius: 3px;
+            width: 100%;
+            height: auto;
+            text-align: center;
+        };
     }
-  }
 `;
 
 const StyledDivSection = styled.div`
@@ -75,7 +92,7 @@ const MainRaised = css`
         margin-left: 10px;
         margin-right: 10px;
     };
-    margin: -40vh 0 0;
+    // margin: -40vh 0 0;
     padding: 40px;
     
     border-radius: 6px;
@@ -95,6 +112,42 @@ const StyledGridContainer = styled(Grid)`
     margin-right: -15px;
     margin-left: -15px;
     width: auto;
+
+    & .image-gallery-slide img {
+        border-radius: 3px;
+        max-width: 300px;
+        height: auto;
+    };
+    & .image-gallery-swipe {
+        margin: 30px 0px;
+        overflow: hidden;
+        width: 100%;
+        height: auto;
+        text-align: center;
+      };
+      & .image-gallery-thumbnails > .image-gallery-thumbnails-container a {
+        & .active > div {
+          opacity: 1;
+          border-color: gray;
+        };
+        & > div {
+          width: 80%;
+          max-width: 85px;
+          margin: 0 auto;
+          padding: 8px;
+          display: block;
+          border: 1px solid transparent;
+          background: transparent;
+          border-radius: 3px;
+          opacity: .8;
+        };
+        & > div img {
+          border-radius: 3px;
+          width: 100%;
+          height: auto;
+          text-align: center;
+        }
+      }
 `
 const StyledGridItem = styled(Grid)`
     position: relative;
@@ -106,112 +159,69 @@ const StyledGridItem = styled(Grid)`
 const StyledButtonShoppingCart = styled(Button)`
     float: right;
 `;
+const StyledImageGallery = styled(ImageGallery)`
+  
+  & .image-gallery-swipe {
+    margin: 30px 0px;
+    overflow: hidden;
+    width: 100%;
+    height: auto;
+    text-align: center;
+  };
+  & .image-gallery-thumbnails > .image-gallery-thumbnails-container a {
+    & .active > div {
+      opacity: 1;
+      border-color: gray;
+    };
+    & > div {
+      width: 80%;
+      max-width: 85px;
+      margin: 0 auto;
+      padding: 8px;
+      display: block;
+      border: 1px solid transparent;
+      background: transparent;
+      border-radius: 3px;
+      opacity: .8;
+    };
+    & > div img {
+      border-radius: 3px;
+      width: 100%;
+      height: auto;
+      text-align: center;
+    }
+  }
+`;
 
 
-const images = [
-    {
-        original: cardProduct3,
-        thumbnail: product3
-      },
-      {
-        original: cardProduct4,
-        thumbnail: product4
-      },
-      {
-        original: cardProduct1,
-        thumbnail: product1
-      },
-      {
-        original: cardProduct2,
-        thumbnail: product2
-      }
-]
+
 
 const Product = () => {
     return(
-        
-         <StyledDivProductPage>
-             <StyledDivContainer>
-                 <StyledGridContainer container>
-                     <StyledGridItem item md={4}>
-                         <StyledButtonShoppingCart color="white">
-                             <ShoppingCart/>0 items
-                         </StyledButtonShoppingCart>
-                     </StyledGridItem>
-                 </StyledGridContainer>
-             </StyledDivContainer>
-                 <StyledDivSection>
-                    <StyledDivContainer>
-                        <StyledDivMain>
-                           <StyledGridContainer container>
-                               <StyledGridItem item md={6} sm={6}>
-                                    <ImageGallery
-                                        showFullscreenButton={false}
-                                        showPlayButton={false}
-                                        starIndex={3}
-                                        items={images}
-                                    />
-                               </StyledGridItem>
+       <div>
+           {/* upper */}
+           <div>
 
-                               <StyledGridItem item md={6} sm={6}>
-                                   <h2>Becky Silk Blazer</h2>
-                                   <h3>$335</h3>
-                                   <Accordion
-                                        active={0}
-                                        activeColor="rose"
-                                        collapses={[
-                                            {
-                                            title: "Description",
-                                            content: (
-                                                <p>
-                                                Eres{"'"} daring {"'"}Grigri Fortune{"'"} swimsuit has
-                                                the fit and coverage of a bikini in a one-piece
-                                                silhouette. This fuchsia style is crafted from the
-                                                label{"'"}s sculpting peau douce fabric and has
-                                                flattering cutouts through the torso and back. Wear
-                                                yours with mirrored sunglasses on vacation.
-                                                </p>
-                                            )
-                                            },
-                                            {
-                                            title: "Designer Information",
-                                            content: (
-                                                <p>
-                                                An infusion of West Coast cool and New York attitude,
-                                                Rebecca Minkoff is synonymous with It girl style.
-                                                Minkoff burst on the fashion scene with her
-                                                best-selling {"'"}Morning After Bag{"'"} and later
-                                                expanded her offering with the Rebecca Minkoff
-                                                Collection - a range of luxe city staples with a {'"'}
-                                                downtown romantic{'"'} theme.
-                                                </p>
-                                            )
-                                            },
-                                            {
-                                            title: "Details and Care",
-                                            content: (
-                                                <ul>
-                                                <li>Storm and midnight-blue stretch cotton-blend</li>
-                                                <li>
-                                                    Notch lapels, functioning buttoned cuffs, two front
-                                                    flap pockets, single vent, internal pocket
-                                                </li>
-                                                <li>Two button fastening</li>
-                                                <li>84% cotton, 14% nylon, 2% elastane</li>
-                                                <li>Dry clean</li>
-                                                </ul>
-                                            )
-                                            }
-                                        ]}
+           </div>
+           {/* lower */}
+           <div>
+               <StyledDivContainer>
+                    <StyledDivMain>
+                        <StyledGridContainer container>
+                            <StyledGridItem item md={6} sm={6}>
+                                <ImageGallery
+                                    showFullscreenButton={false}
+                                    showPlayButton={false}
+                                    startIndex={3}
+                                    items={images}
                                     />
-                               </StyledGridItem>
-                            </StyledGridContainer>
-                        </StyledDivMain>
-                    </StyledDivContainer>
-                 </StyledDivSection>
-            
-         </StyledDivProductPage>
-        
+                            </StyledGridItem>
+                        </StyledGridContainer>
+                    </StyledDivMain>
+                </StyledDivContainer>
+           </div>
+       </div> 
+       
     )
 }
 

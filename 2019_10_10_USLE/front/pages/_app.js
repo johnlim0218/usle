@@ -7,7 +7,6 @@ import { ThemeProvider } from 'styled-components';
 
 import theme from '../theme/theme';
 
-
 const Usle = ({ Component, pageProps }) => {
     useEffect(() => {
         const jssStyles = document.querySelector('#jss-server-side');
@@ -24,7 +23,8 @@ const Usle = ({ Component, pageProps }) => {
                     <Head>
                         <title>Usle</title>
                         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/antd/3.16.2/antd.css"/>
-                    </Head>
+                        <link rel="stylesheet" href="css/image-gallery.css"/>
+                    s</Head>
                     <AppLayout> 
                         <Component {...pageProps}/>
                     </AppLayout>
