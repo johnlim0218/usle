@@ -6,10 +6,9 @@ import Container from '@material-ui/core/Container';
 import Typography from '../components/Typography';
 
 const StyledSection = styled.section`
-    background-color: ${props => props.theme.palette.secondary.light};
     display: flex;
     overflow: hidden;
-`;
+`; 
 const StyledContainer = styled(Container)`
     margin-top: ${props => props.theme.spacing(15)}px;
     margin-bottom: ${props => props.theme.spacing(30)}px;

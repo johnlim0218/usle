@@ -5,6 +5,7 @@ import IndexCategories from '../views/IndexCategories';
 import IndexHowItWorks from '../views/IndexHowItWorks';
 import IndexQuestion from '../views/IndexQuestion';
 import ModifiedButton from '../components/Button';
+
 const Home = ({ props }) => {
     
     return (

@@ -17,7 +17,7 @@ const StyledInfoAppBar = styled(AppBar).attrs(props => ({
     display: flex;
     align-items: center;
     justify-content: flex-end;
-    background-color: #fcf2e0;
+    background-color: ${props => props.theme.palette.secondary.light};
     color: #656565;
     min-height: 30px;
 `
