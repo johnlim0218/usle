@@ -1,12 +1,19 @@
-import React from 'react';
+import React, { useState, useCallback } from 'react';
 import styled, { css } from 'styled-components';
 import ImageGallery from "react-image-gallery";
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
-import Button from '@material-ui/core/Button';
-import ShoppingCart from '@material-ui/icons/ShoppingCart';
 
+import ShoppingCart from '@material-ui/icons/ShoppingCart';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
+import MenuItem from "@material-ui/core/MenuItem";
+import List from "@material-ui/core/List";
+import ListItem from "@material-ui/core/ListItem";
+
+import Typography from '../components/Typography';
 import Accordion from '../components/Accordion';
+import Button from '../components/Button';
 
 // images
 const cardProduct1 = "https://demos.creative-tim.com/material-kit-pro-react/static/media/product1.629c7883.jpg";
@@ -38,40 +45,7 @@ const images = [
 ]
 
 const StyledDivProductPage = styled.div`
-    & .image-gallery-slide img {
-        border-radius: 3px;
-        max-width: 300px;
-        height: auto;
-    };
-    & .image-gallery-swipe {
-        margin: 30px 0px;
-        overflow: hidden;
-        width: 100%;
-        height: auto;
-        text-align: center;
-    };
-    & .image-gallery-thumbnails > .image-gallery-thumbnails-container a {
-        &.active > div {
-            opacity: 1;
-            border-color: gray;
-        & > div {
-            width: 80%;
-            max-width: 85px;
-            margin: 0 auto;
-            padding: 8px;
-            display: block;
-            border: 1px solid transparent;
-            background: transparent;
-            border-radius: 3px;
-            opacity: .8;
-        };
-        & > div img {
-            border-radius: 3px;
-            width: 100%;
-            height: auto;
-            text-align: center;
-        };
-    }
+  
 `;
 
 const StyledDivSection = styled.div`
@@ -126,9 +100,9 @@ const StyledGridContainer = styled(Grid)`
         text-align: center;
       };
       & .image-gallery-thumbnails > .image-gallery-thumbnails-container a {
-        & .active > div {
+        &.active > div {
           opacity: 1;
-          border-color: gray;
+          border-color: #ddd;
         };
         & > div {
           width: 80%;
@@ -159,44 +133,86 @@ const StyledGridItem = styled(Grid)`
 const StyledButtonShoppingCart = styled(Button)`
     float: right;
 `;
-const StyledImageGallery = styled(ImageGallery)`
-  
-  & .image-gallery-swipe {
-    margin: 30px 0px;
-    overflow: hidden;
-    width: 100%;
-    height: auto;
-    text-align: center;
-  };
-  & .image-gallery-thumbnails > .image-gallery-thumbnails-container a {
-    & .active > div {
-      opacity: 1;
-      border-color: gray;
-    };
+
+const StyledFormControl = styled(FormControl)`
+    margin: 10px 1px 10px 0px !important;
     & > div {
-      width: 80%;
-      max-width: 85px;
-      margin: 0 auto;
-      padding: 8px;
-      display: block;
-      border: 1px solid transparent;
-      background: transparent;
-      border-radius: 3px;
-      opacity: .8;
-    };
-    & > div img {
-      border-radius: 3px;
-      width: 100%;
-      height: auto;
-      text-align: center;
+      &:before {
+        border-bttom-width: 1px !important;
+        border-bottom-color: gray !important;
+      };
+      &:after {
+        border-bottom-color: ${props=> props.theme.palette.secondary.light}!important;
+      }
     }
-  }
+`;
+const StyledTypographyTitle = styled(Typography)`
+    color: #3c4858;
+    text-decoration: none;
+    font-weight: 700;
+    margin-top: 30px;
+    margin-bottom: 25px;
+    min-height: 32px;
+`;
+const StyledTypographyPrice = styled(Typography)`
+    margin: 10px 0 25px;
+    color: #3c4858;
+`
+
+const StyledSelect = styled(Select)`
+        padding: 12px 0 7px;
+        font-size: .75rem;
+        font-weight: 400;
+        line-height: 1.42857;
+        text-decoration: none;
+        text-transform: uppercase;
+        letter-spacing: 0;
+        background-color: transparent;
+        & :focus {
+          background-color: transparent;
+        };
+        & [aria-owns] + input + svg {
+          transform: rotate(180deg);
+        };
+        & div + input + svg {
+          transition: all 300ms linear;
+        };
+`;
+const StyledMenuItem = styled(MenuItem)`
+        &.MuiMenuItem-root{
+          font-size: 13px;
+          padding: 10px 20px;
+          margin: 0 5px;
+          border-radius: 2px;
+          transition: all 150ms linear;
+          display: block;
+          clear: both;
+          font-weight: 400;
+          line-height: 2;
+          white-space: nowrap;
+          padding-right: 30px;
+          &:hover {
+            background-color: ${props => props.theme.palette.secondary.light};
+            color: ${props => props.theme.palette.secondary.dark}
+          };
+        };
+        &.Mui-selected{
+          background-color: ${props => props.theme.palette.secondary.light};
+        }
+        
 `;
 
 
-
-
 const Product = () => {
+    const [colorSelect, setColorSelect] = useState("0");
+    const [sizeSelect, setSizeSelect] = useState("0");
+    const onChangeColor = useCallback((e) => {
+      setColorSelect(e.target.value);
+    },[colorSelect]);
+    const onChangeSize = useCallback((e) => {
+      setSizeSelect(e.target.value);
+    },[sizeSelect])
+    
     return(
        <div>
            {/* upper */}
@@ -216,8 +232,125 @@ const Product = () => {
                                     items={images}
                                     />
                             </StyledGridItem>
+                            <StyledGridItem item md={6} sm={6}>
+                              <StyledTypographyTitle variant='h4'>Becky Silk Blazer</StyledTypographyTitle>
+                              <StyledTypographyPrice variant='h4'>$150</StyledTypographyPrice>
+                              <Accordion
+                                active={0}
+                                activeColor='rose'
+                                collapses={[
+                                  {
+                                    title: "Description",
+                                    content: (
+                                      <p>
+                                        Eres{"'"} daring {"'"}Grigri Fortune{"'"} swimsuit has
+                                        the fit and coverage of a bikini in a one-piece
+                                        silhouette. This fuchsia style is crafted from the
+                                        label{"'"}s sculpting peau douce fabric and has
+                                        flattering cutouts through the torso and back. Wear
+                                        yours with mirrored sunglasses on vacation.
+                                      </p>
+                                    )
+                                  },
+                                  {
+                                    title: "Designer Information",
+                                    content: (
+                                      <p>
+                                        An infusion of West Coast cool and New York attitude,
+                                        Rebecca Minkoff is synonymous with It girl style.
+                                        Minkoff burst on the fashion scene with her
+                                        best-selling {"'"}Morning After Bag{"'"} and later
+                                        expanded her offering with the Rebecca Minkoff
+                                        Collection - a range of luxe city staples with a {'"'}
+                                        downtown romantic{'"'} theme.
+                                      </p>
+                                    )
+                                  },
+                                  {
+                                    title: "Details and Care",
+                                    content: (
+                                      <ul>
+                                        <li>Storm and midnight-blue stretch cotton-blend</li>
+                                        <li>
+                                          Notch lapels, functioning buttoned cuffs, two front
+                                          flap pockets, single vent, internal pocket
+                                        </li>
+                                        <li>Two button fastening</li>
+                                        <li>84% cotton, 14% nylon, 2% elastane</li>
+                                        <li>Dry clean</li>
+                                      </ul>
+                                    )
+                                  }
+                                ]}
+                              />
+                              <StyledGridContainer container style={{ paddingTop: '50px'}}>
+                                <StyledGridItem item md={6} sm={6}>
+                                  <label>
+                                    <Typography>Select color</Typography>
+                                  </label>
+                                  <StyledFormControl
+                                    fullWidth>
+                                      <StyledSelect
+                                        value={colorSelect}
+                                        onChange={onChangeColor}
+                                        inputProps={{
+                                          name: 'colorSelect',
+                                          id: 'color-select'
+                                        }}
+                                      >
+                                        <StyledMenuItem
+                                          value="0">
+                                            Rose
+                                        </StyledMenuItem>
+                                        <StyledMenuItem
+                                          value="1">
+                                            Gray
+                                        </StyledMenuItem>
+                                        <StyledMenuItem
+                                          value="2">
+                                            White
+                                        </StyledMenuItem>
+                                      </StyledSelect>
+                                  </StyledFormControl>
+                                </StyledGridItem>
+                                <StyledGridItem item md={6} sm={6}>
+                                  <label>
+                                    <Typography>Select size</Typography>
+                                  </label>
+                                  <StyledFormControl
+                                    fullWidth>
+                                      <StyledSelect
+                                        value={sizeSelect}
+                                        onChange={onChangeSize}
+                                        inputProps={{
+                                          name: 'sizeSelect',
+                                          id: 'size-select'
+                                        }}
+                                      >
+                                        <StyledMenuItem
+                                          value="0">
+                                            Small
+                                        </StyledMenuItem>
+                                        <StyledMenuItem
+                                          value="1">
+                                            Medium
+                                        </StyledMenuItem>
+                                        <StyledMenuItem
+                                          value="2">
+                                            Large
+                                        </StyledMenuItem>
+                                      </StyledSelect>
+                                  </StyledFormControl>
+                                </StyledGridItem>
+                              </StyledGridContainer>
+                              <StyledGridContainer container style={{ float:'right' }}>
+                                <Button round>
+                                  Add to Cart &nbsp; <ShoppingCart/>
+                                </Button>
+                              </StyledGridContainer>
+                            </StyledGridItem>
                         </StyledGridContainer>
-                    </StyledDivMain>
+                      </StyledDivMain>
                 </StyledDivContainer>
            </div>
        </div> 

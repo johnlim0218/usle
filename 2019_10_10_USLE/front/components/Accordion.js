@@ -13,56 +13,41 @@ const StyledDivAccordionRoot = styled.div`
     margin-bottom: 20px;
 `;
 const StyledExpansionPanel = styled(ExpansionPanel)`
-    .MuiExpansionPanel-root{
-        boxShadow: none;
-        &:before {
-          display: none;
-        }
+    box-shadow: none;
+    & :before {
+      display: none;
     }
+
     .Mui-expanded{
         margin: 0;
     }
 `;
 const StyledExpansionPanelSummary = styled(ExpansionPanelSummary)`
-    .MuiExpansionPanelSummary-root{
-        min-height: auto
-        background-color: transparent;
-        border-bottom: 1px solid;
-        padding: 25px 10px 5px 0px;
-        border-top-left-radius: 3px;
-        border-top-right-radius: 3px;
-        color: black;
-    }
-    .Mui-expanded{
-        & $expansionPanelSummaryExpandIcon {
-            ${breakpoint("md")`
-              top: auto;
-            `},
-            transform: rotate(180deg);
-            ${breakpoint("sm")`
-              top: 10px;
-            `},
-            @media all and (-ms-high-contrast: none) (-ms-high-contrast: active) {
-              display: inline-block;
-              top: 10px;
-            }
-          }
-    }
+    min-height: auto;
+    background-color: transparent;
+    border-bottom: 1px solid #ddd;
+    padding: 25px 10px 5px 0px;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+    color: black;
+    
     .MuiExpansionPanelSummary-content{
         margin: 0;
     }
-    .MuiExpansionPanelSummary-expandIcon{
-        ${breakpoint("md")`
-            top: auto;
-        `},
-        transform: rotate(0deg);
-        color: inherit;
-        right: 10px;
-        position: absolute;
-        @media all and (-ms-high-contrast: none) (-ms-high-contrast: active) {
-            display: inline-block;
-        }
+
+    .MuiExpansionPanelSummary-expandIcon {
+      padding-right: 0;
+      padding-left: 0;
     }
+
+    .MuiExpansionPanelSummary-expandIcon.Mui-expanded {
+      transform: rotate(180deg);
+      padding-right: 0;
+      padding-left: 0;
+      position: absolute;
+      right:-1px;
+  }
+    
 `;
 const StyledExpansionDetails = styled(ExpansionPanelDetails)`
     display: block;
