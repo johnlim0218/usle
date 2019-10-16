@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 // import Tooltip from '@material-ui/core/Tooltip';
 import Favorite from '@material-ui/icons/Favorite';
@@ -48,26 +49,29 @@ const StyledButton = styled(Button)`
 `;
 
 
-const ProductItemList = () => {
-    return (
+const ProductItemList = (props) => {
+  const { category, name, price, despcription, imgsrc, item } = props;
+  
+      return (
         <Card product>
           <CardHeader image>
             <a href="#pablo">
-              <img src={cardProduct3} alt="cardProduct3" />
+              <img src={item ? item.imgsrc : 'https://shop-phinf.pstatic.net/20191010_276/1570696979626LfRda_JPEG/8057718259505790_559180585.jpg?type=m510'} alt="cardProduct3" />
             </a>
           </CardHeader>
           <CardBody>
-            <StyledTypographyCategory variant='h6'>Popular</StyledTypographyCategory>
-            <StyledTypographyTitle variant='h5'>Balmain</StyledTypographyTitle>
+            <StyledTypographyCategory variant='h6'>{item ? item.category : 'popular'}</StyledTypographyCategory>
+            <StyledTypographyTitle variant='h5'>{item ? item.name : 'itemname'}</StyledTypographyTitle>
             <StyledDivCardDescription>
-              Balmain{"'"}s mid-rise skinny jeans are cut with stretch
+            {item ? item.despcription : `
+              Balmain's mid-rise skinny jeans are cut with stretch
               to ensure they retain their second-skin fit but move
-              comfortably.
+              comfortably.`}
             </StyledDivCardDescription>
           </CardBody>
           <StyledCardFooter>
             <div>
-              <Typography variant='body1'>$459</Typography>
+              <Typography variant='body1'>￦{item ? item.price : '20,000'}</Typography>
             </div>
             <div>
               <Tooltip
@@ -83,5 +87,14 @@ const ProductItemList = () => {
        </Card>
     )
 }
+
+
+ProductItemList.propTypes = {
+  category: PropTypes.string,
+  name: PropTypes.string,
+  price: PropTypes.string,
+  despcription: PropTypes.string,
+  imgsrc: PropTypes.string,
+};
 
 export default ProductItemList;

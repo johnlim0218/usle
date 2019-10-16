@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 
-import ProductItem from '../components/ProductItem';
+import ProductItemList from '../components/ProductItemList';
 import { dummyItem } from '../dummy/dummy';
 
 const StyledContainer = styled(Container)`
@@ -18,7 +18,7 @@ const ShopAll = () => {
             <Grid container spacing={4}>
                 {dummyItem.map((item, index) => (
                     <Grid item key={item} xs={12} sm={6} md={4}>
-                        <ProductItem
+                        <ProductItemList
                             item={item}
                         />
                     </Grid>

@@ -108,9 +108,13 @@ const StyledGridContainer = styled(Grid)`
         text-align: center;
       };
       & .image-gallery-thumbnails > .image-gallery-thumbnails-container a {
-        &.active > div {
-          opacity: 1;
+        &.active {
+          opacity:1;
           border-color: #ddd;
+          border-width: 2px;
+        }
+        &.active > div {
+          opacity: .9;
         };
         & > div {
           width: 80%;
@@ -121,7 +125,7 @@ const StyledGridContainer = styled(Grid)`
           border: 1px solid transparent;
           background: transparent;
           border-radius: 3px;
-          opacity: .8;
+          opacity: .4;
         };
         & > div img {
           border-radius: 3px;
@@ -137,6 +141,7 @@ const StyledGridContainerSelection = styled(Grid)`
 const StyledGridContainerCart = styled(Grid)`
     width: auto;
     float: right;
+    padding-top: 20px
 `
 const StyledGridItem = styled(Grid)`
     position: relative;
@@ -215,6 +220,14 @@ const StyledMenuItem = styled(MenuItem)`
           background-color: ${props => props.theme.palette.secondary.light};
         }
 `;
+
+const StyledButtonBuy = styled(Button)`
+
+`
+
+const StyledButtonCart = styled(Button)`
+
+`
 
 const StyledDivPolicy = styled.div`
         text-align: center;
@@ -372,9 +385,12 @@ const Product = () => {
                                 </StyledGridItem>
                               </StyledGridContainerSelection>
                               <StyledGridContainerCart container>
-                                <Button size='large'>
+                                <StyledButtonBuy>
+                                  Buy it
+                                </StyledButtonBuy>
+                                <StyledButtonCart>
                                   Add to Cart &nbsp; <ShoppingCart/>
-                                </Button>
+                                </StyledButtonCart>
                               </StyledGridContainerCart>
                             </StyledGridItem>
                         </StyledGridContainer>

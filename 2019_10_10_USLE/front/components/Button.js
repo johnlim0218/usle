@@ -6,7 +6,6 @@ const ModifiedButton = styled(Button)`
         border-radius: 0;
         font-weight: ${props => props.theme.typography.fontWeightMedium};
         font-family: ${props => props.theme.typography.fontFamilySecondary};
-        
         font-size: ${props => props.theme.typography.pxToRem(14)};
         box-shadow: none;
         min-width: 0;
@@ -15,6 +14,7 @@ const ModifiedButton = styled(Button)`
         };
     };
     &.MuiButton-sizeLarge {
+        display: flex;
         padding: ${props => props.theme.spacing(2, 5)};
         font-size: ${props => props.theme.typography.pxToRem(16)}px;
     };
