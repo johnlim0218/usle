@@ -6,9 +6,10 @@ const ModifiedButton = styled(Button)`
         border-radius: 0;
         font-weight: ${props => props.theme.typography.fontWeightMedium};
         font-family: ${props => props.theme.typography.fontFamilySecondary};
-        padding: ${props => props.theme.spacing(2, 4)};
-        font-size: ${props => props.theme.typography.pxToRem(14)}px;
+        
+        font-size: ${props => props.theme.typography.pxToRem(14)};
         box-shadow: none;
+        min-width: 0;
         &:hover &:active &:focus {
           box-shadow: none;
         };

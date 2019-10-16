@@ -4,27 +4,35 @@ import ImageGallery from "react-image-gallery";
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 
-import ShoppingCart from '@material-ui/icons/ShoppingCart';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import MenuItem from "@material-ui/core/MenuItem";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
+// @material-ui/icons
+import ShoppingCart from "@material-ui/icons/ShoppingCart";
+import LocalShipping from "@material-ui/icons/LocalShipping";
+import VerifiedUser from "@material-ui/icons/VerifiedUser";
+import Favorite from "@material-ui/icons/Favorite";
 
 import Typography from '../components/Typography';
 import Accordion from '../components/Accordion';
 import Button from '../components/Button';
+import InfoArea from '../components/InfoArea';
+import ProductItemList from '../components/ProductItemList';
 
 // images
-const cardProduct1 = "https://demos.creative-tim.com/material-kit-pro-react/static/media/product1.629c7883.jpg";
-const cardProduct2 = "https://demos.creative-tim.com/material-kit-pro-react/static/media/product2.77917eb4.jpg";
-const cardProduct3 = "https://demos.creative-tim.com/material-kit-pro-react/static/media/product3.17b8d773.jpg";
-const cardProduct4 = "https://demos.creative-tim.com/material-kit-pro-react/static/media/product4.aeca8662.jpg";
-const product1 = "https://demos.creative-tim.com/material-kit-pro-react/static/media/product1.629c7883.jpg";
-const product2 = "https://demos.creative-tim.com/material-kit-pro-react/static/media/product2.77917eb4.jpg";
-const product3 = "https://demos.creative-tim.com/material-kit-pro-react/static/media/product3.17b8d773.jpg";
-const product4 = "https://demos.creative-tim.com/material-kit-pro-react/static/media/product4.aeca8662.jpg";
+export const cardProduct1 = "https://demos.creative-tim.com/material-kit-pro-react/static/media/product1.629c7883.jpg";
+export const cardProduct2 = "https://demos.creative-tim.com/material-kit-pro-react/static/media/product2.77917eb4.jpg";
+export const cardProduct3 = "https://demos.creative-tim.com/material-kit-pro-react/static/media/product3.17b8d773.jpg";
+export const cardProduct4 = "https://demos.creative-tim.com/material-kit-pro-react/static/media/product4.aeca8662.jpg";
+export const product1 = "https://demos.creative-tim.com/material-kit-pro-react/static/media/product1.629c7883.jpg";
+export const product2 = "https://demos.creative-tim.com/material-kit-pro-react/static/media/product2.77917eb4.jpg";
+export const product3 = "https://demos.creative-tim.com/material-kit-pro-react/static/media/product3.17b8d773.jpg";
+export const product4 = "https://demos.creative-tim.com/material-kit-pro-react/static/media/product4.aeca8662.jpg";
 
+
+const products = [1,2,3,4];
 const images = [
     {
         original: product3,
@@ -48,12 +56,12 @@ const StyledDivProductPage = styled.div`
   
 `;
 
-const StyledDivSection = styled.div`
-    background-color: #e5e5e5;
+
+const StyledDivProductLowerSection = styled.div`
     background-position: 50%;
     background-size: cover;
     padding: 70px 0;
-`;
+`
 const StyledDivContainer = styled.div`
     ${props => props.theme.container};
     z-index: 2;
@@ -122,6 +130,13 @@ const StyledGridContainer = styled(Grid)`
           text-align: center;
         }
       }
+`
+const StyledGridContainerSelection = styled(Grid)`
+    padding-top: 50px;
+`
+const StyledGridContainerCart = styled(Grid)`
+    width: auto;
+    float: right;
 `
 const StyledGridItem = styled(Grid)`
     position: relative;
@@ -199,9 +214,22 @@ const StyledMenuItem = styled(MenuItem)`
         &.Mui-selected{
           background-color: ${props => props.theme.palette.secondary.light};
         }
-        
 `;
 
+const StyledDivPolicy = styled.div`
+        text-align: center;
+        padding-top: 30px;
+`;
+
+const StyledDivRelatedItems = styled.div`
+        margin-top: 50px;
+        & h1{
+          margin-bottom: 80px;
+        }
+`;
+const StyledTypographyRelateditems = styled(Typography)`
+  text-align: center;
+`;
 
 const Product = () => {
     const [colorSelect, setColorSelect] = useState("0");
@@ -220,7 +248,7 @@ const Product = () => {
 
            </div>
            {/* lower */}
-           <div>
+           <StyledDivProductLowerSection>
                <StyledDivContainer>
                     <StyledDivMain>
                         <StyledGridContainer container>
@@ -283,7 +311,7 @@ const Product = () => {
                                   }
                                 ]}
                               />
-                              <StyledGridContainer container style={{ paddingTop: '50px'}}>
+                              <StyledGridContainerSelection container>
                                 <StyledGridItem item md={6} sm={6}>
                                   <label>
                                     <Typography>Select color</Typography>
@@ -342,17 +370,60 @@ const Product = () => {
                                       </StyledSelect>
                                   </StyledFormControl>
                                 </StyledGridItem>
-                              </StyledGridContainer>
-                              <StyledGridContainer container style={{ float:'right' }}>
-                                <Button round>
+                              </StyledGridContainerSelection>
+                              <StyledGridContainerCart container>
+                                <Button size='large'>
                                   Add to Cart &nbsp; <ShoppingCart/>
                                 </Button>
-                              </StyledGridContainer>
+                              </StyledGridContainerCart>
                             </StyledGridItem>
                         </StyledGridContainer>
                       </StyledDivMain>
+                    
+                    <StyledDivPolicy>
+                      <StyledGridContainer container>
+                        <StyledGridItem item md={4} sm={4}>
+                         <InfoArea
+                            title="2 Days Delivery"
+                            description="Divide details about your product or agency work into parts. Write a few lines about each one. A paragraph describing a feature will be enough."
+                            icon={LocalShipping}
+                            vertical
+                          />
+                        </StyledGridItem>
+                        <StyledGridItem item md={4} sm={4}>
+                         <InfoArea
+                            title="Refundable Policy"
+                            description="Divide details about your product or agency work into parts. Write a few lines about each one. A paragraph describing a feature will be enough."
+                            icon={VerifiedUser}
+                            vertical
+                          />
+                        </StyledGridItem>
+                        <StyledGridItem item md={4} sm={4}>
+                         <InfoArea
+                            title="Popular Item"
+                            description="Divide details about your product or agency work into parts. Write a few lines about each one. A paragraph describing a feature will be enough."
+                            icon={Favorite}
+                            vertical
+                          />
+                        </StyledGridItem>
+                      </StyledGridContainer>               
+                    </StyledDivPolicy>
+
+                    <StyledDivRelatedItems>
+                      <StyledTypographyRelateditems variant="h4">
+                        You may also be interested in:
+                      </StyledTypographyRelateditems>
+                      <StyledGridContainer container>
+                        {products.map((v, i) => (
+                          <StyledGridItem item sm={6} md={3}>
+                            <ProductItemList key={v}/>
+                          </StyledGridItem>
+                        ))} 
+                      </StyledGridContainer>
+                    </StyledDivRelatedItems>                     
+
                 </StyledDivContainer>
-           </div>
+           </StyledDivProductLowerSection>
        </div> 
        
     )

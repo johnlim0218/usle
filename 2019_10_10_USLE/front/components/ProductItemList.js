@@ -1,0 +1,87 @@
+import React from 'react';
+import styled from 'styled-components';
+// import Tooltip from '@material-ui/core/Tooltip';
+import Favorite from '@material-ui/icons/Favorite';
+import Typography from '../components/Typography';
+import Card from '../components/Card/Card';
+import CardHeader from '../components/Card/CardHeader';
+import CardBody from '../components/Card/CardBody';
+import CardFooter from '../components/Card/CardFooter';
+import Button from '../components/Button';
+import Tooltip from '../components/Tooltip';
+
+import { cardProduct1 }from '../pages/product';
+import { cardProduct2 } from '../pages/product';
+import { cardProduct3 }from '../pages/product';
+import { cardProduct4 }from '../pages/product';
+
+const StyledTypographyCategory = styled(Typography)`
+  text-align: center;
+  margin-top: 10px;
+`
+const StyledTypographyTitle = styled(Typography)`
+  text-decoration: none;
+  font-weight: 700;
+  margin-top: 30px;
+  margin-bottom: 25px;
+  min-height: 32px;
+  text-align: center;
+`
+const StyledDivCardDescription = styled.div`
+  text-align: center;
+  color: gray;
+`;
+const StyledCardFooter = styled(CardFooter)`
+  justify-content: space-between !important;
+`;
+
+const StyledButton = styled(Button)`
+  &:hover {
+    background-color:transparent;
+  }
+  &:active{
+    background-color:transparent;
+  }
+  &:focus{
+    background-color:transparent;
+  }
+`;
+
+
+const ProductItemList = () => {
+    return (
+        <Card product>
+          <CardHeader image>
+            <a href="#pablo">
+              <img src={cardProduct3} alt="cardProduct3" />
+            </a>
+          </CardHeader>
+          <CardBody>
+            <StyledTypographyCategory variant='h6'>Popular</StyledTypographyCategory>
+            <StyledTypographyTitle variant='h5'>Balmain</StyledTypographyTitle>
+            <StyledDivCardDescription>
+              Balmain{"'"}s mid-rise skinny jeans are cut with stretch
+              to ensure they retain their second-skin fit but move
+              comfortably.
+            </StyledDivCardDescription>
+          </CardBody>
+          <StyledCardFooter>
+            <div>
+              <Typography variant='body1'>$459</Typography>
+            </div>
+            <div>
+              <Tooltip
+                id='tooltip-top'
+                title='Save to Wishlist'
+                placement='top'>
+                <StyledButton justIcon link>
+                  <Favorite />
+                </StyledButton>
+              </Tooltip>
+            </div>
+          </StyledCardFooter>
+       </Card>
+    )
+}
+
+export default ProductItemList;
