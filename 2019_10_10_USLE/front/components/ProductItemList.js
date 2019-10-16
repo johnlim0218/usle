@@ -16,6 +16,8 @@ import { cardProduct2 } from '../pages/product';
 import { cardProduct3 }from '../pages/product';
 import { cardProduct4 }from '../pages/product';
 
+import { dummyImg } from '../dummy/dummy';
+
 const StyledTypographyCategory = styled(Typography)`
   text-align: center;
   margin-top: 10px;
@@ -56,7 +58,7 @@ const ProductItemList = (props) => {
         <Card product>
           <CardHeader image>
             <a href="#pablo">
-              <img src={item ? item.imgsrc : 'https://shop-phinf.pstatic.net/20191010_276/1570696979626LfRda_JPEG/8057718259505790_559180585.jpg?type=m510'} alt="cardProduct3" />
+              <img src={item ? item.imgsrc : dummyImg} alt="cardProduct3" />
             </a>
           </CardHeader>
           <CardBody>

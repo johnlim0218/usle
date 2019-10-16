@@ -103,7 +103,7 @@ const StyledButton = styled(Button)`
     `};
 `;
 
-const AppAppBar = ({ ...props }) => {
+const AppAppBar = () => {
     const [sent, setSent] = useState(false);
     const validate = (values) => {
         const errors = required(['firstName', 'lastName', 'email', 'password'], values);
@@ -173,47 +173,6 @@ const AppAppBar = ({ ...props }) => {
             }
             rightLinks={
                 <div>
-                  
-            {/* <CustomInput
-              white
-              inputRootCustomClasses={classes.inputRootCustomClasses}
-              formControlProps={{
-                className: classes.formControl
-              }}
-              inputProps={{
-                placeholder: "Search",
-                inputProps: {
-                  "aria-label": "Search",
-                  className: classes.searchInput
-                }
-              }}
-            /> */}
-
-            {/* <Form onSubmit={handleSubmit} subscription={{ submitting: true }} validate={validate}>
-            {({ handleSubmit2, submitting }) =>(     
-                <form>
-                    <Field
-                        autoComplete="email"
-                        component={RFTextField}
-                        disabled={submitting || sent}
-                        fullWidth
-                        label="Email"
-                        margin="normal"
-                        name="email"
-                        required
-                    />
-                    <FormSpy subscription={{ submitError: true }}>
-                    {({ submitError }) =>
-                        submitError ? (
-                            <FormFeedback error>
-                              {submitError}
-                            </FormFeedback>
-                        ) : null
-                    }
-                    </FormSpy>
-                </form>
-            )}
-            </Form> */}
                     <form style={{display: 'flex'}}>
                         <TextField noBorder placeholder="Search"/>
                         <Button justIcon>

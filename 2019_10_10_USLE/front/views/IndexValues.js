@@ -88,8 +88,5 @@ const IndexValues = () => {
     )
 }
 
-IndexValues.propTypes = {
-    
-}
 
 export default IndexValues;

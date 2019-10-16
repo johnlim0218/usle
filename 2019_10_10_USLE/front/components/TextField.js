@@ -74,7 +74,7 @@ const TextField = (props) => {
     )
 }
 
-TextField.PropTypes = {
+TextField.propTypes = {
     noBorder: PropTypes.bool,
     SelectProps: PropTypes.object,
     size: PropTypes.oneOf(['small', 'medium', 'large', 'xlarge']),

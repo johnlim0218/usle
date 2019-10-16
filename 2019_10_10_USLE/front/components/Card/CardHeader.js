@@ -31,18 +31,26 @@ const StyledCardHeader = styled.div`
                 display: block;
             }   
     `}
+
+    ${props => props.plain && `
+        margin-left: 0px;
+        margin-right: 0px;
+        "&$cardHeaderImage": {
+          margin: "0 !important"
+        }
+    `}
 `;
 
 const CardHeader = (props) => {
+    const { color, plain, image, contact, signup, noShadow, children, ...others } = props;
     return(
         <StyledCardHeader {...props}>
-            {props.children}
+            {children}
         </StyledCardHeader>
     )
 }
 
 CardHeader.propTypes = {
-  className: PropTypes.string,
   color: PropTypes.oneOf([
     "warning",
     "success",

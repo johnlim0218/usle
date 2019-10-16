@@ -32,13 +32,19 @@ const StyledDivCard = styled.div.attrs((props) => {
         display: inline-block !important;
     }
 
+    ${props => props.plain && `
+        background: transparent;
+        box-shadow: none;
+    `}
+
 `
 
 
 const Card = (props) => {
+    const { plain, profile, blog, raised, background, pricing, testimonial, color, product, children, ...others } = props;
     return (
         <StyledDivCard {...props}>
-          {props.children}
+          {children}
         </StyledDivCard>
     )
 }

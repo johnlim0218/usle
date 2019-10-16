@@ -16,6 +16,9 @@ import VerifiedUser from "@material-ui/icons/VerifiedUser";
 import Favorite from "@material-ui/icons/Favorite";
 
 import Typography from '../components/Typography';
+import GridContainer from '../components/Grid/GridContainer';
+import GridItem from '../components/Grid/GridItem';
+
 import Accordion from '../components/Accordion';
 import Button from '../components/Button';
 import InfoArea from '../components/InfoArea';
@@ -62,7 +65,7 @@ const StyledDivProductLowerSection = styled.div`
     background-size: cover;
     padding: 70px 0;
 `
-const StyledDivContainer = styled.div`
+export const StyledDivContainer = styled.div`
     ${props => props.theme.container};
     z-index: 2;
 `;
@@ -85,16 +88,13 @@ const MainDiv = css`
     position: relative;
     z-index: 3;
 `;
-const StyledDivMain = styled.div`
+
+export const StyledDivMain = styled.div`
     ${MainRaised}
     ${MainDiv}
 `;
 
-const StyledGridContainer = styled(Grid)`
-    margin-right: -15px;
-    margin-left: -15px;
-    width: auto;
-
+const StyledGridContainer = styled(GridContainer)`
     & .image-gallery-slide img {
         border-radius: 3px;
         max-width: 300px;
@@ -135,15 +135,15 @@ const StyledGridContainer = styled(Grid)`
         }
       }
 `
-const StyledGridContainerSelection = styled(Grid)`
+const StyledGridContainerSelection = styled(GridContainer)`
     padding-top: 50px;
 `
-const StyledGridContainerCart = styled(Grid)`
+const StyledGridContainerCart = styled(GridContainer)`
     width: auto;
     float: right;
     padding-top: 20px
 `
-const StyledGridItem = styled(Grid)`
+const StyledGridItem = styled(GridItem)`
     position: relative;
     width: 100%;
     min-height: 1px;
@@ -264,8 +264,8 @@ const Product = () => {
            <StyledDivProductLowerSection>
                <StyledDivContainer>
                     <StyledDivMain>
-                        <StyledGridContainer container>
-                            <StyledGridItem item md={6} sm={6}>
+                        <StyledGridContainer>
+                            <StyledGridItem md={6} sm={6}>
                                 <ImageGallery
                                     showFullscreenButton={false}
                                     showPlayButton={false}
@@ -273,7 +273,7 @@ const Product = () => {
                                     items={images}
                                     />
                             </StyledGridItem>
-                            <StyledGridItem item md={6} sm={6}>
+                            <StyledGridItem md={6} sm={6}>
                               <StyledTypographyTitle variant='h4'>Becky Silk Blazer</StyledTypographyTitle>
                               <StyledTypographyPrice variant='h4'>$150</StyledTypographyPrice>
                               <Accordion
@@ -324,8 +324,8 @@ const Product = () => {
                                   }
                                 ]}
                               />
-                              <StyledGridContainerSelection container>
-                                <StyledGridItem item md={6} sm={6}>
+                              <StyledGridContainerSelection>
+                                <StyledGridItem md={6} sm={6}>
                                   <label>
                                     <Typography>Select color</Typography>
                                   </label>
@@ -354,7 +354,7 @@ const Product = () => {
                                       </StyledSelect>
                                   </StyledFormControl>
                                 </StyledGridItem>
-                                <StyledGridItem item md={6} sm={6}>
+                                <StyledGridItem md={6} sm={6}>
                                   <label>
                                     <Typography>Select size</Typography>
                                   </label>
@@ -384,7 +384,7 @@ const Product = () => {
                                   </StyledFormControl>
                                 </StyledGridItem>
                               </StyledGridContainerSelection>
-                              <StyledGridContainerCart container>
+                              <StyledGridContainerCart>
                                 <StyledButtonBuy>
                                   Buy it
                                 </StyledButtonBuy>
@@ -397,8 +397,8 @@ const Product = () => {
                       </StyledDivMain>
                     
                     <StyledDivPolicy>
-                      <StyledGridContainer container>
-                        <StyledGridItem item md={4} sm={4}>
+                      <StyledGridContainer>
+                        <StyledGridItem md={4} sm={4}>
                          <InfoArea
                             title="2 Days Delivery"
                             description="Divide details about your product or agency work into parts. Write a few lines about each one. A paragraph describing a feature will be enough."
@@ -406,7 +406,7 @@ const Product = () => {
                             vertical
                           />
                         </StyledGridItem>
-                        <StyledGridItem item md={4} sm={4}>
+                        <StyledGridItem md={4} sm={4}>
                          <InfoArea
                             title="Refundable Policy"
                             description="Divide details about your product or agency work into parts. Write a few lines about each one. A paragraph describing a feature will be enough."
@@ -414,7 +414,7 @@ const Product = () => {
                             vertical
                           />
                         </StyledGridItem>
-                        <StyledGridItem item md={4} sm={4}>
+                        <StyledGridItem md={4} sm={4}>
                          <InfoArea
                             title="Popular Item"
                             description="Divide details about your product or agency work into parts. Write a few lines about each one. A paragraph describing a feature will be enough."
@@ -429,9 +429,9 @@ const Product = () => {
                       <StyledTypographyRelateditems variant="h4">
                         You may also be interested in:
                       </StyledTypographyRelateditems>
-                      <StyledGridContainer container>
+                      <StyledGridContainer>
                         {products.map((v, i) => (
-                          <StyledGridItem item sm={6} md={3}>
+                          <StyledGridItem sm={6} md={3}>
                             <ProductItemList key={v}/>
                           </StyledGridItem>
                         ))} 
