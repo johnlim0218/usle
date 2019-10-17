@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import propTypes from 'prop-types';
+import PropTypes from 'prop-types';
 import Link from 'next/link';
 import styled, { css } from 'styled-components';
 
@@ -17,7 +17,7 @@ const StyledInfoAppBar = styled(AppBar).attrs(props => ({
     display: flex;
     align-items: center;
     justify-content: flex-end;
-    background-color: #fcf2e0;
+    background-color: ${props => props.theme.palette.secondary.light};
     color: #656565;
     min-height: 30px;
 `
@@ -153,5 +153,26 @@ const ModifiedAppBar = ({ infoBar, leftLinks, rightLinks, ...props }) => {
         </>
     )
 }
+
+
+ModifiedAppBar.propTypes = {
+    color: PropTypes.oneOf([
+      "primary",
+      "info",
+      "success",
+      "warning",
+      "danger",
+      "transparent",
+      "white",
+      "rose",
+      "dark"
+    ]),
+    infoBar: PropTypes.node,
+    rightLinks: PropTypes.node,
+    leftLinks: PropTypes.node,
+    // brand: PropTypes.string,
+    // fixed: PropTypes.bool,
+    // absolute: PropTypes.bool,
+};
 
 export default ModifiedAppBar;

@@ -7,7 +7,6 @@ import Button from '../components/Button';
 import Typography from '../components/Typography';
 
 const StyledSection = styled.section`
-    background-color: ${props => props.theme.palette.secondary.light};
     display: flex;
     overflow: hidden;
 `;
