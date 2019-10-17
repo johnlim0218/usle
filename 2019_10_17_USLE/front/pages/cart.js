@@ -14,11 +14,9 @@ import CardBody from '../components/Card/CardBody';
 import Table from '../components/Table';
 import Button from '../components/Button';
 
-import CartTableData from '../components/CartTableData';
 import GridContainer from '../components/Grid/GridContainer';
 import GridItem from '../components/Grid/GridItem';
 
-import { dummyImg } from '../dummy/dummy';
 import { dummyCartData } from '../dummy/dummy';
 
 const StyledDivImgContainer = styled.div`
@@ -59,7 +57,7 @@ const Cart = () => {
                                     "SIZE",
                                     "PRICE",
                                     "QTY",
-                                    "AMOUT",
+                                    "AMOUNT",
                                     ""
                                 ]}
                                 tableData={
@@ -117,11 +115,11 @@ const Cart = () => {
                                         colspan: "3",
                                         amount: (
                                           <span>
-                                            <small>€</small>2,346
+                                            <small>￦</small>20,000
                                           </span>
                                         ),
                                         col: {
-                                          colspan: 3,
+                                          colspan: "3",
                                           text: (
                                             <Button color="info" round>
                                               Complete Purchase <KeyboardArrowRight />

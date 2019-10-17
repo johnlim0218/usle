@@ -12,24 +12,43 @@ const StyledDivFormRoot = styled.div`
     background-image: url(https://material-ui.com/static/themes/onepirate/productCurvyLines.png);
     background-repeat: no-repeat;
 `;
+const StyledContainer = styled(Container)`
+    ${props => props.theme.container};
+`
+const StyledBox = styled(Box)`
+    ${props => props.checkout && `
+        &.MuiBox-root {
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+    `}
+`
 const StyledPaper = styled(Paper)`
     padding: ${props => props.theme.spacing(4, 3)};
     ${breakpoint('md')`
         padding: ${props => props.theme.spacing(8,6)};    
     `};
 `
-const AppForm = ({ children, ...props}) => {
+
+const AppForm = (props) => {
+    const { children, checkout, ...others } = props;
+    console.log(checkout)
     return(
         <StyledDivFormRoot>
-            <Container maxWidth='sm'>
-                <Box mt={7} mb={12}>
+            <StyledContainer>
+                <StyledBox mt={7} mb={12} {...props}>
                     <StyledPaper>
                         {children}
                     </StyledPaper>
-                </Box>
-            </Container>
+                </StyledBox>
+            </StyledContainer>
         </StyledDivFormRoot>
     )
 };
+
+AppForm.propTypes = {
+    children: PropTypes.node,
+    checkout: PropTypes.bool,
+}
 
 export default AppForm;

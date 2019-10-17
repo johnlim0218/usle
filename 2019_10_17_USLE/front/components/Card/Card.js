@@ -13,10 +13,9 @@ const StyledDivCard = styled.div.attrs((props) => {
 })`
     border: 0;
     margin-bottom: 30px;
-    margin-top: ${props => props.product && 30}px;
     border-radius: 6px;
     color: rgba(0, 0, 0, 0.87);
-    background: whiteColor;
+    background: white;
     width: 100%;
     box-shadow:
         0 2px 2px 0 rgba(0, 0, 0, 0.14),
@@ -32,7 +31,11 @@ const StyledDivCard = styled.div.attrs((props) => {
         display: inline-block !important;
     }
 
-    ${props => props.plain && `
+    ${props => props.product &&`
+        margin-top: 30px;
+    `}
+
+    ${props => props.plain &&`
         background: transparent;
         box-shadow: none;
     `}

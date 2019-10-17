@@ -30,7 +30,7 @@ const StyledTable = styled(Table)`
 
 const ModifiedTable = (props) => {
     const { tableHead, tableData, tableFooter, hover, ...others } = props;
-    console.log(tableData);
+
     return(
         <StyledDivTableResponsive>
             <StyledTable>
@@ -38,7 +38,6 @@ const ModifiedTable = (props) => {
                     <TableHead>
                         <TableRow>
                             {tableHead && tableHead.map((tableRowValue, index) => {
-                                
                                 return(
                                     <TableCell key={tableRowValue}>
                                         {tableRowValue}
@@ -69,7 +68,11 @@ const ModifiedTable = (props) => {
                                     <TableCell colSpan={tableFooter.colspan}/>
                                     <TableCell>Total</TableCell>
                                     <TableCell>{tableFooter.amount}</TableCell>
-                                    <TableCell colSpan={tableFooter.col.colspan}>{tableFooter.col.text}</TableCell>
+                                    {tableFooter.col && 
+                                        <TableCell colSpan={tableFooter.col.colspan}>
+                                            {tableFooter.col.text}
+                                        </TableCell>
+                                    }
                                 </TableRow> 
                             )
                     }
@@ -82,6 +85,7 @@ const ModifiedTable = (props) => {
 ModifiedTable.propTypes ={
     tableHead: PropTypes.arrayOf(PropTypes.string),
     tableData: PropTypes.array,
+    tableFooter: PropTypes.node,
     hover: PropTypes.bool,
 };
 

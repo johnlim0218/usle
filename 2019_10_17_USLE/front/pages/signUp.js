@@ -23,12 +23,12 @@ const SignUp = () => {
     
     const validate = values => {
         const errors = required(['firstName', 'lastName', 'email', 'password'], values);
-            if (!errors.email) {
-                const emailError = email(values.email, values);
-                if (emailError) {
-                    errors.email = email(values.email, values);
-                }
+        if (!errors.email) {
+            const emailError = email(values.email, values);
+            if (emailError) {
+                errors.email = email(values.email, values);
             }
+        }
         return errors;
     };
 
@@ -51,31 +51,31 @@ const SignUp = () => {
             </Typography>
             <Form
                 onSubmit={onSubmit}
-                subscription={{ submitting: true}}
+                subscription={{ submitting: true }}
                 validate={validate}
                 render={({ handleSubmit, submitting }) => (
                     <StyledForm
                         onSubmit={handleSubmit}
                         noValidate>
                         <Grid container spacing={2}>
-                            <Grid item xs={12} sm={6}>
+                            <Grid item sm={6}>
                                 <Field
                                     autoFocus
                                     component={RFTextField}
-                                    autoCOmplete="fname"
-                                    fullWIdth
+                                    autoComplete="fname"
+                                    fullWidth
                                     label="First name"
                                     name="firstName"
                                     required
                                     noBorder
                                 />
                             </Grid>
-                            <Grid item xs={12} sm={6}>
+                            <Grid item sm={6}>
                                 <Field
                                     autoFocus
                                     component={RFTextField}
-                                    autoCOmplete="lname"
-                                    fullWIdth
+                                    autoComplete="lname"
+                                    fullWidth
                                     label="Last name"
                                     name="lastName"
                                     required

@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import TextField from '../components/TextField';
 
 const StyledTextField = styled(TextField).attrs((props) => {
-  console.log(props.error) 
+  
 })`
   ${props => !props.error && `
     margin-bottom: ${props.theme.spacing(1.75)}px;
