@@ -41,7 +41,7 @@ const SignIn = () => {
 
 
     return(
-        <AppForm>
+        <AppForm signIn>
             <Typography gutterBottom variant="h3" marked="center" align="center">
                 Sign In
             </Typography>
@@ -71,7 +71,7 @@ const SignIn = () => {
                             name="email"
                             required
                             size="large"
-                            noBorder
+                            noBorder={false}
                         />
                         <Field
                             autoComplete="current-password"
@@ -84,7 +84,7 @@ const SignIn = () => {
                             required
                             size="large"
                             type="password"
-                            noBorder
+                            noBorder={false}
                         />
                         {/* FormSpy는 기본적으로 form을 subscript하고 있다? */}
                         <FormSpy

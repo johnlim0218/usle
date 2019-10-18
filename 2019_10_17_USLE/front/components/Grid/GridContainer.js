@@ -9,12 +9,21 @@ const ModifiedGrid = styled(Grid).attrs(props => ({
     margin-right: -15px;
     margin-left: -15px;
     width: auto;
+    
+    ${props => props.checkout &&`
+        margin-right: 0;
+        margin-left: 0;   
+    `}
+    ${props => props.signUp &&`
+        margin-right: 0;
+        margin-left: 0;   
+    `}
 `
 
 const GridContainer = (props) => {
-    const { children, ...others } = props;
+    const { children, checkout, signUp, ...others } = props;
     return(
-        <ModifiedGrid {...others}>
+        <ModifiedGrid {...props}>
             {children}
         </ModifiedGrid>
     )
@@ -23,6 +32,8 @@ const GridContainer = (props) => {
 
 GridContainer.PropTypes = {
     children: PropTypes.node,
+    checkout: PropTypes.bool,
+    signUp: PropTypes.bool,
 };
 
 export default GridContainer;

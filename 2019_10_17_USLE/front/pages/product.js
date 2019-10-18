@@ -143,13 +143,7 @@ const StyledGridContainerCart = styled(GridContainer)`
     float: right;
     padding-top: 20px
 `
-const StyledGridItem = styled(GridItem)`
-    position: relative;
-    width: 100%;
-    min-height: 1px;
-    padding-right: 15px;
-    padding-left: 15px;
-`;
+
 const StyledButtonShoppingCart = styled(Button)`
     float: right;
 `;
@@ -265,15 +259,15 @@ const Product = () => {
                <StyledDivContainer>
                     <StyledDivMain>
                         <StyledGridContainer>
-                            <StyledGridItem md={6} sm={6}>
+                            <GridItem md={6} sm={6}>
                                 <ImageGallery
                                     showFullscreenButton={false}
                                     showPlayButton={false}
                                     startIndex={3}
                                     items={images}
                                     />
-                            </StyledGridItem>
-                            <StyledGridItem md={6} sm={6}>
+                            </GridItem>
+                            <GridItem md={6} sm={6}>
                               <StyledTypographyTitle variant='h4'>Becky Silk Blazer</StyledTypographyTitle>
                               <StyledTypographyPrice variant='h4'>$150</StyledTypographyPrice>
                               <Accordion
@@ -325,7 +319,7 @@ const Product = () => {
                                 ]}
                               />
                               <StyledGridContainerSelection>
-                                <StyledGridItem md={6} sm={6}>
+                                <GridItem md={6} sm={6}>
                                   <label>
                                     <Typography>Select color</Typography>
                                   </label>
@@ -353,8 +347,8 @@ const Product = () => {
                                         </StyledMenuItem>
                                       </StyledSelect>
                                   </StyledFormControl>
-                                </StyledGridItem>
-                                <StyledGridItem md={6} sm={6}>
+                                </GridItem>
+                                <GridItem md={6} sm={6}>
                                   <label>
                                     <Typography>Select size</Typography>
                                   </label>
@@ -382,7 +376,7 @@ const Product = () => {
                                         </StyledMenuItem>
                                       </StyledSelect>
                                   </StyledFormControl>
-                                </StyledGridItem>
+                                </GridItem>
                               </StyledGridContainerSelection>
                               <StyledGridContainerCart>
                                 <StyledButtonBuy>
@@ -392,36 +386,36 @@ const Product = () => {
                                   Add to Cart &nbsp; <ShoppingCart/>
                                 </StyledButtonCart>
                               </StyledGridContainerCart>
-                            </StyledGridItem>
+                            </GridItem>
                         </StyledGridContainer>
                       </StyledDivMain>
                     
                     <StyledDivPolicy>
                       <StyledGridContainer>
-                        <StyledGridItem md={4} sm={4}>
+                        <GridItem md={4} sm={4}>
                          <InfoArea
                             title="2 Days Delivery"
                             description="Divide details about your product or agency work into parts. Write a few lines about each one. A paragraph describing a feature will be enough."
                             icon={LocalShipping}
                             vertical
                           />
-                        </StyledGridItem>
-                        <StyledGridItem md={4} sm={4}>
+                        </GridItem>
+                        <GridItem md={4} sm={4}>
                          <InfoArea
                             title="Refundable Policy"
                             description="Divide details about your product or agency work into parts. Write a few lines about each one. A paragraph describing a feature will be enough."
                             icon={VerifiedUser}
                             vertical
                           />
-                        </StyledGridItem>
-                        <StyledGridItem md={4} sm={4}>
+                        </GridItem>
+                        <GridItem md={4} sm={4}>
                          <InfoArea
                             title="Popular Item"
                             description="Divide details about your product or agency work into parts. Write a few lines about each one. A paragraph describing a feature will be enough."
                             icon={Favorite}
                             vertical
                           />
-                        </StyledGridItem>
+                        </GridItem>
                       </StyledGridContainer>               
                     </StyledDivPolicy>
 
@@ -431,9 +425,9 @@ const Product = () => {
                       </StyledTypographyRelateditems>
                       <StyledGridContainer>
                         {products.map((v, i) => (
-                          <StyledGridItem sm={6} md={3}>
+                          <GridItem sm={6} md={3}>
                             <ProductItemList key={v}/>
-                          </StyledGridItem>
+                          </GridItem>
                         ))} 
                       </StyledGridContainer>
                     </StyledDivRelatedItems>                     

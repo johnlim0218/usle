@@ -44,6 +44,11 @@ const StyledDivFormInner = styled.div`
     margin-top: ${props => props.theme.spacing(6)}px;
 `;
 
+const StyledGridItem = styled(GridItem)`
+padding-right: 0;
+padding-left: 0;
+`;
+
 const Cart = () => {
     const [qty, setQty] = useState(1);
     const [sent, setSent] = useState(false);
@@ -145,31 +150,33 @@ const Cart = () => {
                                         autoComplete="Name"
                                         label="Name"
                                         name="name"
-                                        fullWidth
                                         required
-                                        noBorder
+                                        size="large"
+                                        noBorder={false}
                                     />
-                                    <GridContainer spacing={2}>
-                                        <GridItem sm={6}>
+                                    <GridContainer checkout>
+                                        <GridItem left sm={6}>
                                             <Field
                                                 component={RFTextField}   
                                                 autoComplete="Phone"
                                                 label="Phone"
                                                 name="phone"
-                                                fullWidth
                                                 required
-                                                noBorder
+                                                fullWidth
+                                                size="large"
+                                                noBorder={false}
                                             />
                                         </GridItem>  
-                                        <GridItem sm={6}>
+                                        <GridItem right sm={6}>
                                             <Field
                                                 component={RFTextField}   
                                                 autoComplete="Email"
                                                 label="Email"
                                                 name="email"
-                                                fullWidth
                                                 required
-                                                noBorder
+                                                fullWidth
+                                                size="large"
+                                                noBorder={false}
                                             />
                                         </GridItem> 
                                     </GridContainer>
@@ -183,43 +190,49 @@ const Cart = () => {
                                         autoComplete="Name"
                                         label="Name"
                                         name="name"
-                                        fullWidth
                                         required
-                                        noBorder
+                                        size="large"
+                                        noBorder={false}
                                     />
-                                    <GridContainer spacing={2}>
-                                        <GridItem sm={6}>
+                                    <GridContainer checkout>
+                                        <GridItem left sm={6}>
                                             <Field
                                                 component={RFTextField}   
                                                 autoComplete="Phone"
                                                 label="Phone"
                                                 name="phone"
-                                                fullWidth
                                                 required
-                                                noBorder
+                                                fullWidth
+                                                size="large"
+                                                noBorder={false}
                                             />
                                         </GridItem>  
-                                        <GridItem sm={6}>
+                                        <GridItem right sm={6}>
                                             <Field
                                                 component={RFTextField}   
                                                 autoComplete="Email"
                                                 label="Email"
                                                 name="email"
-                                                fullWidth
                                                 required
-                                                noBorder
+                                                fullWidth
+                                                size="large"
+                                                noBorder={false}
                                             />
                                         </GridItem> 
                                     </GridContainer>
-                                    <Field
-                                        component={RFTextField}   
-                                        autoComplete="ZIP code"
-                                        label="ZIP code"
-                                        name="zipcode"
-                                        fullWidth
-                                        required
-                                        noBorder
-                                    />
+                                    <GridContainer checkout>
+                                        <StyledGridItem sm={6}>
+                                            <Field
+                                                component={RFTextField}   
+                                                autoComplete="ZIP code"
+                                                label="ZIP code"
+                                                name="zipcode"
+                                                required
+                                                size="large"
+                                                noBorder={false}
+                                            />
+                                       </StyledGridItem> 
+                                    </GridContainer>
                                     <Field
                                         component={RFTextField}   
                                         autoComplete="Address1"
@@ -227,7 +240,8 @@ const Cart = () => {
                                         name="address1"
                                         fullWidth
                                         required
-                                        noBorder
+                                        size="large"
+                                        noBorder={false}
                                     />
                                     <Field
                                         component={RFTextField}   
@@ -236,7 +250,8 @@ const Cart = () => {
                                         name="address2"
                                         fullWidth
                                         required
-                                        noBorder
+                                        size="large"
+                                        noBorder={false}
                                     />
                                 </StyledDivFormInner>
                             </AppForm>

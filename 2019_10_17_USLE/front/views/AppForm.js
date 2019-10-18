@@ -19,25 +19,44 @@ const StyledBox = styled(Box)`
     ${props => props.checkout && `
         &.MuiBox-root {
             margin-top: 10px;
-            margin-bottom: 10px;
+            margin-bottom: 60px;
         }
     `}
 `
 const StyledPaper = styled(Paper)`
-    padding: ${props => props.theme.spacing(4, 3)};
-    ${breakpoint('md')`
-        padding: ${props => props.theme.spacing(8,6)};    
+
+    ${props => props.signUp && `    
+        padding: ${props.theme.spacing(4, 3)};
     `};
-`
+    ${props => props.signIn && `
+        padding: ${props.theme.spacing(4, 3)};
+    `};
+    ${props => props.checkout && `
+        padding: ${props.theme.spacing(2, 3)};
+        
+    `};
+
+    ${breakpoint('md')`
+        ${props => props.signUp && ` 
+            padding: ${props.theme.spacing(8, 6)};    
+        `};
+        ${props => props.signIn && `
+            padding: ${props.theme.spacing(8, 6)};    
+        `};
+        ${props => props.checkout && `
+            padding: ${props.theme.spacing(2, 6)};    
+        `};
+    `};
+`;
 
 const AppForm = (props) => {
-    const { children, checkout, ...others } = props;
-    console.log(checkout)
+    const { children, checkout, signIn, signUp, ...others } = props;
+    
     return(
         <StyledDivFormRoot>
             <StyledContainer>
                 <StyledBox mt={7} mb={12} {...props}>
-                    <StyledPaper>
+                    <StyledPaper {...props}>
                         {children}
                     </StyledPaper>
                 </StyledBox>
@@ -49,6 +68,8 @@ const AppForm = (props) => {
 AppForm.propTypes = {
     children: PropTypes.node,
     checkout: PropTypes.bool,
+    signIn: PropTypes.bool,
+    signUp: PropTypes.bool,
 }
 
 export default AppForm;

@@ -15,13 +15,6 @@ const ModifiedTextField = styled(MuiTextField).attrs((props) => ({
     }
 }))`
 
-    ${props => (!props.noBorder) &&`
-    border: 1px solid #e9ddd0;
-    :focus, :hover {
-        border-color: ${props.theme.palette.secondary.main}
-    }
-    `}
-
     .MuiInput-root {
         padding: 0;
         label +  {
@@ -50,6 +43,14 @@ const ModifiedTextField = styled(MuiTextField).attrs((props) => ({
             padding: 25px;
             width: calc(100% - ${25 * 2}px);
         `};
+        ${props => (!props.noBorder) &&`
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        margin-top: 10px;
+        :focus, :hover {
+            border-color: ${props.theme.palette.secondary.main}
+        }
+        `}
     }
 
     .MuiInputLabel-root {

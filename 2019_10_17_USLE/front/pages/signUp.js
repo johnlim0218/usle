@@ -3,6 +3,9 @@ import styled from 'styled-components';
 import Link from 'next/link';
 import Grid from '@material-ui/core/Grid';
 import { Field, Form, FormSpy } from 'react-final-form';
+
+import GridContainer from '../components/Grid/GridContainer';
+import GridItem from '../components/Grid/GridItem';
 import Typography from '../components/Typography';
 import AppForm from '../views/AppForm';
 import { email, required } from '../form/validation';
@@ -40,7 +43,7 @@ const SignUp = () => {
     }, [sent]);
 
     return(
-        <AppForm>
+        <AppForm signUp>
             <Typography gutterBottom variant="h3" marked="center" align="center">
                 Sign Up
             </Typography>
@@ -57,8 +60,8 @@ const SignUp = () => {
                     <StyledForm
                         onSubmit={handleSubmit}
                         noValidate>
-                        <Grid container spacing={2}>
-                            <Grid item sm={6}>
+                        <GridContainer signUp>
+                            <GridItem left sm={6}>
                                 <Field
                                     autoFocus
                                     component={RFTextField}
@@ -67,10 +70,11 @@ const SignUp = () => {
                                     label="First name"
                                     name="firstName"
                                     required
-                                    noBorder
+                                    size="large"
+                                    noBorder={false}
                                 />
-                            </Grid>
-                            <Grid item sm={6}>
+                            </GridItem>
+                            <GridItem right sm={6}>
                                 <Field
                                     autoFocus
                                     component={RFTextField}
@@ -79,10 +83,11 @@ const SignUp = () => {
                                     label="Last name"
                                     name="lastName"
                                     required
-                                    noBorder
+                                    size="large"
+                                    noBorder={false}
                                 />
-                            </Grid>
-                        </Grid>    
+                            </GridItem>
+                        </GridContainer>    
                         <Field
                             autoComplete="email"
                             component={RFTextField}
@@ -92,7 +97,8 @@ const SignUp = () => {
                             margin="normal"
                             name="email"
                             required
-                            noBorder
+                            size="large"
+                            noBorder={false}
                         />
                         <Field
                             autoComplete="password"
@@ -103,7 +109,8 @@ const SignUp = () => {
                             margin="normal"
                             name="password"
                             required
-                            noBorder
+                            size="large"
+                            noBorder={false}
                         />
                         <FormSpy
                             subscription={{ submitError : true}}
