@@ -32,11 +32,13 @@ const SignIn = () => {
         return errors;
     }
     
-    const onSubmit = useCallback(() => {
-        setSent(true);
-        // submitError 발생
-        setSubmitErrorTest(true);
-        setSent(false);
+    const onSubmit = useCallback((e) => {
+        // setSent(true);
+        // // submitError 발생
+        // setSubmitErrorTest(true);
+        // setSent(false);
+
+        
     }, [sent, submitErrorTest]);
 
 
@@ -88,8 +90,8 @@ const SignIn = () => {
                         />
                         {/* FormSpy는 기본적으로 form을 subscript하고 있다? */}
                         <FormSpy
-                            subscription={{ submitError : true }}
-                            render={({ submitError }) => (
+                            subscription={{ values:true, submitError:true }}
+                            render={({ values, submitError }) => (
                                 submitError ? (
                                 <FormFeedback error>
                                     {submitError}

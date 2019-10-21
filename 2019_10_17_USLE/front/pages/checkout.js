@@ -1,7 +1,8 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useRef, useEffect } from 'react';
 import axios from 'axios';
 import styled from 'styled-components';
 import { Field, Form, FormSpy } from 'react-final-form';
+import { OnChange } from "react-final-form-listeners";
 // import Grid from '@material-ui/core/Grid';
 
 import Typography from '../components/Typography';
@@ -59,6 +60,14 @@ const StyledButton = styled(Button)`
 const CheckOut = () => {
     const [qty, setQty] = useState(1);
     const [sent, setSent] = useState(false);
+    const [zipCodeState, setZipCodeState] = useState('');
+    const [addressState, setAddress] = useState('');
+    const [addressDetailState, setAddressDetail] = useState('');
+
+    const addressLayer = useRef();
+    const zipCode = useRef();
+    const address1 = useRef();
+    const address2 = useRef();
 
     const validate = values => {
         const errors = required([], values);
@@ -69,9 +78,12 @@ const CheckOut = () => {
             }
         }
     }
-    
+
     const onClickSearchingAddress = useCallback(() => {
-        new window.daum.Postcode({
+
+        const element_layer = addressLayer.current;
+        
+        const result = new window.daum.Postcode({
             oncomplete: (data) => {
                 let addr = '';
                 let extraAddr = '';
@@ -100,24 +112,61 @@ const CheckOut = () => {
                     }
                     // 조합된 참고항목을 해당 필드에 넣는다.
                     // document.getElementById("sample6_extraAddress").value = extraAddr;
-                
+                    setAddressDetail(extraAddr);
                 } else {
                     // document.getElementById("sample6_extraAddress").value = '';
                 }
-
+                
+                setZipCodeState(data.zonecode);
+                setAddress(addr);
+                
+                
                 // 우편번호와 주소 정보를 해당 필드에 넣는다.
                 // document.getElementById('sample6_postcode').value = data.zonecode;
                 // document.getElementById("sample6_address").value = addr;
                 // 커서를 상세주소 필드로 이동한다.
                 // document.getElementById("sample6_detailAddress").focus();
-            }
-        }).open();
-    });
+            },
+            width : '100%',
+            height : '100%',
+            maxSuggestItems : 5
+        }).embed(element_layer);
+
+        element_layer.style.display = 'block';
+
+        () => {
+            const width = 300;
+            const height = 400;
+            const borderWidth = 5;
+
+            element_layer.style.width = width + 'px';
+            element_layer.style.height = height + 'px';
+            element_layer.style.borderWidth = borderWidth + 'px';
+
+            element_layer.style.left = (((window.innerWidth || document.documentElement.clientWidth) - width)/2 - borderWidth) + 'px';
+            element_layer.style.top = (((window.innerHeight || document.documentElement.clientHeight) - height)/2 - borderWidth) + 'px';
+        }
+
+        
+    }, [zipCodeState, addressState, addressDetailState]);
+
+    useEffect(() => {
+       
+    
+    },[zipCodeState, addressState, addressDetailState]);
+
+    const onChangeValue = (e) => {
+        e.target.value = zipCodeState; 
+    }
+    const onChangeTest = useCallback((e) => {
+        setZipCodeState(e.target.value);
+        
+    },[zipCodeState]);
 
     const onSubmit = useCallback(() => {
         setSent(true);
     },[sent])
-
+    
     return(
         <div>
             <div>
@@ -187,9 +236,9 @@ const CheckOut = () => {
                 </StyledDivContainer>
                 <Form
                     onSubmit={onSubmit}
-                    subscription={{ submitting: true }}
+                    subscription={{ submitting: true, values:true, input:true }}
                     validate={validate}
-                    render={({ handleSubmit, submitting}) => (
+                    render={({ handleSubmit, submitting, values, input}) => (
                         <StyledForm
                             onSubmit={handleSubmit}
                             noValidate>
@@ -275,7 +324,6 @@ const CheckOut = () => {
                                         <GridItem left sm={6}>
                                             <Field
                                                 component={RFTextField} 
-                                                id="1234zip"  
                                                 autoComplete="ZIP code"
                                                 label="ZIP code"
                                                 name="zipcode"
@@ -283,42 +331,57 @@ const CheckOut = () => {
                                                 fullWidth
                                                 size="large"
                                                 noBorder={false}
+                                                initialValue={zipCodeState}
                                             />
-                                       </GridItem>
+                                        </GridItem>
                                        <StyledGridItemZIPCodeButton right sm={6}>
                                             <StyledButton 
                                                 onClick={onClickSearchingAddress}>
                                                 Searching Address
                                             </StyledButton>
+                                            <div ref={addressLayer} style={{display:'none', position:'absolute', top:0, left:0, width:'400px', height:'500px', overflow:'hidden', zIndex:'1', overflowScrolling:'touch'}} ></div>            
                                         </StyledGridItemZIPCodeButton> 
                                     </GridContainer>
                                     <Field
                                         component={RFTextField}   
-                                        autoComplete="Address1"
-                                        label="Address1"
-                                        name="address1"
+                                        autoComplete="Address"
+                                        label="Address"
+                                        name="address"
                                         fullWidth
                                         required
                                         size="large"
                                         noBorder={false}
+                                        initialValue={addressState}
                                     />
                                     <Field
-                                        component={RFTextField}   
-                                        autoComplete="Address2"
-                                        label="Address2"
-                                        name="address2"
+                                        component={RFTextField}
+                                        autoComplete="AddressDetail"
+                                        label="AddressDetail"
+                                        name="addressDetail"
                                         fullWidth
                                         required
                                         size="large"
                                         noBorder={false}
+                                        initialValue={addressDetailState}
                                     />
                                 </StyledDivFormInner>
+                                {/* <FormSpy
+                                    subscription={{ values:true, submitError:true }}
+                                    render={({ values, submitError }) => (
+                                        console.log(values),
+                                        submitError ? (
+                                        <FormFeedback error>
+                                            {submitError}
+                                        </FormFeedback>
+                                        ) : null
+                                )}/> */}
                             </AppForm>
                         </StyledForm>
                     )}
                 />
+                <input value={zipCodeState}></input>
             </StyledDivMain>
-
+            
                                  
         </div>
     )
