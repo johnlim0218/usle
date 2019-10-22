@@ -27,6 +27,10 @@ const StyledTable = styled(Table)`
         height: auto;
     }
 `
+const StyledTableCell = styled(TableCell)`
+    text-align: center;
+    min-width: 120px;
+`
 
 const ModifiedTable = (props) => {
     const { tableHead, tableData, tableFooter, hover, ...others } = props;
@@ -39,9 +43,9 @@ const ModifiedTable = (props) => {
                         <TableRow>
                             {tableHead && tableHead.map((tableRowValue, index) => {
                                 return(
-                                    <TableCell key={tableRowValue}>
+                                    <StyledTableCell key={tableRowValue}>
                                         {tableRowValue}
-                                    </TableCell>
+                                    </StyledTableCell>
                                 )
                             })}
                         </TableRow>    
@@ -53,9 +57,9 @@ const ModifiedTable = (props) => {
                             <TableRow key={tableRowValue} hover={hover}>
                                 {tableRowValue.map((tableCellValue, index) => {
                                     return(
-                                        <TableCell key={{tableCellValue}}>
+                                        <StyledTableCell key={{tableCellValue}}>
                                             {tableCellValue}
-                                        </TableCell>
+                                        </StyledTableCell>
                                     )
                                 })}
                             </TableRow>

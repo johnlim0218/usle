@@ -35,11 +35,8 @@ const StyledTdNameSmall = styled.small`
 const StyledTdNumberSmall = styled.small`
     margin-right: 3px;
 `;
-const StyledAddRemoveButton = styled(Button)`
-    padding: 5px 0 !important;
-`
 
-const Cart = () => {
+const MyPage = () => {
     const [qty, setQty] = useState(1);
 
     return(
@@ -51,7 +48,7 @@ const Cart = () => {
                 <StyledDivContainer>
                    <Card plain>
                        <CardBody plain>
-                           <Typography variant="h4">Shopping Cart</Typography>
+                           <Typography variant="h4">Order History</Typography>
                            <Table
                                 tableHead={[
                                     "",
@@ -61,7 +58,7 @@ const Cart = () => {
                                     "PRICE",
                                     "QTY",
                                     "AMOUNT",
-                                    ""
+                                    "SHIPPING"
                                 ]}
                                 tableData={
                                     dummyCartData.map((value, index) => ([
@@ -88,48 +85,23 @@ const Cart = () => {
                                             </span>,
                                             <span>
                                                 {qty}
-                                                <div>
-                                                    <StyledAddRemoveButton>
-                                                        <Remove/>
-                                                    </StyledAddRemoveButton>
-                                                    <StyledAddRemoveButton>
-                                                        <Add/>
-                                                    </StyledAddRemoveButton>
-                                                </div>
                                             </span>,
                                             <span>
                                                 <StyledTdNumberSmall>￦ {value.price * qty}</StyledTdNumberSmall>
                                             </span>,
                                             <Tooltip
                                                 id="close1"
-                                                title="Remove item"
+                                                title="Shipping tracking"
                                                 placement="right"
                                             >
-                                                <Button>
-                                                    <Close/>
+                                                <Button size="small">
+                                                    {"Tracking"}
                                                 </Button>
                                             </Tooltip>
                                         ])
                                     )
                                 }
-                                tableFooter=
-                                    {{
-                                        purchase: true,
-                                        colspan: "3",
-                                        amount: (
-                                          <span>
-                                            <small>￦</small>20,000
-                                          </span>
-                                        ),
-                                        col: {
-                                          colspan: "3",
-                                          text: (
-                                            <Button color="info" round>
-                                              Complete Purchase <KeyboardArrowRight />
-                                            </Button>
-                                          )
-                                        }
-                                    }}
+                                
                             />
                        </CardBody>
                    </Card>
@@ -140,6 +112,6 @@ const Cart = () => {
     )
 }
 
-export default Cart;
+export default MyPage;
 
 

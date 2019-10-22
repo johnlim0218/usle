@@ -17,11 +17,11 @@ const ModifiedButton = styled(Button)`
     &.MuiButton-sizeLarge {
         display: flex;
         padding: ${props => props.theme.spacing(2, 5)};
-        font-size: ${props => props.theme.typography.pxToRem(16)}px;
+        font-size: ${props => props.theme.typography.pxToRem(16)};
     };
     &.MuiButton-sizeSmall {
         padding: ${props => props.theme.spacing(1, 3)};
-        font-size: ${props => props.theme.typography.pxToRem(13)}px;
+        font-size: ${props => props.theme.typography.pxToRem(13)};
     };
 `;
 

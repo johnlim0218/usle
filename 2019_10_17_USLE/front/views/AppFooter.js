@@ -13,6 +13,7 @@ const StyledTypographyRoot = styled(Typography).attrs((props) => ({
     background-color: ${props => props.theme.palette.secondary.light};
 `;
 const StyledContainer = styled(Container)`
+    ${props => props.theme.container}
     margin-top: ${props => props.theme.spacing(8)}px;
     margin-bottom: ${props => props.theme.spacing(8)}px;
     display: flex;

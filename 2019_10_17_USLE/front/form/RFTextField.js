@@ -7,9 +7,11 @@ import TextField from '../components/TextField';
 const StyledTextField = styled(TextField).attrs((props) => {
   
 })`
-  ${props => !props.error && `
-    margin-bottom: ${props.theme.spacing(1.75)}px;
-  `}
+  ${props => !props.error ? `
+    margin-bottom: ${props.theme.spacing(1.75)}px;`
+    : `
+    margin-bottom: ${props.theme.spacing(1.75)}px;`
+    }
 `;
 
 const RFTextField = (props) => {

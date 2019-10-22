@@ -35,8 +35,8 @@ const StyledCardHeader = styled.div`
     ${props => props.plain && `
         margin-left: 0px;
         margin-right: 0px;
-        "&$cardHeaderImage": {
-          margin: "0 !important"
+        &$cardHeaderImage {
+          margin: 0 !important;
         }
     `}
 `;

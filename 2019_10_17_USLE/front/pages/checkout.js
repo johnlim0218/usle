@@ -1,10 +1,8 @@
-import React, { useState, useCallback, useRef, useEffect } from 'react';
-import axios from 'axios';
+import React, { useState, useCallback, useRef, useEffect, focus } from 'react';
 import styled from 'styled-components';
 import { Field, Form, FormSpy } from 'react-final-form';
-import { OnChange } from "react-final-form-listeners";
-// import Grid from '@material-ui/core/Grid';
 
+// import Grid from '@material-ui/core/Grid';
 import Typography from '../components/Typography';
 import { StyledDivMain, StyledDivContainer } from './product';
 import Card from '../components/Card/Card';
@@ -19,9 +17,9 @@ import RFTextField from '../form/RFTextField';
 import FormButton from '../form/FormButton';
 import FormFeedback from '../form/FormFeedback';
 
-import DaumPostcode from '../components/DaumPostcode';
 
 import { dummyCartData } from '../dummy/dummy';
+import { element } from 'prop-types';
 
 const StyledDivImgContainer = styled.div`
     width: 120px;
@@ -61,29 +59,32 @@ const CheckOut = () => {
     const [qty, setQty] = useState(1);
     const [sent, setSent] = useState(false);
     const [zipCodeState, setZipCodeState] = useState('');
-    const [addressState, setAddress] = useState('');
-    const [addressDetailState, setAddressDetail] = useState('');
+    const [addressState, setAddressState] = useState('');
+    const [addressDetailState, setAddressDetailState] = useState('');
 
     const addressLayer = useRef();
-    const zipCode = useRef();
-    const address1 = useRef();
-    const address2 = useRef();
+    const closeButton = useRef();
+  
 
     const validate = values => {
-        const errors = required([], values);
+        const errors = required(['name', 'phone', 'email', 'zipcode', 'address', 'addressDetail'], values);
         if(!errors.email) {
             const emailError =email(values.email, values);
             if(emailError) {
                 errors.email = email(values.email, values);
             }
         }
+        return errors;
     }
-
+    
     const onClickSearchingAddress = useCallback(() => {
-
-        const element_layer = addressLayer.current;
         
-        const result = new window.daum.Postcode({
+        const element_layer = addressLayer.current;
+
+        let currentScroll = Math.max(document.body.scrollTop, document.documentElement.scrollTop);
+
+        new window.daum.Postcode({
+           
             oncomplete: (data) => {
                 let addr = '';
                 let extraAddr = '';
@@ -112,20 +113,17 @@ const CheckOut = () => {
                     }
                     // 조합된 참고항목을 해당 필드에 넣는다.
                     // document.getElementById("sample6_extraAddress").value = extraAddr;
-                    setAddressDetail(extraAddr);
+                    setAddressDetailState(extraAddr);
                 } else {
                     // document.getElementById("sample6_extraAddress").value = '';
                 }
                 
                 setZipCodeState(data.zonecode);
-                setAddress(addr);
-                
-                
-                // 우편번호와 주소 정보를 해당 필드에 넣는다.
-                // document.getElementById('sample6_postcode').value = data.zonecode;
-                // document.getElementById("sample6_address").value = addr;
-                // 커서를 상세주소 필드로 이동한다.
-                // document.getElementById("sample6_detailAddress").focus();
+                setAddressState(addr);
+
+                element_layer.style.display='none';
+                document.body.scrollTop = currentScroll;
+
             },
             width : '100%',
             height : '100%',
@@ -147,24 +145,16 @@ const CheckOut = () => {
             element_layer.style.top = (((window.innerHeight || document.documentElement.clientHeight) - height)/2 - borderWidth) + 'px';
         }
 
-        
     }, [zipCodeState, addressState, addressDetailState]);
-
-    useEffect(() => {
-       
     
-    },[zipCodeState, addressState, addressDetailState]);
-
-    const onChangeValue = (e) => {
-        e.target.value = zipCodeState; 
-    }
-    const onChangeTest = useCallback((e) => {
-        setZipCodeState(e.target.value);
-        
-    },[zipCodeState]);
+    const foldDaumPostcode = (e) => {
+        e.preventDefault;
+        const element_layer = addressLayer.current;
+        element_layer.style.display = 'none';
+    };
 
     const onSubmit = useCallback(() => {
-        setSent(true);
+        setSent(false);
     },[sent])
     
     return(
@@ -236,9 +226,9 @@ const CheckOut = () => {
                 </StyledDivContainer>
                 <Form
                     onSubmit={onSubmit}
-                    subscription={{ submitting: true, values:true, input:true }}
+                    subscription={{ submitting: true}}
                     validate={validate}
-                    render={({ handleSubmit, submitting, values, input}) => (
+                    render={({ handleSubmit }) => (
                         <StyledForm
                             onSubmit={handleSubmit}
                             noValidate>
@@ -339,7 +329,14 @@ const CheckOut = () => {
                                                 onClick={onClickSearchingAddress}>
                                                 Searching Address
                                             </StyledButton>
-                                            <div ref={addressLayer} style={{display:'none', position:'absolute', top:0, left:0, width:'400px', height:'500px', overflow:'hidden', zIndex:'1', overflowScrolling:'touch'}} ></div>            
+                                            <div 
+                                                ref={addressLayer} 
+                                                style={{display:'none', position:'absolute', top:0, left:0, width:'400px', height:'500px', overflow:'hidden', zIndex:'1', overflowScrolling:'touch'}}>
+                                               <img 
+                                                    src="//t1.daumcdn.net/postcode/resource/images/close.png" style={{cursor:'pointer', position:'absolute', right:0, top:0, zIndex:'100'}} 
+                                                    alt="접기 버튼" 
+                                                    onClick={foldDaumPostcode}/>    
+                                            </div>
                                         </StyledGridItemZIPCodeButton> 
                                     </GridContainer>
                                     <Field
@@ -364,22 +361,29 @@ const CheckOut = () => {
                                         noBorder={false}
                                         initialValue={addressDetailState}
                                     />
+                                    <Field
+                                        component={RFTextField}
+                                        label="Comment"
+                                        name="comment"
+                                        fullWidth
+                                        size="large"
+                                        noBorder={false}
+                                        />
                                 </StyledDivFormInner>
-                                {/* <FormSpy
-                                    subscription={{ values:true, submitError:true }}
-                                    render={({ values, submitError }) => (
-                                        console.log(values),
+                                <FormSpy
+                                    subscription={{ submitError:true }}
+                                    render={({ submitError }) => (
                                         submitError ? (
                                         <FormFeedback error>
                                             {submitError}
                                         </FormFeedback>
                                         ) : null
-                                )}/> */}
+                                )}/>
                             </AppForm>
                         </StyledForm>
                     )}
                 />
-                <input value={zipCodeState}></input>
+                
             </StyledDivMain>
             
                                  
