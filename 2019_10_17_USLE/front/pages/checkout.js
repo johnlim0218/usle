@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useRef, useEffect, focus } from 'react';
+import React, { useState, useCallback, useRef, useEffect } from 'react';
 import styled from 'styled-components';
 import { Field, Form, FormSpy } from 'react-final-form';
 
@@ -17,9 +17,7 @@ import RFTextField from '../form/RFTextField';
 import FormButton from '../form/FormButton';
 import FormFeedback from '../form/FormFeedback';
 
-
 import { dummyCartData } from '../dummy/dummy';
-import { element } from 'prop-types';
 
 const StyledDivImgContainer = styled.div`
     width: 120px;
@@ -50,7 +48,7 @@ const StyledGridItemZIPCodeButton = styled(GridItem)`
     display: flex;
     align-items: center;
 `;
-const StyledButton = styled(Button)`
+const StyledButtonSearchingAddress = styled(Button)`
     border: 1px solid;
 `
 
@@ -325,10 +323,10 @@ const CheckOut = () => {
                                             />
                                         </GridItem>
                                        <StyledGridItemZIPCodeButton right sm={6}>
-                                            <StyledButton 
+                                            <StyledButtonSearchingAddress 
                                                 onClick={onClickSearchingAddress}>
                                                 Searching Address
-                                            </StyledButton>
+                                            </StyledButtonSearchingAddress>
                                             <div 
                                                 ref={addressLayer} 
                                                 style={{display:'none', position:'absolute', top:0, left:0, width:'400px', height:'500px', overflow:'hidden', zIndex:'1', overflowScrolling:'touch'}}>

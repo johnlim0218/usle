@@ -16,7 +16,7 @@ const StyledContainer = styled(Container)`
     ${props => props.theme.container};
 `
 const StyledBox = styled(Box)`
-    ${props => props.checkout && `
+    ${props => props.checkout || props.myAccount&& `
         &.MuiBox-root {
             margin-top: 10px;
             margin-bottom: 60px;
@@ -33,7 +33,9 @@ const StyledPaper = styled(Paper)`
     `};
     ${props => props.checkout && `
         padding: ${props.theme.spacing(2, 3)};
-        
+    `};
+    ${props => props.myAccount && `
+        padding: ${props.theme.spacing(2, 3)};
     `};
 
     ${breakpoint('md')`
@@ -44,6 +46,9 @@ const StyledPaper = styled(Paper)`
             padding: ${props.theme.spacing(8, 6)};    
         `};
         ${props => props.checkout && `
+            padding: ${props.theme.spacing(2, 6)};    
+        `};
+        ${props => props.myAccount && `
             padding: ${props.theme.spacing(2, 6)};    
         `};
     `};

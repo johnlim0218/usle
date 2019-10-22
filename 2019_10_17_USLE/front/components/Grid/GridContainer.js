@@ -14,6 +14,10 @@ const ModifiedGrid = styled(Grid).attrs(props => ({
         margin-right: 0;
         margin-left: 0;   
     `}
+    ${props => props.myAccount &&`
+        margin-right: 0;
+        margin-left: 0;   
+    `}
     ${props => props.signUp &&`
         margin-right: 0;
         margin-left: 0;   

@@ -41,9 +41,6 @@ const MyPage = () => {
 
     return(
         <div>
-            <div>
-
-            </div>
             <StyledDivMain>
                 <StyledDivContainer>
                    <Card plain>
