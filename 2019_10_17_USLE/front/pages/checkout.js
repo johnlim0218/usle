@@ -4,7 +4,8 @@ import { Field, Form, FormSpy } from 'react-final-form';
 
 // import Grid from '@material-ui/core/Grid';
 import Typography from '../components/Typography';
-import { StyledDivMain, StyledDivContainer } from './product';
+import { StyledDivMain, StyledDivContainer } from '../pages/product';
+import { StyledFormButton } from '../pages/signIn';
 import Card from '../components/Card/Card';
 import CardBody from '../components/Card/CardBody';
 import Table from '../components/Table';
@@ -226,7 +227,7 @@ const CheckOut = () => {
                     onSubmit={onSubmit}
                     subscription={{ submitting: true}}
                     validate={validate}
-                    render={({ handleSubmit }) => (
+                    render={({ handleSubmit, submitting }) => (
                         <StyledForm
                             onSubmit={handleSubmit}
                             noValidate>
@@ -377,6 +378,15 @@ const CheckOut = () => {
                                         </FormFeedback>
                                         ) : null
                                 )}/>
+                                 <StyledFormButton
+                                    type="submit"
+                                    disabled={submitting || sent}
+                                    size="large"
+                                    color="secondary"
+                                    fullWidth
+                                >
+                                    {submitting || sent ? 'In progress…' : 'Check Out'}
+                                </StyledFormButton>
                             </AppForm>
                         </StyledForm>
                     )}

@@ -13,6 +13,7 @@ import FormButton from '../form/FormButton';
 import FormFeedback from '../form/FormFeedback';
 
 import { StyledDivMain, StyledDivContainer } from '../pages/product';
+import { StyledFormButton } from '../pages/signIn';
 
 const StyledForm = styled.form`
     margin-top: ${props => props.theme.spacing(3)}px;
@@ -139,7 +140,7 @@ const MyAccount = () => {
                     onSubmit={onSubmit}
                     subscription={{ submitting: true}}
                     validate={validate}
-                    render={({ handleSubmit }) => (
+                    render={({ handleSubmit, submitting }) => (
                         <StyledForm
                             onSubmit={handleSubmit}
                             noValidate>
@@ -282,6 +283,15 @@ const MyAccount = () => {
                                         </FormFeedback>
                                         ) : null
                                 )}/>
+                                <StyledFormButton
+                                    type="submit"
+                                    disabled={submitting || sent}
+                                    size="large"
+                                    color="secondary"
+                                    fullWidth
+                                    >
+                                    {submitting || sent ? 'In progress…' : 'Submit'}
+                                </StyledFormButton>
                             </AppForm>
                         </StyledForm>
                     )}

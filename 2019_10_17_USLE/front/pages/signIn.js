@@ -12,7 +12,7 @@ import FormButton from '../form/FormButton';
 const StyledForm = styled.form`
     margin-top: ${props => props.theme.spacing(6)}px;
 `
-const StyledFormButton = styled(FormButton)`
+export const StyledFormButton = styled(FormButton)`
     margin-top: ${props => props.theme.spacing(3)}px;
     margin-bottom: ${props => props.theme.spacing(2)}px;
 `;

@@ -16,7 +16,13 @@ const StyledContainer = styled(Container)`
     ${props => props.theme.container};
 `
 const StyledBox = styled(Box)`
-    ${props => props.checkout || props.myAccount&& `
+    ${props => props.checkout && `
+        &.MuiBox-root {
+            margin-top: 10px;
+            margin-bottom: 60px;
+        }
+    `}
+    ${props => props.myAccount && `
         &.MuiBox-root {
             margin-top: 10px;
             margin-bottom: 60px;
