@@ -11,5 +11,9 @@ module.exports = (sequelize, DataTypes) => {
         collate: 'utf8mb4_general_ci',
     });
 
+    ProductImage.associate = (db) => {
+        db.ProductImage.belongsTo(db.Product);
+    }
+
     return ProductImage;
 }

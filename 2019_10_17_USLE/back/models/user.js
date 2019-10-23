@@ -37,6 +37,14 @@ module.exports = (sequelize, DataTypes) => {
         collate: 'utf8_general_ci',
     });
 
+    User.associate = (db) => {
+        db.User.hasMany(db.Order);
+        db.User.hasMany(db.Cart);
+        db.User.hasMany(db.UserAddress);
+        db.User.hasMany(db.Post);
+        db.User.hasMany(db.Comment);
+        db.User.belongsToMany(db.Coupon, {through: 'OwnCoupon', as:'Owned'})
+    }
 
     return User;
 }

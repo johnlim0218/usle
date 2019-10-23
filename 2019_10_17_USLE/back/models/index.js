@@ -20,6 +20,7 @@ db.OrderPayment = require('./orderPayment')(sequelize, Sequelize);
 db.OrderReturn = require('./orderReturn')(sequelize, Sequelize);
 db.OrderShipping = require('./orderShipping')(sequelize, Sequelize);
 db.OrderStatus = require('./orderStatus')(sequelize, Sequelize);
+db.Delievery = require('./delievery')(sequelize, Sequelize);
 
 db.Cart = require('./cart')(sequelize, Sequelize);
 db.Coupon = require('./coupon')(sequelize, Sequelize);

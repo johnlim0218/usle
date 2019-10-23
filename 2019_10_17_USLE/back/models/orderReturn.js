@@ -20,5 +20,10 @@ module.exports = (sequelize, DataTypes) => {
         collate: 'utf8mb4_general_ci',
     })
 
+    OrderReturn.associate = (db) => {
+        db.OrderReturn.belongsTo(db.OrderStatus);
+    }
+    
+
     return OrderReturn;
 }

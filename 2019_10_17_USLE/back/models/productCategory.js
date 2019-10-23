@@ -16,5 +16,9 @@ module.exports = (sequelize, DataTypes) => {
         collate: 'utf8mb4_general_ci',
     });
 
+    ProductCategory.associate = (db) => {
+        db.ProductCategory.hasMany(db.Product);
+    }
+
     return ProductCategory;
 }

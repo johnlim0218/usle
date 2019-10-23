@@ -11,10 +11,10 @@ module.exports = (sequelize, DataTypes) => {
         collate: 'utf8mb4_general_ci',
     });
 
-    // Comment.associate = (db) => {
-    //     db.Comment.belongsTo(db.Post);
-    //     db.Comment.belongsTo(db.User);
-    // }
+    Comment.associate = (db) => {
+        db.Comment.belongsTo(db.Post);
+        db.Comment.belongsTo(db.User);
+    }
 
     return Comment;
 }

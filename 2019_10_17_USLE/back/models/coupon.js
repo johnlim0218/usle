@@ -19,5 +19,11 @@ module.exports = (sequelize, DataTypes) => {
         collate: 'utf8mb4_general_ci',
     });
 
+    Coupon.associate = (db) => {
+        db.Coupon.hasMany(db.OrderDetail);
+        db.Coupon.belongsToMany(db.User, {through: 'OwnCoupon', as:'Owner'})
+        db.Coupon.belongsToMany(db.ProductInventory, {through: 'Applicable', as:'ApplicableCoupon'})
+    }
+
     return Coupon;
 }

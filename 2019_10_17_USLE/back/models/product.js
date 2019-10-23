@@ -15,5 +15,13 @@ module.exports = (sequelize, DataTypes) => {
         collate: 'utf8mb4_general_ci',
     });
 
+    Product.associate = (db) => {
+        db.Product.hasMany(db.ProductImage);
+        db.Product.hasMany(db.ProductInventory);
+        db.Product.hasMany(db.Comment, {as: 'review'});
+        db.Product.belongsTo(db.ProductBrand);
+        db.Product.belongsTo(db.ProductCategory);
+    }
+
     return Product;
 }

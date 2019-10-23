@@ -11,5 +11,10 @@ module.exports = (sequelize, DataTypes) => {
         collate: 'utf8mb4_general_ci',
     });
 
+    Cart.associate = (db) => {
+        db.Cart.belongsTo(db.User);
+        db.Cart.belongsTo(db.ProductInventory);
+    }
+
     return Cart;
 }

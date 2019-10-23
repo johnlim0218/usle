@@ -11,5 +11,12 @@ module.exports = (sequelize, DataTypes) => {
         collate: 'utf8mb4_general_ci',
     })
 
+    Order.associate = (db) => {
+        db.Order.hasOne(db.OrderPayment);
+        db.Order.hasOne(db.OrderShipping);
+        db.Order.hasMany(db.OrderStatus);
+        db.Order.belongsTo(db.User);
+    }
+
     return Order;
 }

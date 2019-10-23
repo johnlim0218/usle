@@ -32,5 +32,9 @@ module.exports = (sequelize, DataTypes) => {
         collate: 'utf8mb4_general_ci',
     });
 
+    ProductBrand.associate = (db) => {
+        db.ProductBrand.hasMany(db.Product);
+    }
+
     return ProductBrand;
 }

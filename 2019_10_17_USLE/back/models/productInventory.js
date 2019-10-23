@@ -23,5 +23,12 @@ module.exports = (sequelize, DataTypes) => {
         collate: 'utf8mb4_general_ci',
     });
 
+    ProductInventory.associate = (db) => {
+        db.ProductInventory.hasMany(db.Cart);
+        db.ProductInventory.hasMany(db.OrderDetail);
+        db.ProductInventory.belongsTo(db.Product);
+        db.ProductInventory.belongsToMany(db.Coupon, {through: 'Applicable', as:'ApplicableProduct'})
+    }
+
     return ProductInventory;
 }

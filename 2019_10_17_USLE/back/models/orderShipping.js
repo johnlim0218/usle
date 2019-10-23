@@ -30,6 +30,11 @@ module.exports = (sequelize, DataTypes) => {
         charset: 'utf8mb4', // 한글 + 이모티콘
         collate: 'utf8mb4_general_ci',
     })
+    
+    OrderShipping.associate = (db) => {
+        db.OrderShipping.hasOne(db.Delievery);
+        db.OrderShipping.belongsTo(db.Order);
+    }
 
     return OrderShipping;
 }
