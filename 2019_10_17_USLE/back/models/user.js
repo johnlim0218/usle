@@ -33,6 +33,9 @@ module.exports = (sequelize, DataTypes) => {
             defaultValue: 'locale',
         },
     }, {
+        timestamps: true,
+        paranoid: true,
+        underscored: true,
         charset: 'utf8',
         collate: 'utf8_general_ci',
     });
