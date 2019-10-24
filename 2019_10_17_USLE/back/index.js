@@ -1,7 +1,7 @@
 const express = require('express');
 const morgan = require('morgan');
 
-const db = require('./models');
+const db = require('./models/index1');
 
 const app = express();
 db.sequelize.sync();
