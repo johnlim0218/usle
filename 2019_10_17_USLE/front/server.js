@@ -29,9 +29,8 @@ app.prepare().then(() => {
             httpOnly: true,
             secure: false,
         },
+        name: '1q2w3e', // 백엔드 쿠키와 같게
     }));
-
-    // server.use('/daumJuso', require('./routes/daumJusoRouter'));
 
     server.get('*', (req, res) => {
         return handle(req, res);

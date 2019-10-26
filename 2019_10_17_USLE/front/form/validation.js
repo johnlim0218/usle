@@ -1,7 +1,11 @@
 import isEmail from 'validator/lib/isEmail';
 
-export function email(value) {
+export function email(value, values) {
   return value && !isEmail(value.trim()) ? 'Invalid email' : null;
+}
+
+export function checkPassword(password, checkPassword) {
+  return password !== checkPassword ? 'Please Check Your Password' : null;
 }
 
 function isDirty(value) {

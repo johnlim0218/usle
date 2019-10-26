@@ -77,7 +77,7 @@ const configureStore = (initialState, options) => {
         process.env.NODE_ENV === 'production'
         ? compose(applyMiddleware(...middlewares))
         : compose(
-            appliMiddleware(...middlewares),
+            applyMiddleware(...middlewares),
             //개발 단계
             !options.isServer && window.__REDUX_DEVTOOLS_EXTENSION__ !== 'undefined' 
             ? window.__REDUX_DEVTOOLS_EXTENSION__() 

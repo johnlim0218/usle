@@ -2,12 +2,12 @@
 
 module.exports = (sequelize, DataTypes) => {
     const User = sequelize.define('User', {
-        userId: {
+        email: {
             type: DataTypes.STRING(30),
             allowNull: false,
             unique: true,
         },
-        nickName: {
+        nickname: {
             type: DataTypes.STRING(30),
             allowNull: false,
         },
@@ -19,13 +19,13 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.STRING(20),
             allowNull: true,
         },
-        email: {
-            type: DataTypes.STRING(30),
-            unique: true,
-        },
         mileage: {
             type: DataTypes.INTEGER,
             defaultValue: 0,
+        },
+        mailing: {
+            type: DataTypes.INTEGER,
+            defaultValue: 0, // 0 - YES, 1 - NO
         },
         type: {
             type: DataTypes.STRING(20),

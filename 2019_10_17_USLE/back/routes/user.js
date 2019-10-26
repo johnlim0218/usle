@@ -14,9 +14,10 @@ router.post('/login', unnecessarilyLoggedIn, (req, res, next) => {
             return next(err);
         };
         if(info){
+            console.log(info);
             return res.status(403).send(info.reason);
         };
-
+        
         return req.login(user, async(loginErr) => {
             try{
                 if(loginErr) {
@@ -27,8 +28,10 @@ router.post('/login', unnecessarilyLoggedIn, (req, res, next) => {
                     where: {
                         id: user.id,
                     },
-                    attributes: ['id', 'userId', 'nickName'],
+                    attributes: ['id', 'email', 'nickname'],
                 });
+
+                console.log(fullUser);
                 return res.json(fullUser);
 
             } catch(e) {
@@ -39,7 +42,7 @@ router.post('/login', unnecessarilyLoggedIn, (req, res, next) => {
 });
 
 router.post('/logout', necessarilyLoggedIn, (req, res) => {
-//로그 아웃 라우터 
+//로그아웃 라우터 
     req.logout();
     req.session.destroy();
     res.send('로그아웃 되었습니다.');
@@ -49,25 +52,23 @@ router.post('/signup', async(req, res, next) => {
 //회원가입 라우터
     try{
         // 아이디 중복 확인
-        const checkDupId = await db.User.findOne({
+        const checkDupEmail = await db.User.findOne({
             where: {
-                userId: req.body.userId,
+                email: req.body.email,
             }
         });
         // 중복된 아이디가 DB에 있을 경우
-        if(checkDupId){
+        if(checkDupEmail){
             return res.status(403).send('이미 사용중인 아이디입니다.');
         }
         // 중복된 아이디가 DB에 없을 경우
         // 회원가입 진행
         const hashedPassword = await bcrypt.hash(req.body.password, 12);
         const newUser = await db.User.create({
-            userId: req.body.userId,
+            email: req.body.email,
             password: hashedPassword,
-            nickName: req.body.nickName,
-            email: req.body.userId,
+            nickname: req.body.nickname,
         });
-        console.log(newUser);
 
         return res.status(200).json(newUser);
     } catch(e) {

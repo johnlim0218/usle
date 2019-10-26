@@ -22,9 +22,9 @@ const RFTextField = (props) => {
       meta: { touched, error, submitError },
       ...other
     } = props;
-    
+      console.log(props);
     return(
-      
+        
         <StyledTextField
           error={Boolean(touched && (error || submitError))}
           InputProps={{
