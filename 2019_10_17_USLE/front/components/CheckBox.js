@@ -3,6 +3,7 @@ import CheckBox from '@material-ui/core/CheckBox';
 
 
 const ModifiedCheckBox = (props) => {
+    const {input:{value}} = props;
     const [checked, setChecked] = useState([1]);
     const onClickCheckBox = useCallback((value) => {
         const targetIndex = checked.indexOf(value);
@@ -13,23 +14,24 @@ const ModifiedCheckBox = (props) => {
             newChecked.push(1);
         }
         setChecked(newChecked);
-        console.log(checked[0]);
     }, [checked]);
     
     return(
         <>
             <CheckBox
                 onClick={() => onClickCheckBox(1)}
-                checked={checked.indexOf(1) !== -1 ? true : false}
+                // checked={checked.indexOf(1) !== -1 ? true : false}
+                checked={value ? true : false}
                 inputProps={{
-                    value:checked.indexOf(1) !== -1 ? true : ''
+                    value:checked.indexOf(1) !== -1 ? 'check' : '',
+                    ...props.inputProps
                 }}
                 {...props}
             />
             <span>
                 {props.label}
             </span>
-            {props.meta.error && props.meta.touched ? <div><span>Required</span></div> : ''}
+            {props.meta.error && props.meta.touched ? <div><span style={{color:'red'}}>Please read and check at this box</span></div> : ''}
         </>
     )
 }

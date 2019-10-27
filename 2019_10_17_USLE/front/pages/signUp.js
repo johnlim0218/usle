@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import Link from 'next/link';
@@ -12,7 +12,7 @@ import GridItem from '../components/Grid/GridItem';
 import Typography from '../components/Typography';
 import CheckBox from '../components/CheckBox';
 import AppForm from '../views/AppForm';
-import { email, checkPassword, required } from '../form/validation';
+import { email, checkPassword, readTerm, required } from '../form/validation';
 import RFTextField from '../form/RFTextField';
 import FormButton from '../form/FormButton';
 import FormFeedback from '../form/FormFeedback';
@@ -26,11 +26,13 @@ const StyledFormButton = styled(FormButton)`
 `;
 
 const SignUp = () => {
-    const [sent, setSent] = React.useState(false);
+    const [sent, setSent] = useState(false);
+    const [term, setTerm] = useState(false);
+    const [mailing, setMailing] = useState(false);
     const dispatch = useDispatch();
 
     const validate = values => {
-        const errors = required(['nickname', 'email', 'password', 'checkPassword', 'terms'], values);
+        const errors = required(['nickname', 'email', 'password', 'checkPassword'], values);
         if (!errors.email) {
             const emailError = email(values.email, values);
             if (emailError) {
@@ -43,12 +45,21 @@ const SignUp = () => {
                 errors.checkPassword = checkPassword(values.password, values.checkPassword);
             }
         }
+        
         return errors;
     };
-    
+
+    const onClickMailing = useCallback(() => {
+        mailing ? setMailing(false) : setMailing(true);
+    }, [mailing]);
+
+    const onClickTerm = useCallback(() => {
+        term ? setTerm(false) : setTerm(true);
+    }, [term]);
+
     const onSubmit = useCallback((values) => {
         setSent(true);
-
+        console.log(values);
         dispatch({
             type: SIGN_UP_REQUEST,
             data: values,
@@ -68,9 +79,9 @@ const SignUp = () => {
             </Typography>
             <Form
                 onSubmit={onSubmit}
-                subscription={{ submitting: true, values: true }}
+                subscription={{ submitting: true, values: true, value: true }}
                 validate={validate}
-                render={({ handleSubmit, submitting, values }) => (
+                render={({ handleSubmit, submitting, values, value }) => (
                     <StyledForm
                         onSubmit={handleSubmit}
                         noValidate
@@ -88,6 +99,9 @@ const SignUp = () => {
                             noBorder={false}
                         />
                         <Field
+                            type="checkbox"
+                            initialValue={mailing}
+                            onClick={onClickMailing}
                             component={CheckBox}
                             disabled={submitting || sent}
                             fullWidth        
@@ -142,12 +156,18 @@ const SignUp = () => {
                             noBorder={false}
                         />
                         <Field
+                            type="checkbox"
+                            initialValue={term}
+                            onClick={onClickTerm} 
                             component={CheckBox}
                             disabled={submitting || sent}
                             fullWidth        
-                            label="I agree to the terms and conditions."
+                            label={<>
+                                        I agree to the{" "}
+                                        <a href="#pablo">terms and conditions</a>.
+                                    </>}
                             margin="normal"
-                            name="terms"
+                            name="term"
                             required
                             size="large"
                             noBorder={false}

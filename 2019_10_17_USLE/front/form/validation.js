@@ -8,6 +8,10 @@ export function checkPassword(password, checkPassword) {
   return password !== checkPassword ? 'Please Check Your Password' : null;
 }
 
+export function readTerm(value){
+  console.log(value);
+}
+
 function isDirty(value) {
   return value || value === 0;
 }
