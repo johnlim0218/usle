@@ -23,9 +23,8 @@ export const StyledFormButton = styled(FormButton)`
 `;
 
 const SignIn = () => {
-    const [sent, setSent] = useState(false);
     const [submitErrorTest, setSubmitErrorTest] = useState(false);
-    const { me, logInErrorReason } = useSelector(state => state.userReducer);
+    const { me, isLoggingIn, logInErrorReason } = useSelector(state => state.userReducer);
     const dispatch = useDispatch();
     
     useEffect(() => {
@@ -34,6 +33,13 @@ const SignIn = () => {
             Router.push('/');
         }
     }, [me]);
+
+    useEffect(() => {
+        // if(logInErrorReason !== ''){
+        //     setSent(false);
+        //     // return { [FORM_ERROR]: logInErrorReason }
+        // }
+    }, []);
 
     const validate = (values) => {
         const errors = required(['email', 'password'], values);
@@ -45,24 +51,24 @@ const SignIn = () => {
         }
         return errors;
     }
-    
+
     const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 
-    const onSubmit = useCallback(async (values) => {
+    const onSubmit = useCallback((values) => {
         
-        setSent(true);
+        // setSent(true);
         dispatch({
            type: LOG_IN_REQUEST,
            data: values,
         })
-        
-        await sleep(1000);
-        if(logInErrorReason !== ''){
-            setSent(false);
-            return { [FORM_ERROR]: logInErrorReason }
-        }
+        // setSent(false);
+        // await sleep(2000);
+        // if(logInErrorReason !== ''){
+        //     setSent(false);
+        //     return { [FORM_ERROR]: logInErrorReason }
+        // }
     
-    }, [sent, submitErrorTest, logInErrorReason]);
+    }, []);
     
     return(
         <AppForm signIn>
@@ -88,7 +94,7 @@ const SignIn = () => {
                             autoComplete="email"
                             autoFocus
                             component={RFTextField}
-                            disabled={submitting || sent}
+                            disabled={submitting || isLoggingIn}
                             fullWidth
                             label="Email"
                             margin="normal"
@@ -100,7 +106,7 @@ const SignIn = () => {
                         <Field
                             autoComplete="current-password"
                             component={RFTextField}
-                            disabled={submitting || sent}
+                            disabled={submitting || isLoggingIn}
                             fullWidth
                             label="Password"
                             margin="normal"
@@ -112,21 +118,21 @@ const SignIn = () => {
                         />
                         <StyledFormButton
                             type="submit"
-                            disabled={submitting || sent}
+                            disabled={submitting || isLoggingIn}
                             size="large"
                             color="secondary"
                             fullWidth
                         >
-                            {submitting || sent ? 'In progress…' : 'Sign In'}
+                            {submitting || isLoggingIn ? 'In progress…' : 'Sign In'}
                         </StyledFormButton>
                         {/* FormSpy는 기본적으로 form을 subscript하고 있다? */}
                         <FormSpy
                             subscription={{ submitError:true }}
                             render={({ submitError }) => (
-                                submitError ? (
-                                <FormFeedback error>
-                                    {submitError}
-                                </FormFeedback>
+                                submitError!=='' ? (
+                                    <FormFeedback error>
+                                        {submitError}
+                                    </FormFeedback>
                                 ) : null
                         )}/>
                     </StyledForm>

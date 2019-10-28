@@ -26,10 +26,9 @@ const StyledFormButton = styled(FormButton)`
 `;
 
 const SignUp = () => {
-    const [sent, setSent] = useState(false);
     const [term, setTerm] = useState(false);
     const [mailing, setMailing] = useState(false);
-    const { me, signUpErrorReason } = useSelector(state => state.userReducer);
+    const { me, isSigningUp, signUpErrorReason } = useSelector(state => state.userReducer);
     const dispatch = useDispatch();
 
     const validate = values => {
@@ -61,19 +60,17 @@ const SignUp = () => {
     const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 
     const onSubmit = useCallback(async (values) => {
-        setSent(true);
         dispatch({
             type: SIGN_UP_REQUEST,
             data: values,
         });
 
-        await sleep(1800);
+        await sleep(2000);
         if(signUpErrorReason !== ''){
-            setSent(false);
             return { [FORM_ERROR]: signUpErrorReason }
         }
 
-    }, [sent, signUpErrorReason]);
+    }, [signUpErrorReason]);
 
     return(
         <AppForm signUp>
@@ -97,7 +94,7 @@ const SignUp = () => {
                         <Field
                             autoComplete="Email"
                             component={RFTextField}
-                            disabled={submitting || sent}
+                            disabled={submitting || isSigningUp}
                             fullWidth        
                             label="Email"
                             margin="normal"
@@ -111,7 +108,7 @@ const SignUp = () => {
                             initialValue={mailing}
                             onClick={onClickMailing}
                             component={CheckBox}
-                            disabled={submitting || sent}
+                            disabled={submitting || isSigningUp}
                             fullWidth        
                             label="Mailing Service."
                             margin="normal"
@@ -125,7 +122,7 @@ const SignUp = () => {
                                     type='password'
                                     autoComplete="Password"
                                     component={RFTextField}
-                                    disabled={submitting || sent}
+                                    disabled={submitting || isSigningUp}
                                     fullWidth        
                                     label="Password"
                                     margin="normal"
@@ -140,7 +137,7 @@ const SignUp = () => {
                                     type='password'
                                     autoComplete="Check Password"
                                     component={RFTextField}
-                                    disabled={submitting || sent}
+                                    disabled={submitting || isSigningUp}
                                     fullWidth        
                                     label="Check Password"
                                     margin="normal"
@@ -154,7 +151,7 @@ const SignUp = () => {
                         <Field
                             autoComplete="Nickname"
                             component={RFTextField}
-                            disabled={submitting || sent}
+                            disabled={submitting || isSigningUp}
                             fullWidth        
                             label="Nickname"
                             margin="normal"
@@ -168,7 +165,7 @@ const SignUp = () => {
                             initialValue={term}
                             onClick={onClickTerm} 
                             component={CheckBox}
-                            disabled={submitting || sent}
+                            disabled={submitting || isSigningUp}
                             fullWidth        
                             label={<>
                                         I agree to the{" "}
@@ -180,6 +177,14 @@ const SignUp = () => {
                             size="large"
                             noBorder={false}
                         />
+                        <StyledFormButton
+                            type='submit'
+                            disabled={submitting || isSigningUp}
+                            color="secondary"
+                            fullWidth
+                        >
+                            {submitting || isSigningUp ? 'In progress...' : 'Sign Up'}
+                        </StyledFormButton>
                         <FormSpy
                             subscription={{ submitError : true}}
                             render= {({ submitError }) => (
@@ -190,14 +195,6 @@ const SignUp = () => {
                                 ) : null
                             )}
                         />
-                        <StyledFormButton
-                            type='submit'
-                            disabled={submitting || sent}
-                            color="secondary"
-                            fullWidth
-                        >
-                            {submitting || sent ? 'In progress...' : 'Sign Up'}
-                        </StyledFormButton>
                     </StyledForm>
                 )}
             />
