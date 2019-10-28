@@ -5,10 +5,16 @@ import Typography from '../components/Typography';
 
 
 const FormFeedback = (props) => {
-    console.log(props);
+    const { children } = props;
+    console.log(children);
     return(
-        <div>123</div>
+        <div>
+            {children}
+        </div>
     )
+}
+FormFeedback.propTypes = {
+    children: PropTypes.node,
 }
 
 export default FormFeedback;

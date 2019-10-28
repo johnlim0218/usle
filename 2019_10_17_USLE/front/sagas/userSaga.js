@@ -29,10 +29,9 @@ function* signUp(action) {
             data: result.data,
         })
     } catch(e) {
-        console.error(e);
         yield put({
             type: SIGN_UP_FAILURE,
-            data: e,
+            error: e,
         })
     }
 }
@@ -55,10 +54,9 @@ function* logIn(action) {
             data: result.data,
         })
     } catch(e) {
-        console.error(e);
         yield put({
             type: LOG_IN_FAILURE,
-            data: e,
+            error: e,
         })
     }
 }

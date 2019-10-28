@@ -1,13 +1,18 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import Link from 'next/link';
+import Router from 'next/router';
 import { Field, Form, FormSpy } from 'react-final-form';
+import { FORM_ERROR } from 'final-form';
+
 import { email, required } from '../form/validation';
 import Typography from '../components/Typography';
 import RFTextField from '../form/RFTextField';
 import AppForm from '../views/AppForm';
 import FormFeedback from '../form/FormFeedback';
 import FormButton from '../form/FormButton';
+import { LOG_IN_REQUEST } from '../reducers/userReducer';
 
 const StyledForm = styled.form`
     margin-top: ${props => props.theme.spacing(6)}px;
@@ -20,7 +25,16 @@ export const StyledFormButton = styled(FormButton)`
 const SignIn = () => {
     const [sent, setSent] = useState(false);
     const [submitErrorTest, setSubmitErrorTest] = useState(false);
+    const { me, logInErrorReason } = useSelector(state => state.userReducer);
+    const dispatch = useDispatch();
     
+    useEffect(() => {
+        // 로그인 성공
+        if(me){
+            Router.push('/');
+        }
+    }, [me]);
+
     const validate = (values) => {
         const errors = required(['email', 'password'], values);
         if(!errors.email){
@@ -32,16 +46,24 @@ const SignIn = () => {
         return errors;
     }
     
-    const onSubmit = useCallback((e) => {
-        // setSent(true);
-        // // submitError 발생
-        // setSubmitErrorTest(true);
-        // setSent(false);
+    const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 
+    const onSubmit = useCallback(async (values) => {
         
-    }, [sent, submitErrorTest]);
-
-
+        setSent(true);
+        dispatch({
+           type: LOG_IN_REQUEST,
+           data: values,
+        })
+        
+        await sleep(1000);
+        if(logInErrorReason !== ''){
+            setSent(false);
+            return { [FORM_ERROR]: logInErrorReason }
+        }
+    
+    }, [sent, submitErrorTest, logInErrorReason]);
+    
     return(
         <AppForm signIn>
             <Typography gutterBottom variant="h3" marked="center" align="center">
@@ -88,17 +110,6 @@ const SignIn = () => {
                             type="password"
                             noBorder={false}
                         />
-                        {/* FormSpy는 기본적으로 form을 subscript하고 있다? */}
-                        <FormSpy
-                            subscription={{ values:true, submitError:true }}
-                            render={({ values, submitError }) => (
-                                submitError ? (
-                                <FormFeedback error>
-                                    {submitError}
-                                </FormFeedback>
-                                ) : null
-                            )}/>
-                        
                         <StyledFormButton
                             type="submit"
                             disabled={submitting || sent}
@@ -108,6 +119,16 @@ const SignIn = () => {
                         >
                             {submitting || sent ? 'In progress…' : 'Sign In'}
                         </StyledFormButton>
+                        {/* FormSpy는 기본적으로 form을 subscript하고 있다? */}
+                        <FormSpy
+                            subscription={{ submitError:true }}
+                            render={({ submitError }) => (
+                                submitError ? (
+                                <FormFeedback error>
+                                    {submitError}
+                                </FormFeedback>
+                                ) : null
+                        )}/>
                     </StyledForm>
                 )}/>
                 <Typography align="center">

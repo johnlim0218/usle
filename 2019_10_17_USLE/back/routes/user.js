@@ -35,7 +35,7 @@ router.post('/login', unnecessarilyLoggedIn, (req, res, next) => {
                 return res.json(fullUser);
 
             } catch(e) {
-                next(e);
+                return next(e);
             }
         });
     })(req, res, next);
@@ -72,7 +72,7 @@ router.post('/signup', async(req, res, next) => {
 
         return res.status(200).json(newUser);
     } catch(e) {
-        next(e);
+        return next(e);
     }
 })
 

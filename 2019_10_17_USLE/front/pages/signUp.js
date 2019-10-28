@@ -1,12 +1,10 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import Link from 'next/link';
-
-
 import { Field, Form, FormSpy } from 'react-final-form';
+import { FORM_ERROR } from 'final-form';
 
-import { SIGN_UP_REQUEST } from '../reducers/userReducer';
 import GridContainer from '../components/Grid/GridContainer';
 import GridItem from '../components/Grid/GridItem';
 import Typography from '../components/Typography';
@@ -16,6 +14,8 @@ import { email, checkPassword, readTerm, required } from '../form/validation';
 import RFTextField from '../form/RFTextField';
 import FormButton from '../form/FormButton';
 import FormFeedback from '../form/FormFeedback';
+import { SIGN_UP_REQUEST } from '../reducers/userReducer';
+import { sign } from 'crypto';
 
 const StyledForm = styled.form`
     margin-top: ${props => props.theme.spacing(6)}px;
@@ -29,10 +29,12 @@ const SignUp = () => {
     const [sent, setSent] = useState(false);
     const [term, setTerm] = useState(false);
     const [mailing, setMailing] = useState(false);
+    const { me, signUpErrorReason } = useSelector(state => state.userReducer);
     const dispatch = useDispatch();
 
     const validate = values => {
-        const errors = required(['nickname', 'email', 'password', 'checkPassword'], values);
+        const errors = required(['nickname', 'email', 'password', 'checkPassword', 'term'], values);
+        
         if (!errors.email) {
             const emailError = email(values.email, values);
             if (emailError) {
@@ -45,7 +47,6 @@ const SignUp = () => {
                 errors.checkPassword = checkPassword(values.password, values.checkPassword);
             }
         }
-        
         return errors;
     };
 
@@ -57,15 +58,22 @@ const SignUp = () => {
         term ? setTerm(false) : setTerm(true);
     }, [term]);
 
-    const onSubmit = useCallback((values) => {
+    const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
+
+    const onSubmit = useCallback(async (values) => {
         setSent(true);
-        console.log(values);
         dispatch({
             type: SIGN_UP_REQUEST,
             data: values,
         });
-       
-    }, [setSent]);
+
+        await sleep(1800);
+        if(signUpErrorReason !== ''){
+            setSent(false);
+            return { [FORM_ERROR]: signUpErrorReason }
+        }
+
+    }, [sent, signUpErrorReason]);
 
     return(
         <AppForm signUp>

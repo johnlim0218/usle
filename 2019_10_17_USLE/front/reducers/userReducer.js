@@ -30,6 +30,7 @@ const userReducer = (state = initialState, action) => {
             }
         }
         case LOG_IN_SUCCESS: {
+            console.log(action.data);
             return {
                 ...state,
                 isLogginIn: false,
@@ -40,7 +41,7 @@ const userReducer = (state = initialState, action) => {
             return {
                 ...state,
                 isLogginIn: false,
-                logInErrorReason: action.data,
+                logInErrorReason: action.error.response.data,
             }
         }
 
@@ -79,6 +80,7 @@ const userReducer = (state = initialState, action) => {
             return {
                 ...state,
                 isSigningUP: false,
+                signUpErrorReason: action.error.response.data,
             }
         }
 
