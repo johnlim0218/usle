@@ -22,6 +22,26 @@ export const SIGN_UP_FAILURE = "SIGN_UP_FAILURE";
 
 const userReducer = (state = initialState, action) => {
     switch(action.type){
+        case SIGN_UP_REQUEST: {
+            return {
+                ...state,
+                isSigningUp: true,
+            }
+        }
+        case SIGN_UP_SUCCESS: {
+            return {
+                ...state,
+                isSigningUp: false,
+            }
+        }
+        case SIGN_UP_FAILURE: {
+            return {
+                ...state,
+                isSigningUp: false,
+                signUpErrorReason: action.error.response.data,
+            }
+        }
+        
         case LOG_IN_REQUEST: {
             return {
                 ...state,
@@ -62,27 +82,7 @@ const userReducer = (state = initialState, action) => {
                 isLoggingOut: false,
             }
         }
-
-        case SIGN_UP_REQUEST: {
-            return {
-                ...state,
-                isSigningUp: true,
-            }
-        }
-        case SIGN_UP_SUCCESS: {
-            return {
-                ...state,
-                isSigningUp: false,
-            }
-        }
-        case SIGN_UP_FAILURE: {
-            return {
-                ...state,
-                isSigningUp: false,
-                signUpErrorReason: action.error.response.data,
-            }
-        }
-
+        
         default:
             return {
                 ...state,

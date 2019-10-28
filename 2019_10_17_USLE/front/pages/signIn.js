@@ -4,7 +4,6 @@ import styled from 'styled-components';
 import Link from 'next/link';
 import Router from 'next/router';
 import { Field, Form, FormSpy } from 'react-final-form';
-import { FORM_ERROR } from 'final-form';
 
 import { email, required } from '../form/validation';
 import Typography from '../components/Typography';
@@ -34,13 +33,6 @@ const SignIn = () => {
         }
     }, [me]);
 
-    useEffect(() => {
-        // if(logInErrorReason !== ''){
-        //     setSent(false);
-        //     // return { [FORM_ERROR]: logInErrorReason }
-        // }
-    }, []);
-
     const validate = (values) => {
         const errors = required(['email', 'password'], values);
         if(!errors.email){
@@ -52,22 +44,12 @@ const SignIn = () => {
         return errors;
     }
 
-    const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
-
     const onSubmit = useCallback((values) => {
-        
-        // setSent(true);
         dispatch({
            type: LOG_IN_REQUEST,
            data: values,
         })
-        // setSent(false);
-        // await sleep(2000);
-        // if(logInErrorReason !== ''){
-        //     setSent(false);
-        //     return { [FORM_ERROR]: logInErrorReason }
-        // }
-    
+        
     }, []);
     
     return(
@@ -129,9 +111,9 @@ const SignIn = () => {
                         <FormSpy
                             subscription={{ submitError:true }}
                             render={({ submitError }) => (
-                                submitError!=='' ? (
+                                logInErrorReason !=='' ? (
                                     <FormFeedback error>
-                                        {submitError}
+                                        {logInErrorReason}
                                     </FormFeedback>
                                 ) : null
                         )}/>

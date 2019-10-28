@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import Link from 'next/link';
 import { Field, Form, FormSpy } from 'react-final-form';
-import { FORM_ERROR } from 'final-form';
 
 import GridContainer from '../components/Grid/GridContainer';
 import GridItem from '../components/Grid/GridItem';
@@ -57,20 +56,13 @@ const SignUp = () => {
         term ? setTerm(false) : setTerm(true);
     }, [term]);
 
-    const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
-
-    const onSubmit = useCallback(async (values) => {
+    const onSubmit = useCallback((values) => {
         dispatch({
             type: SIGN_UP_REQUEST,
             data: values,
         });
-
-        await sleep(2000);
-        if(signUpErrorReason !== ''){
-            return { [FORM_ERROR]: signUpErrorReason }
-        }
-
-    }, [signUpErrorReason]);
+        
+    }, []);
 
     return(
         <AppForm signUp>
@@ -84,9 +76,9 @@ const SignUp = () => {
             </Typography>
             <Form
                 onSubmit={onSubmit}
-                subscription={{ submitting: true, values: true, value: true }}
+                subscription={{ submitting: true }}
                 validate={validate}
-                render={({ handleSubmit, submitting, values, value }) => (
+                render={({ handleSubmit, submitting }) => (
                     <StyledForm
                         onSubmit={handleSubmit}
                         noValidate
@@ -188,9 +180,9 @@ const SignUp = () => {
                         <FormSpy
                             subscription={{ submitError : true}}
                             render= {({ submitError }) => (
-                                submitError ? (
+                                signUpErrorReason !== '' ? (
                                     <FormFeedback error>
-                                        {submitError}
+                                        {signUpErrorReason}
                                     </FormFeedback>
                                 ) : null
                             )}
