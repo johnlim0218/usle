@@ -6,6 +6,15 @@ const db = require('../models');
 const { necessarilyLoggedIn, unnecessarilyLoggedIn } = require('../middlewares/userMiddleware');
 const router = express.Router();
 
+router.get('/', (req, res, next) => {
+    console.log('test');
+    console.log(req.cookies);
+    
+    const user = Object.assign({}, req.user.toJSON());
+    delete user.password;
+    return res.json(user);
+})
+
 router.post('/login', unnecessarilyLoggedIn, (req, res, next) => {
 //로그인 라우터
     passport.authenticate('local', (err, user, info) => {

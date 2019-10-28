@@ -6,7 +6,13 @@ const initialState = {
     logOutErrorReason: '', // 로그아웃 실패 이유
     isSigningUp : false, // 회원가입 시도
     signUpErrorReason : '', // 회원가입 실패 이유
+    isLoadingUser : false,
+    loadUserErrorReason : '',
 };
+
+export const SIGN_UP_REQUEST = "SIGN_UP_REQUEST";
+export const SIGN_UP_SUCCESS = "SIGN_UP_SUCCESS";
+export const SIGN_UP_FAILURE = "SIGN_UP_FAILURE";
 
 export const LOG_IN_REQUEST = "LOG_IN_REQUEST";
 export const LOG_IN_SUCCESS = "LOG_IN_SUCCESS";
@@ -16,9 +22,9 @@ export const LOG_OUT_REQUEST = "LOG_OUT_REQUEST";
 export const LOG_OUT_SUCCESS = "LOG_OUT_SUCCESS";
 export const LOG_OUT_FAILURE = "LOG_OUT_FAILURE";
 
-export const SIGN_UP_REQUEST = "SIGN_UP_REQUEST";
-export const SIGN_UP_SUCCESS = "SIGN_UP_SUCCESS";
-export const SIGN_UP_FAILURE = "SIGN_UP_FAILURE";
+export const LOAD_USER_REQUEST = "LOAD_USER_REQUEST";
+export const LOAD_USER_SUCCESS = "LOAD_USER_SUCCESS";
+export const LOAD_USER_FAILURE = "LOAD_USER_FAILURE";
 
 const userReducer = (state = initialState, action) => {
     switch(action.type){
@@ -41,7 +47,7 @@ const userReducer = (state = initialState, action) => {
                 signUpErrorReason: action.error.response.data,
             }
         }
-        
+
         case LOG_IN_REQUEST: {
             return {
                 ...state,
@@ -49,7 +55,6 @@ const userReducer = (state = initialState, action) => {
             }
         }
         case LOG_IN_SUCCESS: {
-            console.log(action.data);
             return {
                 ...state,
                 isLoggingIn: false,
@@ -80,6 +85,27 @@ const userReducer = (state = initialState, action) => {
             return {
                 ...state,
                 isLoggingOut: false,
+            }
+        }
+
+        case LOAD_USER_REQUEST: {
+            return {
+                ...state,
+                isLoadingUser: true,
+            }
+        }
+        case LOAD_USER_SUCCESS: {
+            return {
+                ...state,
+                isLoadingUser: false,
+                me: action.data,
+            }
+        }
+        case LOAD_USER_FAILURE: {
+            return {
+                ...state,
+                isLoadingUser: false,
+                loadUserErrorReason: action.error.response.data,
             }
         }
         

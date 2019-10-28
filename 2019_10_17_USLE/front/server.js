@@ -26,10 +26,9 @@ app.prepare().then(() => {
         saveUninitialized: false,
         secret: process.env.COOKIE_SECRET,
         cookie: {
-            httpOnly: true,
-            secure: false,
+        httpOnly: true,
+        secure: false,
         },
-        name: '1q2w3e', // 백엔드 쿠키와 같게
     }));
 
     server.get('*', (req, res) => {

@@ -7,6 +7,9 @@ import {
     SIGN_UP_REQUEST,
     SIGN_UP_SUCCESS,
     SIGN_UP_FAILURE,
+    LOAD_USER_REQUEST,
+    LOAD_USER_SUCCESS,
+    LOAD_USER_FAILURE,
 } from '../reducers/userReducer';
 
 
@@ -14,6 +17,7 @@ function* userSaga() {
     yield all([
         fork(watchLogIn), // fork는 비동기, call은 동기
         fork(watchSignUp),
+        fork(watchLoadUser),
     ]);
 }
 
@@ -61,8 +65,29 @@ function* logIn(action) {
     }
 }
 
-function* watchLogIn() {
+function* watchLogIn(userId) {
     yield takeEvery(LOG_IN_REQUEST, logIn);
+}
+
+function loadUserAPI() {
+    return axios.get('/user/', {
+        withCredentials: true,
+    })
+}
+function* loadUser(action){
+    try{
+        const result = yield call(loadUserAPI, action.data);
+        console.log(result);
+        yield put({
+            type: LOAD_USER_SUCCESS,
+            data: result.data,
+        })
+    } catch(e) {
+
+    }
+}
+function* watchLoadUser() {
+    yield takeEvery(LOAD_USER_REQUEST, loadUser);
 }
 
 
