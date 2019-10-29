@@ -30,6 +30,13 @@ const SignUp = () => {
     const { me, isSigningUp, signUpErrorReason } = useSelector(state => state.userReducer);
     const dispatch = useDispatch();
 
+    useEffect(() => {
+        // 로그인 성공
+        if(me){
+            Router.push('/');
+        }
+    }, [me]);
+
     const validate = values => {
         const errors = required(['nickname', 'email', 'password', 'checkPassword', 'term'], values);
         
