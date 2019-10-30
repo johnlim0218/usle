@@ -10,12 +10,15 @@ import {
     LOAD_USER_REQUEST,
     LOAD_USER_SUCCESS,
     LOAD_USER_FAILURE,
+    LOG_OUT_REQUEST,
+    LOG_OUT_SUCCESS,
 } from '../reducers/userReducer';
 
 
 function* userSaga() {
     yield all([
         fork(watchLogIn), // fork는 비동기, call은 동기
+        fork(watchLogOut),
         fork(watchSignUp),
         fork(watchLoadUser),
     ]);
@@ -65,8 +68,33 @@ function* logIn(action) {
     }
 }
 
-function* watchLogIn(userId) {
+function* watchLogIn() {
     yield takeEvery(LOG_IN_REQUEST, logIn);
+}
+
+function logOutAPI(){
+    return axios.post('/user/logout', {}, {
+        withCredentials: true,
+    })
+}
+
+function* logOut(){
+    try{
+        yield call(logOutAPI);
+        yield put({
+            type: LOG_OUT_SUCCESS,
+        })
+    } catch(e){
+        console.error(e);
+        yield put({
+            type: LOG_IN_FAILURE,
+            error: e,
+        })
+    }
+}
+
+function* watchLogOut(){
+    yield takeLatest(LOG_OUT_REQUEST, logOut);
 }
 
 function loadUserAPI() {

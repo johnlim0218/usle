@@ -79,12 +79,14 @@ const userReducer = (state = initialState, action) => {
             return {
                 ...state,
                 isLoggingOut: false,
+                me: null,
             }
         }
         case LOG_OUT_FAILURE: {
             return {
                 ...state,
                 isLoggingOut: false,
+                logInErrorReason: action.error.response.data,
             }
         }
 

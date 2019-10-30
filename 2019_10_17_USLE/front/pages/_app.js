@@ -1,6 +1,7 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import Head from 'next/head';
+import Router from'next/router';
 import withRedux from 'next-redux-wrapper';
 import withReduxSaga from 'next-redux-saga';
 import { Provider } from 'react-redux';
@@ -12,15 +13,23 @@ import { ThemeProvider } from 'styled-components';
 import rootReducer from '../reducers';
 import rootSaga from '../sagas';
 import AppLayout from '../layout/AppLayout';
+import AdminLayout from '../layout/AdminLayout';
 import theme from '../theme/theme';
 
 const Usle = ({ Component, store, pageProps }) => {
+    const [isAdmin, setIsAdmin] = useState(false);
+
     useEffect(() => {
         const jssStyles = document.querySelector('#jss-server-side');
         if(jssStyles){
             jssStyles.parentNode.removeChild(jssStyles);
         }
+        if(Router.route === '/admin/admin'){
+            setIsAdmin(true);
+        }
     }, []);
+    
+    
     return (
         <>
             <Provider store={store}>
@@ -32,9 +41,15 @@ const Usle = ({ Component, store, pageProps }) => {
                             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/antd/3.16.2/antd.css"/>
                             <link rel="stylesheet" href="css/image-gallery-no-icon.css"/>
                         </Head>
-                        <AppLayout> 
-                            <Component {...pageProps}/>
-                        </AppLayout>
+                        {!isAdmin ? 
+                            <AppLayout> 
+                                <Component {...pageProps}/>
+                            </AppLayout>
+                        : 
+                            <AdminLayout>
+                                 <Component {...pageProps}/>
+                            </AdminLayout>
+                        }
                     
                     </StylesProvider>
                 </ThemeProvider>
@@ -50,11 +65,13 @@ Usle.propTypes = {
 }
 
 Usle.getInitialProps = async (context) => {
-    const { ctx, Component } = context;
-
+    const { ctx, Component, router } = context;
+    console.log(context.router.route);
     let pageProps = {};
+    let pageUrl = '';
     if(Component.getInitialProps) {
         pageProps = await Component.getInitialProps(ctx) || {};
+        
     }
 
     return { pageProps };

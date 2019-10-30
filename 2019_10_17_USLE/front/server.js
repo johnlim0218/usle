@@ -30,6 +30,10 @@ app.prepare().then(() => {
         secure: false,
         },
     }));
+    
+    server.get('/admin', (req, res) => {
+        return app.render(req, res, '/admin')
+    })
 
     server.get('*', (req, res) => {
         return handle(req, res);

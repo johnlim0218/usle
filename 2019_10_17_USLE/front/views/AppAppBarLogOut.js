@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 import Link from 'next/link';
 import styled from 'styled-components';
@@ -10,18 +9,17 @@ import Button from "@material-ui/core/Button";
 import Search from "@material-ui/icons/Search";
 import Input from "@material-ui/core/Input";
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
-import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 
 import Breadcrumbs from '@material-ui/core/Breadcrumbs';
 import PersonIcon from '@material-ui/icons/Person';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 
 import { Field, Form, FormSpy } from 'react-final-form';
+import { email, required } from '../form/validation';
 import TextField from '../components/TextField';
 import RFTextField from '../form/RFTextField';
 
 import ModifiedAppBar from '../components/AppBar';
-import { LOG_OUT_REQUEST } from '../reducers/userReducer';
 
 const StyeldDivInfoBar = styled.div`
     display: flex;
@@ -33,23 +31,9 @@ const StyledBreadCrumbs = styled(Breadcrumbs)`
         padding-left: 100px;
     `};
 `;
-const StyledPersonIcon = styled(PersonIcon)`
-    width: 20px;
-    height: 20px; 
-`;
-const StyledFavoriteIcon = styled(FavoriteIcon)`
-    width: 20px;
-    height: 20px;
-`;
-const StyledShoppingCartIcon = styled(ShoppingCartIcon)`
-    width: 20px;
-    height: 20px;
-`;
-const StyledExitToAppIcon = styled(ExitToAppIcon)`
-    width: 20px;
-    height: 20px;
+const StyledATag = styled.a`
+    font-size: 15px;
 `
-
 // ul tag
 const StyledList = styled(List)`
     font-size: 14px;
@@ -109,20 +93,21 @@ const StyledButton = styled(Button)`
     `};
 `;
 
-const AppAppBar = () => {
+const AppAppBarLogOut = () => {
     const [sent, setSent] = useState(false);
-    const dispatch = useDispatch();
-    
-    const onClickLogOut = () => {
-        dispatch({
-            type: LOG_OUT_REQUEST,
-        })
-    }
-
+    const validate = (values) => {
+        const errors = required(['firstName', 'lastName', 'email', 'password'], values);
+        if (!errors.email) {
+          const emailError = email(values.email, values);
+          if (emailError) {
+            errors.email = email(values.email, values);
+          }
+        }
+        return errors;
+    };
     const handleSubmit = () => {
         setSent(true);
     };
-
 
     return(
         <ModifiedAppBar
@@ -130,14 +115,16 @@ const AppAppBar = () => {
                 <StyeldDivInfoBar>
                     <a>FREE ZERO WASTE + PLASTIC FREE SHIPPING ON ALL USA ORDERS OVER $25*</a>
                     <StyledBreadCrumbs aria-label="breadcrumb">
-                        <StyledPersonIcon/>
-                            MyAccount
-                        <StyledFavoriteIcon/>
-                            Favorite
-                        <StyledShoppingCartIcon/>
-                            ShoppingCart
-                        <StyledExitToAppIcon onClick={onClickLogOut}/>
-                            LogOut       
+                        <Link>
+                            <StyledATag href='/signin'>
+                                Log In
+                            </StyledATag>
+                        </Link>
+                        <Link>
+                            <StyledATag href='/signup'>
+                                Sign Up
+                            </StyledATag>
+                        </Link>
                     </StyledBreadCrumbs>
                 </StyeldDivInfoBar>
             }
@@ -192,4 +179,4 @@ const AppAppBar = () => {
     )
 }
 
-export default AppAppBar;
+export default AppAppBarLogOut;
