@@ -13,17 +13,22 @@ import Icon from '@material-ui/core/Icon';
 import Admin from '../../pages/admin/admin';
 
 const ConditionalWidth = css `
-    width: ${props => props.miniActive ? 80 : 260}px !important;
-`
+    width: ${props => props.miniActive ? 80 : 230}px !important;
+`;
+const TextColor = css`
+    color: black;
+`;
 
 const StyledDrawer = styled(Drawer)`
     .MuiDrawer-paper {
-        ${ConditionalWidth}    
+        ${ConditionalWidth}   
+        ${TextColor} 
         border: none;
         position: fixed;
         top: 0;
         bottom: 0;
         z-index: 1032;
+        overflow: hidden;
         transition-property: top, bottom, width;
         transition-duration: .2s, .2s, .35s;
         transition-timing-function: linear, linear, ease;
@@ -58,10 +63,8 @@ const StyledDrawer = styled(Drawer)`
             content: "";
             display: block;
             top: 0;
-        }
-        
+        }   
     }
-    
      
 `
 const StyledDivBrandLogo = styled.div`
@@ -99,12 +102,14 @@ const StyledList = styled(List)`
     margin-bottom: 0;
     list-style: none;
     position: unset;
+    color: inherit;
 `;
 
 const StyledATagNavigationLink = styled.a`
     position: relative;
     display: block;
     text-decoration: none;
+    color: inherit;
     :hover, :focus, :visited {
         color: white;
     }
@@ -131,6 +136,7 @@ const StyledListItem = styled(ListItem)`
     display: block;
     padding: 10px 15px;
     background-color: transparent;
+    color: inherit;
 `;
 
 const StyledListItemText = styled(ListItemText)`
@@ -155,7 +161,7 @@ const StyledListItemText = styled(ListItemText)`
 const StyledDivSidebarWrapper = styled.div`
     position: relative;
     height: calc(100vh - 75px);
-    overflow: auto;
+    overflow: hidden;
     z-index: 4;
     overflow-scrolling: touch;
     transition-property: top, bottom, width;

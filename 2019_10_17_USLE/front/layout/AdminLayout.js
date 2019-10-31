@@ -21,7 +21,7 @@ const StyledDivWrapper = styled.div`
 `;
 const StyledDivMainPanel = styled.div`
     ${breakpoint('md')`
-        width : ${props => props.miniActive ? `calc(100% - 80px)` : `calc(100% - 260px)`}
+        width : ${props => props.miniActive ? `calc(100% - 80px)` : `calc(100% - 230px)`}
         
     `};
     height: 1000px;
