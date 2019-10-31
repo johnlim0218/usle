@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 
 import styled, {css} from 'styled-components';
@@ -73,7 +73,9 @@ const StyledButtonTitle = styled(Button)`
 
 const AdminNavBar = (props) => {
     const{ routes, handleDrawerToggle, miniActive, sidebarMinimize, ...others } = props; 
-    
+    useEffect(() => {
+        console.log(miniActive);
+    }, [miniActive]);
     return (
         <StyledAppBar>
             <StyledToolbar>

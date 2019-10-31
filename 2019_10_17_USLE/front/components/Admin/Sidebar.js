@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import Link from 'next/link'
 import styled, { css } from 'styled-components';
@@ -13,12 +13,17 @@ import Icon from '@material-ui/core/Icon';
 import Admin from '../../pages/admin/admin';
 
 const StyledDrawer = styled(Drawer)`
+    
     .MuiDrawer-paper {
+        width: ${props => props.miniActive ? 80 : 260}px !important;
         border: none;
         position: fixed;
         top: 0;
         bottom: 0;
-        z-index: 1;
+        z-index: 1032;
+        transition-property: top, bottom, width;
+        transition-duration: .2s, .2s, .35s;
+        transition-timing-function: linear, linear, ease;
         
         ${breakpoint('md')`
             width: 260px;
@@ -39,8 +44,21 @@ const StyledDrawer = styled(Drawer)`
             text-align: left;
             padding-right: 0px;
             padding-left: 0;
+            transform: translate3d(260px, 0 0);
+        }
+        
+        :before, :after {
+            position: absolute;
+            z-index: 3;
+            width:100%
+            height: 100%;
+            content: "";
+            display: block;
+            top: 0;
         }
     }
+    
+    
 `
 const StyledDivBrandLogo = styled.div`
     position: relative;
@@ -124,6 +142,11 @@ const StyledDivSidebarWrapper = styled.div`
     width: 260px;
     z-index: 4;
     overflow-scrolling: touch;
+    transition-property: top, bottom, width;
+    transition-duration: .2s, .2s, .35s;
+    transition-timing-function: linear, linear, ease;
+    color: inherit;
+    padding-bottom: 30p;
 `;
 
 const StyledDivBackground = styled.div`
@@ -153,6 +176,14 @@ const Sidebar = (props) => {
     const { routes, open, handleDrawerToggle, ...others } = props;
     const [miniActive, setMiniActive] = useState(true);
     
+    const onMouseOverMiniActive = useCallback(() => {
+        setMiniActive(false);
+    }, [miniActive]);
+
+    const onMouseOutMiniActive = useCallback(() => {
+        setMiniActive(true);
+    }, [miniActive]);
+
     const Brand = () => {
         return(
             <StyledDivBrandLogo>
@@ -198,11 +229,12 @@ const Sidebar = (props) => {
     <div>
         <Hidden smDown implementation='css'>
             <StyledDrawer
-                onMouseOver
-                onMouseOut
+                onMouseOver={onMouseOverMiniActive}
+                onMouseOut={onMouseOutMiniActive}
                 anchor="left"
                 variant="permanent"
                 open
+                miniActive={miniActive && props.miniActive ? true : false}
             >
                 <Brand/>
                 <StyledDivSidebarWrapper>

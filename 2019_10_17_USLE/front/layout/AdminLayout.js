@@ -57,6 +57,8 @@ const AdminLayout = (props) => {
                 routes={AdminRoutes}
                 handleDrawerToggle={handleDrawerToggle}
                 open={mobileOpen}
+                miniActive={miniActive}
+                {...others}
             />
             <StyledDivMainPanel 
                 ref={mainPanel}
