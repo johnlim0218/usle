@@ -1,4 +1,5 @@
 import React, {useState, useCallback, useRef} from 'react';
+import PropTypes from 'prop-types';
 import PerfectScrollbar from 'perfect-scrollbar';
 import styled from 'styled-components';
 import breakpoint from 'styled-components-breakpoint';
@@ -11,11 +12,17 @@ const StyledDivWrapper = styled.div`
     position: relative;
     top: 0;
     height: 100vh;
+    :after {
+        display: table;
+        clear: both;
+        content: "";
+    }
     
 `;
 const StyledDivMainPanel = styled.div`
     ${breakpoint('md')`
-        width: calc(100% - 260px);
+        width : ${props => props.miniActive ? `calc(100% - 80px)` : `calc(100% - 260px)`}
+        
     `};
     height: 1000px;
     overflow: auto;
@@ -60,7 +67,8 @@ const AdminLayout = (props) => {
                 miniActive={miniActive}
                 {...others}
             />
-            <StyledDivMainPanel 
+            <StyledDivMainPanel
+                miniActive={miniActive ? true : false} 
                 ref={mainPanel}
             >
                 <Navbar
@@ -76,6 +84,10 @@ const AdminLayout = (props) => {
             {children}
         </StyledDivWrapper>
     )
+}
+
+AdminLayout.proptype = {
+    children: PropTypes.node,
 }
 
 export default AdminLayout;

@@ -30,8 +30,8 @@ const StyledAppBar = styled(AppBar)`
     display: block;
 `
 const StyledToolbar = styled(Toolbar)`
-    ${props => props.theme.container}
-    min-heignt: 50px;
+    ${props => props.theme.containerFluid}
+    min-height: 50px;
 `
 const StyledDivSidebarMinimize = styled.div`
     float: left;
@@ -73,9 +73,7 @@ const StyledButtonTitle = styled(Button)`
 
 const AdminNavBar = (props) => {
     const{ routes, handleDrawerToggle, miniActive, sidebarMinimize, ...others } = props; 
-    useEffect(() => {
-        console.log(miniActive);
-    }, [miniActive]);
+    
     return (
         <StyledAppBar>
             <StyledToolbar>

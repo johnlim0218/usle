@@ -49,7 +49,14 @@ const conatinerFluid = {
   paddingLeft: 15,
   marginRight: 'auto',
   marginLeft: 'auto',
-  width: '100%'
+  width: '100%',
+  "&:before, &:after": {
+    display: "table",
+    content: '""'
+  },
+  "&:after" : {
+    clear: "both"
+  }
 };
 const container = {
   ...conatinerFluid,

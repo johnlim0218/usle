@@ -12,10 +12,13 @@ import Icon from '@material-ui/core/Icon';
 
 import Admin from '../../pages/admin/admin';
 
+const ConditionalWidth = css `
+    width: ${props => props.miniActive ? 80 : 260}px !important;
+`
+
 const StyledDrawer = styled(Drawer)`
-    
     .MuiDrawer-paper {
-        width: ${props => props.miniActive ? 80 : 260}px !important;
+        ${ConditionalWidth}    
         border: none;
         position: fixed;
         top: 0;
@@ -56,9 +59,10 @@ const StyledDrawer = styled(Drawer)`
             display: block;
             top: 0;
         }
+        
     }
     
-    
+     
 `
 const StyledDivBrandLogo = styled.div`
     position: relative;
@@ -130,23 +134,36 @@ const StyledListItem = styled(ListItem)`
 `;
 
 const StyledListItemText = styled(ListItemText)`
+    color: inherit;
     margin: 0;
     line-height: 30px;
     font-size: 14px;
+    transform: translate3d(0px, 0, 0);
+    opacity: 1;
+    transition: transform 300ms ease 0s, opacity 300ms ease 0s;
+    position: relative;
+    display: block;
+    height: auto;
+    white-space: nowrap;
+    padding: 0 16px !important;
+    ${props => props.miniActive && `
+        transform: translate3d(-25px, 0, 0);
+        opacity: 0;
+    `}
 `;
 
 const StyledDivSidebarWrapper = styled.div`
     position: relative;
     height: calc(100vh - 75px);
     overflow: auto;
-    width: 260px;
     z-index: 4;
     overflow-scrolling: touch;
     transition-property: top, bottom, width;
     transition-duration: .2s, .2s, .35s;
     transition-timing-function: linear, linear, ease;
     color: inherit;
-    padding-bottom: 30p;
+    padding-bottom: 30px;
+    
 `;
 
 const StyledDivBackground = styled.div`
@@ -175,6 +192,7 @@ const StyledDivBackground = styled.div`
 const Sidebar = (props) => {
     const { routes, open, handleDrawerToggle, ...others } = props;
     const [miniActive, setMiniActive] = useState(true);
+    // const [navigator, setPlatform] = useState(navigator);
     
     const onMouseOverMiniActive = useCallback(() => {
         setMiniActive(false);
@@ -214,6 +232,7 @@ const Sidebar = (props) => {
                                     <StyledListItemText
                                         primary={prop.name}
                                         disableTypography={true}
+                                        miniActive={miniActive && props.miniActive ? true : false}
                                     />
                                 </StyledListItem>
                             </StyledATagNavigationLink>
@@ -237,7 +256,9 @@ const Sidebar = (props) => {
                 miniActive={miniActive && props.miniActive ? true : false}
             >
                 <Brand/>
-                <StyledDivSidebarWrapper>
+                <StyledDivSidebarWrapper
+                     {...others}
+                >
                     <Links/>
                 </StyledDivSidebarWrapper>
                 <StyledDivBackground/>
