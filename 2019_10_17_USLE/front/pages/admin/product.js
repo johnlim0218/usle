@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { Editor, EditorState, RichUtils, convertToRaw, convertFromRaw } from 'draft-js';
@@ -149,6 +150,14 @@ const Product = () => {
                 placeholder="Tell a story"
             />
         </StyledDivRichEditorRoot>
+=======
+import React from 'react';
+import styled from 'styled-components';
+
+const Product = () => {
+    return(
+        <div></div>
+>>>>>>> 8330f44b6a31eaab125082050e043f6e8658aa36
     )
 
 }
