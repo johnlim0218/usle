@@ -24,8 +24,6 @@ const MyEditor = () => {
     const _onBoldClick = () => {
         onChange(RichUtils.toggleInlineStyle(editorState, 'BOLD'));
     }
-
-   
     
     const [editorStateB, setEditorStateB] = useState(
         EditorState.createEmpty()

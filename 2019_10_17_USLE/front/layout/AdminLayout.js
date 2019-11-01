@@ -36,6 +36,15 @@ const StyledDivMainPanel = styled.div`
     transition-timing-function: linear, linear, ease;
 `;
 
+const StyledDivContent = styled.div`
+    margin-top: 70px;
+    padding: 30px 15px;
+    min-height: calc(100vh - 123px);
+`;
+const StyledDivContainer = styled.div`
+    ${props => props.theme.conatinerFluid}
+`;
+
 const AdminLayout = (props) => {
     const { children, ...others } = props;
     const [mobileOpen, setMobileOpen] = useState(false);
@@ -77,11 +86,14 @@ const AdminLayout = (props) => {
                     miniActive={miniActive}
                     handleDrawerToggle={handleDrawerToggle}
                     {...others}
-                >
-
-                </Navbar> 
+                />
+                <StyledDivContent>
+                    <StyledDivContainer>
+                        {children}
+                    </StyledDivContainer>     
+                </StyledDivContent>
              </StyledDivMainPanel>
-            {children}
+            
         </StyledDivWrapper>
     )
 }

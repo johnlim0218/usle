@@ -2,6 +2,7 @@ import Dashboard from "@material-ui/icons/Dashboard";
 import Person from "@material-ui/icons/Person";
 import LibraryBooks from "@material-ui/icons/LibraryBooks";
 import Notifications from "@material-ui/icons/Notifications";
+import CreateIcon from "@material-ui/icons/Create";
 
 const AdminRoutes = [
   {
@@ -9,6 +10,13 @@ const AdminRoutes = [
     name: "Dashboard",
     icon: Dashboard,
     // component: DashboardPage,
+    layout: "/admin"
+  },
+  {
+    path: "/admin/product",
+    name: "Product",
+    icon: CreateIcon,
+    // component: UserProfile,
     layout: "/admin"
   },
   {
