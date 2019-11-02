@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { Editor, EditorState, RichUtils, convertToRaw, convertFromRaw } from 'draft-js';
@@ -24,6 +23,8 @@ const StyledSpanStyledButton = styled.span`
     display: inline-block;
 `;
 
+
+
 const BLOCK_TYPES = [
     {label: 'H1', style: 'header-one'},
     {label: 'H2', style: 'header-two'},
@@ -35,13 +36,19 @@ const BLOCK_TYPES = [
     {label: 'UL', style: 'unordered-list-item'},
     {label: 'OL', style: 'ordered-list-item'},
     {label: 'Code Block', style: 'code-block'},
-  ];
+];
+
+const INLINE_STYLES = [
+    {label: 'Bold', style: 'BOLD'},
+    {label: 'Italic', style: 'ITALIC'},
+    {label: 'Underline', style: 'UNDERLINE'},
+    {label: 'Monospace', style: 'CODE'},
+];
 
 const Product = () => {
     const [editorState, seteditorState] = useState(
         EditorState.createEmpty()
     );
-    
     const onChange = (editorState) => {
         seteditorState(editorState);
     }
@@ -55,9 +62,8 @@ const Product = () => {
         _toggleBlockType(blockType);
     }
     const toggleInlineStyle = (inlineStyle) => {
-        _toggleInlineStyled(inlineStyle);
+        _toggleInlineStyle(inlineStyle);
     }
-
     const _handleKeyCommand = (command) => {
         const newState = RichUtils.handleKeyCommand(editorState, command);
         if(newState){
@@ -66,7 +72,6 @@ const Product = () => {
         }
         return false;
     }
-
     const _onTab = (e) => {
         const maxDepth = 4;
         onChange(
@@ -77,7 +82,6 @@ const Product = () => {
             )
         );
     }
-
     const _toggleBlockType = (blockType) => {
         onChange(
             RichUtils.toggleBlockType(
@@ -86,7 +90,6 @@ const Product = () => {
             )
         )
     }
-
     const _toggleInlineStyle = (inlineStyle) => {
         onChange(
             RichUtils.toggleInlineStyle(
@@ -95,8 +98,6 @@ const Product = () => {
             )
         )
     }
-
-
     const StyleButton = ({onToggle, style, active, label, ...others}) => {
         
         const onMouseDownToToggle = (e) => {
@@ -112,8 +113,7 @@ const Product = () => {
             </StyledSpanStyledButton>
         )
     }
-
-    const BlockStyleControls = ({editorState, onToggle, ...others}) => {
+    const BlockStyleControls = ({ editorState, onToggle, ...others }) => {
         const selection = editorState.getSelection();
         const blockType = editorState
             .getCurrentContent()
@@ -136,11 +136,35 @@ const Product = () => {
         )    
     }
 
+    const InlineStyleControls = ({ editorState, onToggle }) => {
+        let currentStyle = editorState.getCurrentInlineStyle();
+        return(
+            <StyledDivRichEditorContols>
+                {INLINE_STYLES.map(type => {
+                    return(
+                        <StyleButton
+                            key={type.label}
+                            active={currentStyle.has(type.style)}
+                            label={type.label}
+                            onToggle={onToggle}
+                            style={type.style}
+                        />
+                    )
+                })}
+            </StyledDivRichEditorContols>
+
+        )
+    }
+
     return(
         <StyledDivRichEditorRoot>
             <BlockStyleControls
                 editorState={editorState}
                 onToggle={toggleBlockType}
+            />
+            <InlineStyleControls
+                editorState={editorState}
+                onToggle={toggleInlineStyle}
             />
             <Editor
                 editorState={editorState}
@@ -150,16 +174,7 @@ const Product = () => {
                 placeholder="Tell a story"
             />
         </StyledDivRichEditorRoot>
-=======
-import React from 'react';
-import styled from 'styled-components';
-
-const Product = () => {
-    return(
-        <div></div>
->>>>>>> 8330f44b6a31eaab125082050e043f6e8658aa36
     )
-
 }
 
 export default Product;

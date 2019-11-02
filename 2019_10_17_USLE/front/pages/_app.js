@@ -24,10 +24,7 @@ const Usle = ({ Component, store, pageProps }) => {
         if(jssStyles){
             jssStyles.parentNode.removeChild(jssStyles);
         }
-<<<<<<< HEAD
-=======
 
->>>>>>> 8330f44b6a31eaab125082050e043f6e8658aa36
         if(Router.route.match(/\/[a-z]+\//gi)[0] === '/admin/'){
             setIsAdmin(true);
         }

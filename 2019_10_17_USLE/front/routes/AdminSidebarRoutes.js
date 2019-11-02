@@ -3,7 +3,6 @@ import CreateIcon from '@material-ui/icons/Create';
 import Person from "@material-ui/icons/Person";
 import LibraryBooks from "@material-ui/icons/LibraryBooks";
 import Notifications from "@material-ui/icons/Notifications";
-import CreateIcon from "@material-ui/icons/Create";
 
 const AdminRoutes = [
   {
