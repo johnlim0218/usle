@@ -16,14 +16,17 @@ function* adminCategorySaga() {
     ])
 }
 
-function categoryPostAPI(){
-    return axios.post('/category/get', );
+function categoryPostAPI(newCategoryData){
+    return axios.post('/category/add', newCategoryData, {
+        withCredentials: true
+    });
 }
 function* categoryPost(action){
     try{
-        yield call(categoryPostAPI, action.data)
+        const result = yield call(categoryPostAPI, action.data);
         yield put({
             type: NEW_CATEGORY_POST_SUCCESS,
+            data: result.data,
         })
     }catch(e){
         yield put({

@@ -1,7 +1,7 @@
 const initialState = {
     newCategory: null,
-    isPostingNewCategory: false, // 새 게시물 등록 시도
-    postNewCategoryErrorReason: '', // 새 게시물 실패 이유
+    isPostingNewCategory: false, // 새 카테고리 등록 시도
+    postNewCategoryErrorReason: '', // 새 카테고리 등록 실패 이유
     categories: null,
     isLoadingCategories: false,
     loadCategoriesErrorReason: '',
@@ -27,6 +27,7 @@ const initialState = {
               return{
                   ...state,
                   isPostingNewCategory: false,
+                  categories:[action.data, ...state.categories],
               }
           }
           case NEW_CATEGORY_POST_FAILURE: {
@@ -44,7 +45,6 @@ const initialState = {
             }   
           }
           case CATEGORIES_LOAD_SUCCESS: {
-              console.log(action.data);
             return{
                 ...state,
                 isLoadingCategories: false,
