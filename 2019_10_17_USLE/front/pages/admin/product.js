@@ -1,6 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
+import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import { Editor, EditorState, RichUtils, convertToRaw, convertFromRaw } from 'draft-js';
+import { NEW_PRODUCT_POST_REQUEST } from '../../reducers/admin/adminProductReducer';
 
 const StyledDivRichEditorRoot = styled.div`
     background: #fff;
@@ -23,7 +25,9 @@ const StyledSpanStyledButton = styled.span`
     display: inline-block;
 `;
 
-
+const StyledButtonSubmit = styled.button`
+    margin-top: 50px;
+`;
 
 const BLOCK_TYPES = [
     {label: 'H1', style: 'header-one'},
@@ -49,6 +53,9 @@ const Product = () => {
     const [editorState, seteditorState] = useState(
         EditorState.createEmpty()
     );
+
+    const dispatch = useDispatch();
+
     const onChange = (editorState) => {
         seteditorState(editorState);
     }
@@ -98,6 +105,15 @@ const Product = () => {
             )
         )
     }
+
+    const onClickSubmit = useCallback((e) => {
+        dispatch({
+            type: NEW_PRODUCT_POST_REQUEST,
+            data: JSON.stringify(convertToRaw(editorState.getCurrentContent())),
+        });
+
+    }, [editorState]);
+
     const StyleButton = ({onToggle, style, active, label, ...others}) => {
         
         const onMouseDownToToggle = (e) => {
@@ -173,6 +189,7 @@ const Product = () => {
                 onTab={onTab}
                 placeholder="Tell a story"
             />
+            <StyledButtonSubmit type="submit" onClick={onClickSubmit}>SUBMIT</StyledButtonSubmit>
         </StyledDivRichEditorRoot>
     )
 }

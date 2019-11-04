@@ -6,7 +6,7 @@ import Add from '@material-ui/icons/Add';
 import Close from '@material-ui/icons/Close';
 import Tooltip from '../components/Tooltip';
 
-import Typography from '../components/Typography';
+import Typography from '../components/Typography'
 import { StyledDivMain, StyledDivContainer } from '../pages/product';
 
 import Card from '../components/Card/Card';

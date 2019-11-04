@@ -9,7 +9,7 @@ function* adminProductSaga() {
 }
 
 function productPostAPI(newProductData){
-    return axios.post('/admin/newproduct', newProductData);
+    return axios.post('/product/add', newProductData);
 }
 function* productPost(action){
     try{

@@ -3,6 +3,8 @@ import CreateIcon from '@material-ui/icons/Create';
 import Person from "@material-ui/icons/Person";
 import LibraryBooks from "@material-ui/icons/LibraryBooks";
 import Notifications from "@material-ui/icons/Notifications";
+import BusinessIcon from '@material-ui/icons/Business';
+import CategoryIcon from '@material-ui/icons/Category';
 
 const AdminRoutes = [
   {
@@ -11,6 +13,18 @@ const AdminRoutes = [
     icon: Dashboard,
     // component: DashboardPage,
     layout: "/admin"
+  },
+  {
+    path: "/admin/category",
+    name: "Category",
+    icon: CategoryIcon,
+    layout: "/admin",
+  },
+  {
+    path: "/admin/brand",
+    name: "Brand",
+    icon: BusinessIcon,
+    layout: "/admin",
   },
   {
     path: "/admin/product",
