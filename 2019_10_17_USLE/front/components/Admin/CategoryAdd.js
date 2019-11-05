@@ -24,7 +24,7 @@ import { NEW_CATEGORY_POST_REQUEST } from '../../reducers/admin/adminCategoryRed
 const StyledForm = styled.form`
     padding:30px;
 `;
-const AdminDialog = (props) => {
+const CategoryAdd = (props) => {
     const { open, close, ...others } = props;
     const { isPostingNewCategory, postNewCategoryErrorReason } = useSelector(state => state.adminCategoryReducer);
     const dispatch = useDispatch();
@@ -109,4 +109,4 @@ const AdminDialog = (props) => {
     )
 }
 
-export default AdminDialog;
+export default CategoryAdd;

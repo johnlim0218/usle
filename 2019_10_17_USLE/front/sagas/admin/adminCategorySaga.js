@@ -6,13 +6,17 @@ import {
         NEW_CATEGORY_POST_FAILURE,
         CATEGORIES_LOAD_REQUEST, 
         CATEGORIES_LOAD_SUCCESS, 
-        CATEGORIES_LOAD_FAILURE,  
+        CATEGORIES_LOAD_FAILURE,
+        CATEGORIES_DELETE_REQUEST,
+        CATEGORIES_DELETE_FAILURE,
+        CATEGORIES_DELETE_SUCCESS,  
     } from '../../reducers/admin/adminCategoryReducer';
 
 function* adminCategorySaga() {
     yield all([
         fork(watchCategoryPost),
         fork(watchCategoryGet),
+        fork(watchCategoryDelete),
     ])
 }
 
@@ -47,7 +51,6 @@ function categoriesLoadAPI(){
 function* categoriesLoad(action){
     try{
         const result = yield call(categoriesLoadAPI, action.data)
-        console.log(result);
         yield put({
             type: CATEGORIES_LOAD_SUCCESS,
             data: result.data,
@@ -60,7 +63,29 @@ function* categoriesLoad(action){
     }
 }
 function* watchCategoryGet(){
-    yield takeLatest(CATEGORIES_LOAD_REQUEST, categoriesLoad)
+    yield takeLatest(CATEGORIES_LOAD_REQUEST, categoriesLoad);
 }
 
+function categoryDeleteAPI(categoryId){
+    console.log("categoryId");
+    console.log(categoryId);
+    return axios.delete('/category/delete', categoryId, {
+        withCredentials: true,
+    })
+}
+function* categoryDelete(action){
+    try{
+        yield call(categoryDeleteAPI, action.data);
+        yield put({
+            type: CATEGORIES_DELETE_SUCCESS,
+        })
+    }catch(e){
+        yield put({
+            type: CATEGORIES_DELETE_FAILURE,
+        })
+    }
+}
+function* watchCategoryDelete(){
+    yield takeLatest(CATEGORIES_DELETE_REQUEST, categoryDelete);
+}
 export default adminCategorySaga;

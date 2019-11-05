@@ -15,6 +15,10 @@ const initialState = {
   export const CATEGORIES_LOAD_SUCCESS = "CATEGORIRES_LOAD_SUCCESS";
   export const CATEGORIES_LOAD_FAILURE = "CATEGORIRES_LOAD_FAILURE";
   
+  export const CATEGORIES_DELETE_REQUEST = "CATEGORIRES_DELETE_REQUEST";
+  export const CATEGORIES_DELETE_SUCCESS = "CATEGORIRES_DELETE_SUCCESS";
+  export const CATEGORIES_DELETE_FAILURE = "CATEGORIRES_DELETE_FAILURE";
+
   const adminCategoryReducer = (state = initialState, action) => {
       switch(action.type){
           case NEW_CATEGORY_POST_REQUEST:{
@@ -57,6 +61,22 @@ const initialState = {
                 isLoadingCategories: false,
                 loadCategoriesErrorReason: action.error,
             }   
+          }
+          
+          case CATEGORIES_DELETE_REQUEST: {
+              return{
+                  ...state,
+              }
+          }
+          case CATEGORIES_DELETE_SUCCESS: {
+              return{
+                  ...state,
+              }
+          }
+          case CATEGORIES_DELETE_FAILURE: {
+              return{
+                  ...state,
+              }
           }
   
           default:

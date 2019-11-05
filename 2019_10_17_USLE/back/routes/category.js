@@ -6,7 +6,7 @@ const db = require('../models');
 router.get('/get', async(req, res, next) => {
     try{
         const categories = await db.ProductCategory.findAll({
-            
+            order: [['id', 'DESC']],
         });
         
         return res.json(categories);
