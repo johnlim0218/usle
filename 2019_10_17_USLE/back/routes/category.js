@@ -17,7 +17,6 @@ router.get('/get', async(req, res, next) => {
 });
 
 router.post('/add', async(req, res, next) => {
-    console.log(req.body);
     try{
         const category = await db.ProductCategory.findOne({
             where: {
@@ -40,5 +39,27 @@ router.post('/add', async(req, res, next) => {
         return next(e);
     }
 });
+
+router.delete('/delete/:id', async(req, res, next) => {
+    try{
+        const targetCategory = await db.ProductCategory.findOne({
+            where: {
+                id: req.params.id,
+            }
+        })
+        if(!targetCategory) {
+            return res.status(403).send('삭제되었거나 등록되지 않은 카테고리입니다.')
+        }
+        await db.ProductCategory.destroy({ 
+            where: {
+                id: req.params.id,
+            }
+        })
+        return res.send(req.params.id);
+    } catch(e) {
+        console.error(e);
+        return next(e);
+    }
+})
 
 module.exports = router;

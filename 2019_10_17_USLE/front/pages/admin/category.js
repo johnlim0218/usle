@@ -44,7 +44,7 @@ const Category = () => {
         e.preventDefault();
         setDeleteTarget(id);
         setDeleteOpen(!deleteOpen);
-        
+    
     }, [deleteTarget, deleteOpen]);
 
     const onClickDeleteConfirm = useCallback((e) => {

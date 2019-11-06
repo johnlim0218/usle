@@ -69,8 +69,11 @@ const initialState = {
               }
           }
           case CATEGORIES_DELETE_SUCCESS: {
+              const filteredCategories = state.categories.filter(v => v.id !== action.data);
+              const categories = [...filteredCategories];
               return{
                   ...state,
+                  categories,
               }
           }
           case CATEGORIES_DELETE_FAILURE: {

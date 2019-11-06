@@ -72,7 +72,6 @@ Usle.getInitialProps = async (context) => {
     let pageUrl = '';
     if(Component.getInitialProps) {
         pageProps = await Component.getInitialProps(ctx) || {};
-        
     }
 
     return { pageProps };

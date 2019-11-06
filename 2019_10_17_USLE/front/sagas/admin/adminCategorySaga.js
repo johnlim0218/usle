@@ -67,9 +67,7 @@ function* watchCategoryGet(){
 }
 
 function categoryDeleteAPI(categoryId){
-    console.log("categoryId");
-    console.log(categoryId);
-    return axios.delete('/category/delete', categoryId, {
+    return axios.delete(`/category/delete/${categoryId}`, {
         withCredentials: true,
     })
 }
@@ -78,6 +76,7 @@ function* categoryDelete(action){
         yield call(categoryDeleteAPI, action.data);
         yield put({
             type: CATEGORIES_DELETE_SUCCESS,
+            data: action.data,
         })
     }catch(e){
         yield put({
