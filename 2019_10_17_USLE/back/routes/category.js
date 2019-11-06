@@ -3,13 +3,25 @@ const router = express.Router();
 
 const db = require('../models');
 
-router.get('/get', async(req, res, next) => {
+router.get('/get/:type', async(req, res, next) => {
+    console.log("test");
+    console.log(req.params.type);
     try{
-        const categories = await db.ProductCategory.findAll({
-            order: [['id', 'DESC']],
-        });
+
+        if(req.params.type === 'name'){
+            const categories = await db.ProductCategory.findAll({
+                attributes: ['id', 'categoryName'],
+                order: [['id', 'DESC']],
+            });
+            return res.json(categories);
+
+        } else if(req.params.type === 'all') {
+            const categories = await db.ProductCategory.findAll({
+                order: [['id', 'DESC']],
+            });
+            return res.json(categories);
+        }
         
-        return res.json(categories);
     } catch(e) {
         console.error(e);
         return next(e);

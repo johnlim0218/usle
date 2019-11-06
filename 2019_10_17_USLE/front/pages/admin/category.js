@@ -31,6 +31,9 @@ const Category = () => {
     useEffect(() => {
         dispatch({
             type: CATEGORIES_LOAD_REQUEST,
+            data: {
+                requestType: "all",
+            }
         })
         
     }, []);

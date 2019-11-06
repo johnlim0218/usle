@@ -173,7 +173,7 @@ const StyledTypographyPrice = styled(Typography)`
     color: #3c4858;
 `
 
-const StyledSelect = styled(Select)`
+export const StyledSelect = styled(Select)`
         padding: 12px 0 7px;
         font-size: .75rem;
         font-weight: 400;
@@ -191,8 +191,10 @@ const StyledSelect = styled(Select)`
         & div + input + svg {
           transition: all 300ms linear;
         };
+        
 `;
-const StyledMenuItem = styled(MenuItem)`
+
+export const StyledMenuItem = styled(MenuItem)`
         &.MuiMenuItem-root{
           font-size: 13px;
           padding: 10px 20px;

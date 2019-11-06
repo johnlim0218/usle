@@ -37,7 +37,6 @@ router.post('/login', unnecessarilyLoggedIn, (req, res, next) => {
                     attributes: ['id', 'email', 'nickname'],
                 });
 
-                console.log(fullUser);
                 return res.json(fullUser);
 
             } catch(e) {

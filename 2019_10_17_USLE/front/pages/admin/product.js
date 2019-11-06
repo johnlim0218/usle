@@ -1,8 +1,25 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { Editor, EditorState, RichUtils, convertToRaw, convertFromRaw } from 'draft-js';
+import Select from '@material-ui/core/Select';
+import MenuItem from "@material-ui/core/MenuItem";
+import InputLabel from '@material-ui/core/InputLabel';
+import FormControl from '@material-ui/core/FormControl'
+
 import { NEW_PRODUCT_POST_REQUEST } from '../../reducers/admin/adminProductReducer';
+import { StyledMenuItem, StyledSelect } from '../product';
+import { BRANDS_LOAD_REQUEST } from '../../reducers/admin/adminBrandReducer';
+import { CATEGORIES_LOAD_REQUEST } from '../../reducers/admin/adminCategoryReducer';
+
+const StyledFormControl = styled(FormControl)`
+    margin: ${props => props.theme.spacing(2)}px;
+    min-width: 120px;
+`;
+
+const StyledStyledSelect = styled(StyledSelect)`
+    padding: 0;
+`
 
 const StyledDivRichEditorRoot = styled.div`
     background: #fff;
@@ -50,11 +67,35 @@ const INLINE_STYLES = [
 ];
 
 const Product = () => {
+    const [category, setCategory] = useState('');
+    const [brand, setBrand] = useState('');
     const [editorState, seteditorState] = useState(
         EditorState.createEmpty()
     );
-
+    const { brands } = useSelector((state) => state.adminBrandReducer);
+    const { categories } = useSelector((state) => state.adminCategoryReducer);
     const dispatch = useDispatch();
+
+    useEffect(() => {
+        dispatch({
+            type: CATEGORIES_LOAD_REQUEST,
+            data: {
+                requestType: "name",
+            }
+        })
+        // dispatch({
+        //     type: BRANDS_LOAD_REQUEST
+        //     data: "name"
+        // })
+    }, []);
+
+    const onChangeCategory = useCallback((e) => {
+        setCategory(e.target.value);
+    }, [category]);
+
+    const onChangeBrand = useCallback((e) => {
+        setBrand(e.target.value);
+    }, [brand]);
 
     const onChange = (editorState) => {
         seteditorState(editorState);
@@ -168,11 +209,56 @@ const Product = () => {
                     )
                 })}
             </StyledDivRichEditorContols>
-
         )
     }
 
     return(
+        <>
+
+        <StyledFormControl>
+            <InputLabel id="category-select-label">CATEGORY</InputLabel>
+            <StyledStyledSelect
+                value={category}
+                onChange={onChangeCategory}
+                labelId='category-select-label'
+                inputProps={{
+                    name: 'categorySelect',
+                    id: 'category-select',
+                }}
+            >
+                {categories && categories.map((value, index) => {
+                    return(
+                    <StyledMenuItem
+                        value={value.id}>
+                            {value.categoryName}
+                    </StyledMenuItem>
+                    )
+                })}
+            </StyledStyledSelect>
+        </StyledFormControl>
+        
+        <StyledFormControl>
+            <InputLabel id="brand-select-label">BRAND</InputLabel>    
+            <StyledStyledSelect
+                value={brand}
+                onChange={onChangeBrand}
+                labelId="brand-select-label"
+                inputProps={{
+                    name: 'brandSelect',
+                    id: 'brand-select'
+                }}
+            >
+                <StyledMenuItem
+                    value="0">
+                        USLE
+                </StyledMenuItem>
+                <StyledMenuItem
+                    value="1">
+                        JOHN's CLOSET
+                </StyledMenuItem>
+            </StyledStyledSelect>
+        </StyledFormControl>
+
         <StyledDivRichEditorRoot>
             <BlockStyleControls
                 editorState={editorState}
@@ -191,6 +277,7 @@ const Product = () => {
             />
             <StyledButtonSubmit type="submit" onClick={onClickSubmit}>SUBMIT</StyledButtonSubmit>
         </StyledDivRichEditorRoot>
+        </>
     )
 }
 

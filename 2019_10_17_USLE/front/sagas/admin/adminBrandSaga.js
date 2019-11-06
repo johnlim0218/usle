@@ -18,6 +18,29 @@ function* adminBrandSaga() {
     ])
 }
 
+function brandsLoadAPI(){
+    return axios.get('/brand/get', {
+        withCredentials: true,
+    })
+}
+function* brandsLoad(action){
+    try{
+        const result = yield call(brandsLoadAPI, action.data);
+        yield put({
+            type: BRANDS_LOAD_SUCCESS,
+            data: result.data,
+        })
+    } catch(e) {
+        yield put({
+            type: BRANDS_LOAD_FAILURE,
+            error: e,
+        })
+    }
+}
+function* watchBrandsLoad(){
+    yield takeLatest(BRANDS_LOAD_REQUEST, brandsLoad)
+}
+
 function brandPostAPI(newBrandData){
     return axios.post('/brand/add', newBrandData, {
         withCredentials: true,
@@ -41,28 +64,6 @@ function* watchBrandPost(){
     yield takeLatest(NEW_BRAND_POST_REQUEST, brandPost);
 }
 
-function brandsLoadAPI(){
-    return axios.get('/brand/get', {
-        withCredentials: true,
-    })
-}
-function* brandsLoad(action){
-    try{
-        const result = yield call(brandsLoadAPI, action.data);
-        yield put({
-            type: BRANDS_LOAD_SUCCESS,
-            data: result.data,
-        })
-    } catch(e) {
-        yield put({
-            type: BRANDS_LOAD_FAILURE,
-            error: e,
-        })
-    }
-}
-function* watchBrandsLoad(){
-    yield takeLatest(BRANDS_LOAD_REQUEST, brandsLoad)
-}
 
 function brandDeleteAPI(brandId){
     return axios.delete(`/brand/delete/${brandId}`, {

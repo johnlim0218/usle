@@ -20,6 +20,29 @@ function* adminCategorySaga() {
     ])
 }
 
+function categoriesLoadAPI(type){
+    return axios.get(`/category/get/${type}`, {
+        withCredentials: true, 
+    });
+}
+function* categoriesLoad(action){
+    try{
+        const result = yield call(categoriesLoadAPI, action.data.requestType)
+        yield put({
+            type: CATEGORIES_LOAD_SUCCESS,
+            data: result.data,
+        })
+    } catch(e) {
+        yield put({
+            type: CATEGORIES_LOAD_FAILURE,
+            error: e,
+        })
+    }
+}
+function* watchCategoryLoad(){
+    yield takeLatest(CATEGORIES_LOAD_REQUEST, categoriesLoad);
+}
+
 function categoryPostAPI(newCategoryData){
     return axios.post('/category/add', newCategoryData, {
         withCredentials: true
@@ -41,29 +64,6 @@ function* categoryPost(action){
 }
 function* watchCategoryPost(){
     yield takeLatest(NEW_CATEGORY_POST_REQUEST, categoryPost)
-}
-
-function categoriesLoadAPI(){
-    return axios.get('/category/get', {
-        withCredentials: true, 
-    });
-}
-function* categoriesLoad(action){
-    try{
-        const result = yield call(categoriesLoadAPI, action.data)
-        yield put({
-            type: CATEGORIES_LOAD_SUCCESS,
-            data: result.data,
-        })
-    }catch(e){
-        yield put({
-            type: CATEGORIES_LOAD_FAILURE,
-            error: e,
-        })
-    }
-}
-function* watchCategoryLoad(){
-    yield takeLatest(CATEGORIES_LOAD_REQUEST, categoriesLoad);
 }
 
 function categoryDeleteAPI(categoryId){
