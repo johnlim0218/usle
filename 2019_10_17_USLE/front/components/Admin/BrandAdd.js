@@ -18,25 +18,25 @@ import RFTextField from '../../form/RFTextField';
 import AppForm from '../../views/AppForm';
 import FormFeedback from '../../form/FormFeedback';
 import FormButton from '../../form/FormButton';
+import { NEW_BRAND_POST_REQUEST } from '../../reducers/admin/adminBrandReducer';
 
-import { NEW_CATEGORY_POST_REQUEST } from '../../reducers/admin/adminCategoryReducer';
 
 const StyledForm = styled.form`
     padding:30px;
 `;
-const CategoryAdd = (props) => {
+const BrandAdd = (props) => {
     const { open, close, ...others } = props;
     const { isPostingNewCategory, postNewCategoryErrorReason } = useSelector(state => state.adminCategoryReducer);
     const dispatch = useDispatch();
 
     const validate = (values) => {
-        const errors = required(['categoryName'], values);
+        const errors = required(['brandName'], values);
         return errors;
     }
 
     const onSubmit = useCallback((values) => {
         dispatch({
-            type: NEW_CATEGORY_POST_REQUEST,
+            type: NEW_BRAND_POST_REQUEST,
             data: values,
         })
         
@@ -44,7 +44,7 @@ const CategoryAdd = (props) => {
 
     return(
         <Dialog open={open}>
-            <DialogTitle>Add Category</DialogTitle>
+            <DialogTitle>Add Brand</DialogTitle>
             <Form 
                 onSubmit={onSubmit}
                 // subscriptrion - true로 설정한 Field의 속성 값이 바뀔 때 마다 렌더링 해준다.
@@ -55,15 +55,63 @@ const CategoryAdd = (props) => {
                         onSubmit={handleSubmit}
                         noValidate>
                         <Field
-                            autoComplete="category"
+                            autoComplete="Brand"
                             autoFocus
                             component={RFTextField}
                             disabled={submitting || isPostingNewCategory}
                             fullWidth
-                            label="Category"
+                            label="Brand"
                             margin="normal"
-                            name="categoryName"
+                            name="brandName"
                             required
+                            size="small"
+                            noBorder={false}
+                        />
+                         <Field
+                            autoComplete="Phone"
+                            autoFocus
+                            component={RFTextField}
+                            disabled={submitting || isPostingNewCategory}
+                            fullWidth
+                            label="Phone"
+                            margin="normal"
+                            name="phone"
+                            size="small"
+                            noBorder={false}
+                        />
+                         <Field
+                            autoComplete="Zipcode"
+                            autoFocus
+                            component={RFTextField}
+                            disabled={submitting || isPostingNewCategory}
+                            fullWidth
+                            label="Zipcode"
+                            margin="normal"
+                            name="zipcode"
+                            size="small"
+                            noBorder={false}
+                        />
+                         <Field
+                            autoComplete="Address"
+                            autoFocus
+                            component={RFTextField}
+                            disabled={submitting || isPostingNewCategory}
+                            fullWidth
+                            label="Address"
+                            margin="normal"
+                            name="address"
+                            size="small"
+                            noBorder={false}
+                        />
+                        <Field
+                            autoComplete="Address Detail"
+                            autoFocus
+                            component={RFTextField}
+                            disabled={submitting || isPostingNewCategory}
+                            fullWidth
+                            label="Address Detail"
+                            margin="normal"
+                            name="addressDetail"
                             size="small"
                             noBorder={false}
                         />
@@ -109,4 +157,4 @@ const CategoryAdd = (props) => {
     )
 }
 
-export default CategoryAdd;
+export default BrandAdd;

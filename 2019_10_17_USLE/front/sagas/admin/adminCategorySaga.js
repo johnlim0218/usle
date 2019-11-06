@@ -15,7 +15,7 @@ import {
 function* adminCategorySaga() {
     yield all([
         fork(watchCategoryPost),
-        fork(watchCategoryGet),
+        fork(watchCategoryLoad),
         fork(watchCategoryDelete),
     ])
 }
@@ -62,7 +62,7 @@ function* categoriesLoad(action){
         })
     }
 }
-function* watchCategoryGet(){
+function* watchCategoryLoad(){
     yield takeLatest(CATEGORIES_LOAD_REQUEST, categoriesLoad);
 }
 

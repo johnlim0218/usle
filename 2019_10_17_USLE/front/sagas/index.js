@@ -3,6 +3,7 @@ import axios from 'axios';
 import userSaga from './userSaga';
 import adminProductSaga from './admin/adminProductSaga';
 import adminCategorySaga from './admin/adminCategorySaga';
+import adminBrandSaga from './admin/adminBrandSaga';
 
 axios.defaults.baseURL = 'http://localhost:3065/api';
 
@@ -11,6 +12,7 @@ function* rootSaga() {
         fork(userSaga),
         fork(adminProductSaga),
         fork(adminCategorySaga),
+        fork(adminBrandSaga),
     ]);
 }
 
