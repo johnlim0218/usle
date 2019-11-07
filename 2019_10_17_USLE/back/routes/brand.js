@@ -3,13 +3,22 @@ const router = express.Router();
 
 const db = require('../models');
 
-router.get('/get', async(req, res, next) => {
+router.get('/get/:type', async(req, res, next) => {
     try{
-        const brands = await db.ProductBrand.findAll({
-            order: [['id', 'DESC']],
-        });
+        if(req.params.type === 'name'){
+            const brands = await db.ProductBrand.findAll({
+                attributes: ['id', 'brandName'],
+                order: [['brandName', 'ASC']]
+            })
+            return res.json(brands);
+
+        } else if (req.params.type === 'all') {
+            const brands = await db.ProductBrand.findAll({
+                order: [['brandName', 'ASC']],
+            });
+            return res.json(brands);
+        }
         
-        return res.json(brands);
     } catch(e) {
         console.error(e);
         return next(e);

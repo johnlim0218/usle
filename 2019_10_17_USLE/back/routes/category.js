@@ -4,8 +4,6 @@ const router = express.Router();
 const db = require('../models');
 
 router.get('/get/:type', async(req, res, next) => {
-    console.log("test");
-    console.log(req.params.type);
     try{
 
         if(req.params.type === 'name'){

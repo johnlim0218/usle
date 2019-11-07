@@ -18,14 +18,14 @@ function* adminBrandSaga() {
     ])
 }
 
-function brandsLoadAPI(){
-    return axios.get('/brand/get', {
+function brandsLoadAPI(type){
+    return axios.get(`/brand/get/${type}`, {
         withCredentials: true,
     })
 }
 function* brandsLoad(action){
     try{
-        const result = yield call(brandsLoadAPI, action.data);
+        const result = yield call(brandsLoadAPI, action.data.requestType);
         yield put({
             type: BRANDS_LOAD_SUCCESS,
             data: result.data,

@@ -30,6 +30,9 @@ const Brand = () => {
     useEffect(() => {
         dispatch({
             type: BRANDS_LOAD_REQUEST,
+            data: {
+                requestType: 'all',
+            }
         })
         
     }, []);
