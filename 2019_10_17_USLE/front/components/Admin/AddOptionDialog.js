@@ -5,14 +5,17 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import Container from '@material-ui/core/Container';
 import TextField from '@material-ui/core/TextField';
-import Button from '@material-ui/core/Button';
+import AddCircleIcon from '@material-ui/icons/AddCircle';
+import RemoveCircleOutlineIcon from '@material-ui/icons/RemoveCircleOutline';
 
 import Link from 'next/link';
 import Router from 'next/router';
 import { Field, Form, FormSpy } from 'react-final-form';
 
 import { required } from '../../form/validation';
+import Button from '../Button';
 import Typography from '../Typography';
 import RFTextField from '../../form/RFTextField';
 import AppForm from '../../views/AppForm';
@@ -22,7 +25,10 @@ import FormButton from '../../form/FormButton';
 const StyledForm = styled.form`
     padding:30px;
 `;
-
+const StyledContainter = styled(Container)`
+    ${props => props.theme.container}
+    display: flex;
+`
 const StyledTextField = styled(RFTextField)`
     padding-right: 5px;
 `
@@ -59,42 +65,59 @@ const AddOptionDialog = (props) => {
                     <StyledForm 
                         onSubmit={handleSubmit}
                         noValidate>
-
-                        <Field
-                            autoComplete="Color"
-                            autoFocus
-                            component={StyledTextField}
-                            disabled={submitting}
-                            label="Color"
-                            margin="normal"
-                            name="color"
-                            required
-                            size="small"
-                            noBorder={false}
-                        />
-                         <Field
-                            autoComplete="Size"
-                            autoFocus
-                            component={StyledTextField}
-                            disabled={submitting}
-                            label="Size"
-                            margin="normal"
-                            name="size"
-                            required
-                            size="small"
-                            noBorder={false}
-                        />
-                        <Field
-                            autoComplete="Quantity"
-                            component={StyledTextField}
-                            disabled={submitting}
-                            label="Quantity"
-                            margin="normal"
-                            name="quantity"
-                            required
-                            size="small"
-                            noBorder={false}
-                        />
+                        <StyledContainter>
+                            <Field
+                                autoComplete="Color"
+                                autoFocus
+                                component={StyledTextField}
+                                disabled={submitting}
+                                label="Color"
+                                margin="normal"
+                                name="color"
+                                required
+                                size="small"
+                                noBorder={false}
+                            />
+                            <Field
+                                autoComplete="Size"
+                                autoFocus
+                                component={StyledTextField}
+                                disabled={submitting}
+                                label="Size"
+                                margin="normal"
+                                name="size"
+                                required
+                                size="small"
+                                noBorder={false}
+                            />
+                            <Field
+                                autoComplete="Quantity"
+                                component={StyledTextField}
+                                disabled={submitting}
+                                label="Quantity"
+                                margin="normal"
+                                name="quantity"
+                                required
+                                size="small"
+                                noBorder={false}
+                            />
+                        
+                            <Button
+                                size='small'
+                                justIcon
+                                round
+                            >
+                                <AddCircleIcon/>
+                            </Button>
+                            <Button
+                                size='small'
+                                justIcon
+                                round
+                            >
+                                <RemoveCircleOutlineIcon/>
+                            </Button>
+                        </StyledContainter>
+                       
                         <FormButton
                             type="submit"
                             disabled={submitting}

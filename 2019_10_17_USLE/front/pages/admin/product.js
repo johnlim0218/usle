@@ -10,6 +10,9 @@ import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl'
 import TextField from '@material-ui/core/TextField'
 import { Button } from '@material-ui/core';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemText from '@material-ui/core/ListItemText';
+import { FixedSizeList } from 'react-window';
 
 import { required } from '../../form/validation';
 import RFTextField from '../../form/RFTextField';
@@ -23,13 +26,22 @@ import { CATEGORIES_LOAD_REQUEST } from '../../reducers/admin/adminCategoryReduc
 
 
 const StyledFormControl = styled(FormControl)`
-    margin-left: ${props => props.theme.spacing(1)}px;
+    margin-left: ${props => props.theme.spacing(0)}px;
+    margin-right: ${props => props.theme.spacing(3)}px;
     margin-bottom: ${props => props.theme.spacing(1)}px;
     min-width: 120px;
 `;
 
 const StyledStyledSelect = styled(StyledSelect)`
-    padding: 0;
+    padding: ${props => props.theme.spacing(0)}px;;
+`
+
+const StyledTextField = styled(RFTextField)`
+    margin-bottom: ${props => props.theme.spacing(0)}px;;
+`;
+
+const StyledButton = styled(Button)`
+    margin: ${props => props.theme.spacing(2)}px;
 `
 
 const StyledDivRichEditorRoot = styled.div`
@@ -103,11 +115,7 @@ const Product = () => {
             }
         })
     }, []);
-
-    useEffect(() => {
-        console.log(option);
-    }, [option]);
-
+    
     const onChangeCategory = useCallback((e) => {
         setCategory(e.target.value);
     }, [category]);
@@ -172,7 +180,7 @@ const Product = () => {
     }
 
     const validate = (values) => {
-        const errors = required([], values);
+        const errors = required(['name', 'price'], values);
         // if(!errors.email){
         //     const emailError = email(values.email, values);
         //     if(emailError) {
@@ -182,17 +190,20 @@ const Product = () => {
         return errors;
     }
 
-    const onSubmit = useCallback((e) => {
+    const onSubmit = useCallback((value) => {
         
-    }, []);
-
-    const onClickSubmit = useCallback((e) => {
         dispatch({
             type: NEW_PRODUCT_POST_REQUEST,
-            data: JSON.stringify(convertToRaw(editorState.getCurrentContent())),
+            data: {
+                ...value,
+                option: [...option],
+                category: category,
+                brand: brand,
+                content: JSON.stringify(convertToRaw(editorState.getCurrentContent())),
+            }
         });
+    }, [category, brand, editorState, option]);
 
-    }, [editorState]);
 
     const StyleButton = ({onToggle, style, active, label, ...others}) => {
         
@@ -250,6 +261,19 @@ const Product = () => {
         )
     }
 
+    const RenderOptionList = ({index, style}) => {
+        console.log("Test");
+        return (
+            
+            <ListItem button style={style} key={index}>
+                <ListItemText>{option[index].color}</ListItemText>
+                <ListItemText>{option[index].size}</ListItemText>
+                <ListItemText>{option[index].quantity}</ListItemText>
+            </ListItem>
+            
+          );
+    }
+
     return(
         <Form
             onSubmit={onSubmit}
@@ -260,7 +284,7 @@ const Product = () => {
                     onSubmit={handleSubmit}
                     noValidate
                 >
-                    <div>
+                    
                         <StyledFormControl>
                             <InputLabel id="category-select-label">CATEGORY</InputLabel>
                             <StyledStyledSelect
@@ -283,9 +307,9 @@ const Product = () => {
                                 })}
                             </StyledStyledSelect>
                         </StyledFormControl>
-                    </div>
+                    
 
-                    <div>
+                    
                         <StyledFormControl>
                             <InputLabel id="brand-select-label">BRAND</InputLabel>    
                             <StyledStyledSelect
@@ -308,11 +332,11 @@ const Product = () => {
                                 })}
                             </StyledStyledSelect>
                         </StyledFormControl>
-                    </div>
+                    
 
                     <Field
                         autoComplete="Name"
-                        component={RFTextField}
+                        component={StyledTextField}
                         disabled={submitting}
                         fullWidth
                         label="Name"
@@ -321,11 +345,38 @@ const Product = () => {
                         required
                         size="medium"
                     />
+                    
+                    <Field
+                        autoComplete="Price"
+                        component={StyledTextField}
+                        disabled={submitting}
+                        fullWidth
+                        label="Price"
+                        margin="normal"
+                        name="price"
+                        required
+                        size="medium"
+                    />
 
-                    <Button onClick={onClickOption}>
+
+
+                    <StyledButton onClick={onClickOption}>
                             Add Option
-                    </Button>
+                    </StyledButton>
                     <AddOptionDialog open={optionDialog} close={onClickOption} option={option} setOption={setOption}/>
+                    {/* {option.length !== 0 && option.map((value, index) => (
+                        <div>
+                            {value.size && <span>SIZE:{value.size}</span>}
+                            {value.color && <span>COLOR:{value.color}</span>}
+                            {value.quantity && <span>QUANTITY:{value.quantity}</span>}
+                            {value.price && <span>PRICE:{value.price}</span>}
+                        </div>
+                    ))} */}
+                    
+                    <FixedSizeList height={400} width='100%' itemSize={46} itemCount={option.length}>
+                        {RenderOptionList}
+                    </FixedSizeList>
+                    
 
 
                     <StyledDivRichEditorRoot>
@@ -342,16 +393,16 @@ const Product = () => {
                             onChange={onChange}
                             handleKeyCommand={handleKeyCommand}
                             onTab={onTab}
-                            placeholder="Tell a story"
                         />
-                        <StyledButtonSubmit type="submit" onClick={onClickSubmit}>SUBMIT</StyledButtonSubmit>
+                        <StyledButtonSubmit type="submit">SUBMIT</StyledButtonSubmit>
                     </StyledDivRichEditorRoot>
+
                 </form>
             )}
         />
-            
-        
     )
 }
+
+
 
 export default Product;

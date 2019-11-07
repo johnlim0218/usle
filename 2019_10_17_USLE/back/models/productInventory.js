@@ -5,18 +5,21 @@ module.exports = (sequelize, DataTypes) => {
         size: {
             type: DataTypes.STRING(10),
             allowNull: false,
+            defaultValue: 'one',
         },
         color: {
             type: DataTypes.STRING(10),
             allowNull: false,
+            defaultValue: 'one',
         },
         price: {
             type: DataTypes.INTEGER,
             allowNull: false,
         },
-        inventory: {
+        quantity: {
             type: DataTypes.INTEGER,
             allowNull: false,
+            defaultValue: 100, 
         }
     },{
         timestamps: true,
