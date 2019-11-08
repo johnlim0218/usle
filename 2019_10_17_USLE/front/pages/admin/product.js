@@ -312,7 +312,7 @@ const Product = () => {
             data: formData,
         });
 
-    }, [category, brand, editorState, option, imagePaths, value.price, value.name]);
+    }, [category, brand, editorState, option, imagePaths]);
 
 
     const RenderOptionList = ({index, style}) => {
