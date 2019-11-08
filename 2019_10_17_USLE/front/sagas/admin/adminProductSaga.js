@@ -43,7 +43,6 @@ function uploadImagesAPI(formData){
 function* uploadImages(action){
     try{
         const result = yield call(uploadImagesAPI, action.data);
-        console.log(result);
         yield put({
             type: UPLOAD_IMAGES_SUCCESS,
             data: result.data,

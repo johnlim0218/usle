@@ -7,16 +7,6 @@ const router = express.Router();
 const db = require('../models');
 const { isLoggedIn, isNotLoggedIn } = require('../middlewares/userMiddleware');
 
-router.post('/add', async(req, res, next) => {
-
-    try{
-        
-    }catch(e){
-        console.error(e);
-        return next(e);
-    }
-});
-
 // multer 설정
 const upload = multer({
     storage: multer.diskStorage({
@@ -34,6 +24,17 @@ const upload = multer({
     // 파일크기 상한 5mb 
     limits: { fileSize: 5 * 1024 * 1024 }, 
 })
+
+router.post('/add', upload.none(), async(req, res, next) => {
+    console.log(req.body.option);
+    try{
+        
+    }catch(e){
+        console.error(e);
+        return next(e);
+    }
+});
+
 
 router.post('/add/images', upload.array('image'), async(req, res, next) => {
     return res.json(req.files.map(v => v.filename));

@@ -295,17 +295,24 @@ const Product = () => {
 
     const onSubmit = useCallback((value) => {
         
+        const formData = new FormData();
+        
+        imagePaths.forEach((index) => {
+            formData.append('image', index);
+        });
+        formData.append('category', category);
+        formData.append('brand', brand);
+        formData.append('name', value.name);
+        formData.append('price', value.price);
+        formData.append('option', JSON.stringify(option));
+        formData.append('content', JSON.stringify(convertToRaw(editorState.getCurrentContent())));
+       
         dispatch({
             type: NEW_PRODUCT_POST_REQUEST,
-            data: {
-                ...value,
-                option: [...option],
-                category: category,
-                brand: brand,
-                content: JSON.stringify(convertToRaw(editorState.getCurrentContent())),
-            }
+            data: formData,
         });
-    }, [category, brand, editorState, option]);
+
+    }, [category, brand, editorState, option, imagePaths, value.price, value.name]);
 
 
     const RenderOptionList = ({index, style}) => {
@@ -329,7 +336,7 @@ const Product = () => {
                     noValidate
                     encType="multipart/form-data"
                 >
-                    
+                        {/* 카테고리 */}
                         <StyledFormControl>
                             <InputLabel id="category-select-label">CATEGORY</InputLabel>
                             <StyledStyledSelect
@@ -353,7 +360,7 @@ const Product = () => {
                             </StyledStyledSelect>
                         </StyledFormControl>
 
-
+                        {/* 브랜드 */}
                         <StyledFormControl>
                             <InputLabel id="brand-select-label">BRAND</InputLabel>    
                             <StyledStyledSelect
@@ -377,7 +384,7 @@ const Product = () => {
                             </StyledStyledSelect>
                         </StyledFormControl>
                     
-
+                    {/* 상품 이름 */}
                     <Field
                         autoComplete="Name"
                         component={StyledTextField}
@@ -390,6 +397,7 @@ const Product = () => {
                         size="medium"
                     />
                     
+                    {/* 가격 */}
                     <Field
                         autoComplete="Price"
                         component={StyledTextField}
@@ -401,11 +409,15 @@ const Product = () => {
                         required
                         size="medium"
                     />
+
+                    {/* 이미지 업로드 */}
                     <StyledDivSection>
                         <input type="file" multiple hidden ref={imageInput} onChange={onChangeImages} />
                         <StyledButton onClick={onClickImageUpload}>
                             Image Upload
                         </StyledButton>
+                                
+                        {/* 이미지 미리보기 */}
                         {imagePaths.length !== 0 && imagePaths.map((value, index) => {
                             return(
                                 <StyledDivImagePreview key={value}>
@@ -425,6 +437,7 @@ const Product = () => {
                         })}        
                     </StyledDivSection>
 
+                    {/* 상품 옵션 추가 */}
                     <StyledDivSection>            
                         <StyledButton onClick={onClickOption}>
                                 Add Option
@@ -436,6 +449,7 @@ const Product = () => {
                         </FixedSizeList>
                     </StyledDivSection>
 
+                    {/* 상품 상세 정보 작성 폼 */}
                     <StyledDivRichEditorRoot>
                         <BlockStyleControls
                             editorState={editorState}
