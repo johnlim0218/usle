@@ -3,16 +3,16 @@ const bcrypt = require('bcrypt');
 const passport = require('passport');
 
 const db = require('../models');
-const { necessarilyLoggedIn, unnecessarilyLoggedIn } = require('../middlewares/userMiddleware');
+const { isLoggedIn, isNotLoggedIn } = require('../middlewares/userMiddleware');
 const router = express.Router();
 
-router.get('/', necessarilyLoggedIn, (req, res, next) => {
+router.get('/', isLoggedIn, (req, res, next) => {
     const user = Object.assign({}, req.user.toJSON());
     delete user.password;
     return res.json(user);
 })
 
-router.post('/login', unnecessarilyLoggedIn, (req, res, next) => {
+router.post('/login', isNotLoggedIn, (req, res, next) => {
 //로그인 라우터
     passport.authenticate('local', (err, user, info) => {
         if(err){
@@ -46,7 +46,7 @@ router.post('/login', unnecessarilyLoggedIn, (req, res, next) => {
     })(req, res, next);
 });
 
-router.post('/logout', necessarilyLoggedIn, (req, res) => {
+router.post('/logout', isLoggedIn, (req, res) => {
 //로그아웃 라우터 
     req.logout();
     req.session.destroy();

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { Field, Form, FormSpy } from 'react-final-form';
@@ -12,6 +12,7 @@ import TextField from '@material-ui/core/TextField'
 import { Button } from '@material-ui/core';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
+import RemoveCircleOutlineIcon from '@material-ui/icons/RemoveCircleOutline';
 import { FixedSizeList } from 'react-window';
 
 import { required } from '../../form/validation';
@@ -19,8 +20,8 @@ import RFTextField from '../../form/RFTextField';
 import FormFeedback from '../../form/FormFeedback';
 import FormButton from '../../form/FormButton';
 import AddOptionDialog from '../../components/Admin/AddOptionDialog';
-import { NEW_PRODUCT_POST_REQUEST } from '../../reducers/admin/adminProductReducer';
 import { StyledMenuItem, StyledSelect } from '../product';
+import { NEW_PRODUCT_POST_REQUEST, UPLOAD_IMAGES_REQUEST, REMOVE_IMAGE_REQUEST } from '../../reducers/admin/adminProductReducer';
 import { BRANDS_LOAD_REQUEST } from '../../reducers/admin/adminBrandReducer';
 import { CATEGORIES_LOAD_REQUEST } from '../../reducers/admin/adminCategoryReducer';
 
@@ -42,6 +43,24 @@ const StyledTextField = styled(RFTextField)`
 
 const StyledButton = styled(Button)`
     margin: ${props => props.theme.spacing(2)}px;
+    background-color: #ddd;
+`
+
+const StyledDivSection = styled.div`
+    display: flex;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    margin-top: 15px;
+    margin-bottom: 15px;
+`;
+
+const StyledDivImagePreview = styled.div`
+    display: inline-block;
+`
+const StyledImgPreview = styled.img`
+    padding: 15px;
+    width: 150px;
+
 `
 
 const StyledDivRichEditorRoot = styled.div`
@@ -99,6 +118,8 @@ const Product = () => {
     );
     const { brands } = useSelector((state) => state.adminBrandReducer);
     const { categories } = useSelector((state) => state.adminCategoryReducer);
+    const { imagePaths } = useSelector((state) => state.adminProductReducer);
+    const imageInput = useRef();
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -128,6 +149,32 @@ const Product = () => {
         e.preventDefault();
         setOptionDialog(!optionDialog);
     }, [optionDialog]);
+
+    const onChangeImages = useCallback((e) => {
+        const imageFormData = new FormData();
+        [].forEach.call(e.target.files, (f) => {
+            imageFormData.append('image', f);
+        });
+        
+        dispatch({
+            type: UPLOAD_IMAGES_REQUEST,
+            data: imageFormData,
+        })
+    }, []);
+
+    const onClickImageUpload = useCallback((e) => {
+        imageInput.current.click();
+    }, [imageInput.current]);
+
+    const onClickRemoveImage = useCallback((index) => () => {
+        dispatch({
+            type: REMOVE_IMAGE_REQUEST,
+            data: {
+                index: index,
+                file: imagePaths[index],
+            }
+        })
+    })
 
     const onChange = (editorState) => {
         seteditorState(editorState);
@@ -190,21 +237,6 @@ const Product = () => {
         return errors;
     }
 
-    const onSubmit = useCallback((value) => {
-        
-        dispatch({
-            type: NEW_PRODUCT_POST_REQUEST,
-            data: {
-                ...value,
-                option: [...option],
-                category: category,
-                brand: brand,
-                content: JSON.stringify(convertToRaw(editorState.getCurrentContent())),
-            }
-        });
-    }, [category, brand, editorState, option]);
-
-
     const StyleButton = ({onToggle, style, active, label, ...others}) => {
         
         const onMouseDownToToggle = (e) => {
@@ -261,17 +293,29 @@ const Product = () => {
         )
     }
 
+    const onSubmit = useCallback((value) => {
+        
+        dispatch({
+            type: NEW_PRODUCT_POST_REQUEST,
+            data: {
+                ...value,
+                option: [...option],
+                category: category,
+                brand: brand,
+                content: JSON.stringify(convertToRaw(editorState.getCurrentContent())),
+            }
+        });
+    }, [category, brand, editorState, option]);
+
+
     const RenderOptionList = ({index, style}) => {
-        console.log("Test");
         return (
-            
             <ListItem button style={style} key={index}>
-                <ListItemText>{option[index].color}</ListItemText>
-                <ListItemText>{option[index].size}</ListItemText>
-                <ListItemText>{option[index].quantity}</ListItemText>
+                <ListItemText>COLOR : {option[index].color}</ListItemText>
+                <ListItemText>SIZE : {option[index].size}</ListItemText>
+                <ListItemText>QUANTITY : {option[index].quantity}</ListItemText>
             </ListItem>
-            
-          );
+        );
     }
 
     return(
@@ -283,6 +327,7 @@ const Product = () => {
                 <form
                     onSubmit={handleSubmit}
                     noValidate
+                    encType="multipart/form-data"
                 >
                     
                         <StyledFormControl>
@@ -307,9 +352,8 @@ const Product = () => {
                                 })}
                             </StyledStyledSelect>
                         </StyledFormControl>
-                    
 
-                    
+
                         <StyledFormControl>
                             <InputLabel id="brand-select-label">BRAND</InputLabel>    
                             <StyledStyledSelect
@@ -357,27 +401,40 @@ const Product = () => {
                         required
                         size="medium"
                     />
+                    <StyledDivSection>
+                        <input type="file" multiple hidden ref={imageInput} onChange={onChangeImages} />
+                        <StyledButton onClick={onClickImageUpload}>
+                            Image Upload
+                        </StyledButton>
+                        {imagePaths.length !== 0 && imagePaths.map((value, index) => {
+                            return(
+                                <StyledDivImagePreview key={value}>
+                                    <StyledImgPreview src={`http://localhost:3065/images/${value}`} alt={value}/>
+                                    <div>
+                                        <Button
+                                            onClick={onClickRemoveImage(index)}
+                                            size='small'
+                                            justIcon
+                                            round
+                                        >
+                                            <RemoveCircleOutlineIcon/>
+                                        </Button>
+                                    </div>
+                                </StyledDivImagePreview>
+                            )
+                        })}        
+                    </StyledDivSection>
 
-
-
-                    <StyledButton onClick={onClickOption}>
-                            Add Option
-                    </StyledButton>
-                    <AddOptionDialog open={optionDialog} close={onClickOption} option={option} setOption={setOption}/>
-                    {/* {option.length !== 0 && option.map((value, index) => (
-                        <div>
-                            {value.size && <span>SIZE:{value.size}</span>}
-                            {value.color && <span>COLOR:{value.color}</span>}
-                            {value.quantity && <span>QUANTITY:{value.quantity}</span>}
-                            {value.price && <span>PRICE:{value.price}</span>}
-                        </div>
-                    ))} */}
-                    
-                    <FixedSizeList height={400} width='100%' itemSize={46} itemCount={option.length}>
-                        {RenderOptionList}
-                    </FixedSizeList>
-                    
-
+                    <StyledDivSection>            
+                        <StyledButton onClick={onClickOption}>
+                                Add Option
+                        </StyledButton>
+                        <AddOptionDialog open={optionDialog} close={onClickOption} option={option} setOption={setOption}/>
+                        
+                        <FixedSizeList height={100} width='100%' itemSize={46} itemCount={option.length}>
+                            {RenderOptionList}
+                        </FixedSizeList>
+                    </StyledDivSection>
 
                     <StyledDivRichEditorRoot>
                         <BlockStyleControls

@@ -29,6 +29,9 @@ app.use(cors({
     credentials: true, // 쿠키 교환이 가능해진다.
 }));
 
+// 이미지 폴더
+app.use('/images', express.static('uploads'));
+
 // req.body를 사용하기 위해서 다음 두 줄을 추가한다.
 // json형태 처리를 위함
 app.use(express.json());

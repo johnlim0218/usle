@@ -1,4 +1,4 @@
-exports.necessarilyLoggedIn = (req, res, next) => {
+exports.isLoggedIn = (req, res, next) => {
     // 로그인이 필요한 경우
     if(req.isAuthenticated()) {
         next();
@@ -7,7 +7,7 @@ exports.necessarilyLoggedIn = (req, res, next) => {
     }
 }
 
-exports.unnecessarilyLoggedIn = (req, res, next) => {
+exports.isNotLoggedIn = (req, res, next) => {
     // 로그인이 필요하지 않은 경우
     if(!req.isAuthenticated()) {
         next();
