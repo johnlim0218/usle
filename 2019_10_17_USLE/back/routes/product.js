@@ -26,8 +26,44 @@ const upload = multer({
 })
 
 router.post('/add', upload.none(), async(req, res, next) => {
-    console.log(req.body.option);
+    
     try{
+        const newProduct = await db.Product.create({
+            productName: req.body.name,
+            description: req.body.description,
+            productBrandId: req.body.brand,
+            productCategoryId: req.body.category,
+        });
+        
+        const newProductOptionJsonObj = JSON.parse(req.body.option);
+        const newProductOption = await Promise.all(newProductOptionJsonObj.map((option, index) => {
+            return (
+                db.ProductInventory.create({
+                    size: option.size,
+                    color: option.color,
+                    price: req.body.price,
+                    quantity: option.quantity,
+                })
+            )
+        }));
+        await newProduct.addProductInventory(newProductOption);
+
+        if(req.body.image){
+            if(Array.isArray(req.body.image)){
+                const images = await Promise.all(req.body.image.map((image) => {
+                    return db.ProductImage.create({
+                        src: image,
+                    })
+                }));
+                await newProduct.addProductImage(images);
+            } else {
+                const image = await db.ProductImage.create({
+                    src: req.body.image,
+                })
+                await newProduct.addProductImage(image);
+            }
+        }
+
         
     }catch(e){
         console.error(e);

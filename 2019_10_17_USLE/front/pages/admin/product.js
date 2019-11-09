@@ -68,6 +68,7 @@ const StyledDivRichEditorRoot = styled.div`
     border: 1px solid #ddd;
     font-size: 14px;
     padding: 15px;
+    min-height: 500px;
 `;
 
 const StyledDivRichEditorContols = styled.div`
@@ -84,8 +85,9 @@ const StyledSpanStyledButton = styled.span`
     display: inline-block;
 `;
 
-const StyledButtonSubmit = styled.button`
-    margin-top: 50px;
+const StyledButtonSubmit = styled(Button)`
+    margin-top: 10px;
+    background-color: #ddd;
 `;
 
 const BLOCK_TYPES = [
@@ -305,7 +307,7 @@ const Product = () => {
         formData.append('name', value.name);
         formData.append('price', value.price);
         formData.append('option', JSON.stringify(option));
-        formData.append('content', JSON.stringify(convertToRaw(editorState.getCurrentContent())));
+        formData.append('description', JSON.stringify(convertToRaw(editorState.getCurrentContent())));
        
         dispatch({
             type: NEW_PRODUCT_POST_REQUEST,
@@ -465,9 +467,8 @@ const Product = () => {
                             handleKeyCommand={handleKeyCommand}
                             onTab={onTab}
                         />
-                        <StyledButtonSubmit type="submit">SUBMIT</StyledButtonSubmit>
                     </StyledDivRichEditorRoot>
-
+                    <StyledButtonSubmit type="submit">SUBMIT</StyledButtonSubmit>
                 </form>
             )}
         />
