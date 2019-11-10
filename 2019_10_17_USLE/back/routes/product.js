@@ -36,17 +36,34 @@ router.post('/add', upload.none(), async(req, res, next) => {
         });
         
         const newProductOptionJsonObj = JSON.parse(req.body.option);
-        const newProductOption = await Promise.all(newProductOptionJsonObj.map((option, index) => {
-            return (
-                db.ProductInventory.create({
+
+        // option을 기입했을 때 (1개 이상)
+        if(newProductOptionJsonObj){
+            // option이 2개 이상일 때
+            if(newProductOptionJsonObj.length >= 2) {
+                const newProductOption = await Promise.all(newProductOptionJsonObj.map((option, index) => {
+                    return (
+                        db.ProductInventory.create({
+                            size: option.size,
+                            color: option.color,
+                            price: req.body.price,
+                            quantity: option.quantity,
+                        })
+                    )
+                }));
+                await newProduct.addProductInventory(newProductOption);
+            } else {
+                // option이 1개 일 때
+                const newProductOption = await db.ProductInventory.create({
                     size: option.size,
                     color: option.color,
                     price: req.body.price,
                     quantity: option.quantity,
                 })
-            )
-        }));
-        await newProduct.addProductInventory(newProductOption);
+                await newProduct.addProductInventory(newProductOption);
+            }
+        } 
+        
 
         if(req.body.image){
             if(Array.isArray(req.body.image)){
@@ -65,7 +82,7 @@ router.post('/add', upload.none(), async(req, res, next) => {
         }
 
         
-    }catch(e){
+    } catch(e) {
         console.error(e);
         return next(e);
     }
