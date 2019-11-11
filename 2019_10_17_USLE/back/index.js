@@ -32,6 +32,7 @@ app.use(cors({
 
 // 이미지 폴더
 app.use('/images', express.static('uploads'));
+app.use('/public', express.static('public'));
 
 // req.body를 사용하기 위해서 다음 두 줄을 추가한다.
 // json형태 처리를 위함
