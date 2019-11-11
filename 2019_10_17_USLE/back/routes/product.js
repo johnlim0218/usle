@@ -55,16 +55,15 @@ router.post('/add', upload.none(), async(req, res, next) => {
             } else {
                 // option이 1개 일 때
                 const newProductOption = await db.ProductInventory.create({
-                    size: option.size,
-                    color: option.color,
+                    size: newProductOptionJsonObj.size,
+                    color: newProductOptionJsonObj.color,
                     price: req.body.price,
-                    quantity: option.quantity,
+                    quantity: newProductOptionJsonObj.quantity,
                 })
                 await newProduct.addProductInventory(newProductOption);
             }
         } 
         
-
         if(req.body.image){
             if(Array.isArray(req.body.image)){
                 const images = await Promise.all(req.body.image.map((image) => {
@@ -81,13 +80,19 @@ router.post('/add', upload.none(), async(req, res, next) => {
             }
         }
 
+        const newProductPostId = await db.Product.findOne({
+            where: {
+                id: newProduct.id
+            }
+        });
+
+        return res.json(newProductPostId);
         
     } catch(e) {
         console.error(e);
         return next(e);
     }
 });
-
 
 router.post('/add/images', upload.array('image'), async(req, res, next) => {
     return res.json(req.files.map(v => v.filename));

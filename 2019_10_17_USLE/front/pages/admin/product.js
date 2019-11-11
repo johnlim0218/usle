@@ -138,6 +138,17 @@ const Product = () => {
             }
         })
     }, []);
+
+    const validate = (values) => {
+        const errors = required(['name', 'price'], values);
+        // if(!errors.email){
+        //     const emailError = email(values.email, values);
+        //     if(emailError) {
+        //         errors.email = email(values.email, values);
+        //     }
+        // }
+        return errors;
+    }
     
     const onChangeCategory = useCallback((e) => {
         setCategory(e.target.value);
@@ -228,17 +239,6 @@ const Product = () => {
         )
     }
 
-    const validate = (values) => {
-        const errors = required(['name', 'price'], values);
-        // if(!errors.email){
-        //     const emailError = email(values.email, values);
-        //     if(emailError) {
-        //         errors.email = email(values.email, values);
-        //     }
-        // }
-        return errors;
-    }
-
     const StyleButton = ({onToggle, style, active, label, ...others}) => {
         
         const onMouseDownToToggle = (e) => {
@@ -297,6 +297,11 @@ const Product = () => {
 
     const onSubmit = useCallback((value) => {
         
+        if(!editorState.getCurrentContent().hasText()){
+            alert('Required description');
+            return null;
+        }
+
         const formData = new FormData();
         
         imagePaths.forEach((index) => {

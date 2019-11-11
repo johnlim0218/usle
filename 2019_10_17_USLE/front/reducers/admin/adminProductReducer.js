@@ -33,6 +33,7 @@ const adminProductReducer = (state = initialState, action) => {
             return{
                 ...state,
                 isPostingNewProduct: false,
+                newProduct: action.data,
             }
         }
         case NEW_PRODUCT_POST_FAILURE: {

@@ -20,9 +20,10 @@ function productPostAPI(newProductData){
 }
 function* productPost(action){
     try{
-        yield call(productPostAPI, action.data)
+        const result = yield call(productPostAPI, action.data)
         yield put({
             type: NEW_PRODUCT_POST_SUCCESS,
+            data: result,
         })
     }catch(e){
         yield put({
