@@ -298,7 +298,7 @@ const Product = () => {
     const onSubmit = useCallback((value) => {
         
         if(!editorState.getCurrentContent().hasText()){
-            alert('Required description');
+            alert('require description');
             return null;
         }
 

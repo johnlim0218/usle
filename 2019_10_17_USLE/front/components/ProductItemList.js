@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import Link from 'next/link';
 // import Tooltip from '@material-ui/core/Tooltip';
 import Favorite from '@material-ui/icons/Favorite';
 import Typography from '../components/Typography';
@@ -22,6 +23,7 @@ const StyledTypographyCategory = styled(Typography)`
   text-align: center;
   margin-top: 10px;
 `
+
 const StyledTypographyTitle = styled(Typography)`
   text-decoration: none;
   font-weight: 700;
@@ -50,43 +52,55 @@ const StyledButton = styled(Button)`
   }
 `;
 
+const imgSrcUrl = 'http://localhost:3065/images/';
 
 const ProductItemList = (props) => {
   const { category, name, price, despcription, imgsrc, item } = props;
-  
+      
       return (
-        <Card product>
-          <CardHeader image>
-            <a href="#pablo">
-              <img src={item ? item.imgsrc : dummyImg} alt="cardProduct3" />
-            </a>
-          </CardHeader>
-          <CardBody>
-            <StyledTypographyCategory variant='h6'>{item ? item.category : 'popular'}</StyledTypographyCategory>
-            <StyledTypographyTitle variant='h5'>{item ? item.name : 'itemname'}</StyledTypographyTitle>
-            <StyledDivCardDescription>
-            {item ? item.despcription : `
-              Balmain's mid-rise skinny jeans are cut with stretch
-              to ensure they retain their second-skin fit but move
-              comfortably.`}
-            </StyledDivCardDescription>
-          </CardBody>
-          <StyledCardFooter>
-            <div>
-              <Typography variant='body1'>￦{item ? item.price : '20,000'}</Typography>
-            </div>
-            <div>
-              <Tooltip
-                id='tooltip-top'
-                title='Save to Wishlist'
-                placement='top'>
-                <StyledButton justIcon link>
-                  <Favorite />
-                </StyledButton>
-              </Tooltip>
-            </div>
-          </StyledCardFooter>
-       </Card>
+        
+          <Card product>
+            <CardHeader image>
+              <a>
+                <img 
+                  src={item.ProductImages ? imgSrcUrl + item.ProductImages[0].src : dummyImg} 
+                  alt={item.productName ? item.productName : 'itemname'} 
+                />
+              </a>
+            </CardHeader>
+            <CardBody>
+              <StyledTypographyCategory variant='h6'>
+                  {item.ProductCategory ? item.ProductCategory.categoryName : 'popular'}
+              </StyledTypographyCategory>
+              <StyledTypographyTitle variant='h5'>
+                  {item.productName ? item.productName : 'itemname'}
+              </StyledTypographyTitle>
+              <StyledDivCardDescription>
+              {`
+                Balmain's mid-rise skinny jeans are cut with stretch
+                to ensure they retain their second-skin fit but move
+                comfortably.`}
+              </StyledDivCardDescription>
+            </CardBody>
+            <StyledCardFooter>
+              <div>
+                <Typography variant='body1'>
+                  ￦{item.ProductInventories ? item.ProductInventories[0].price : '0'}
+                </Typography>
+              </div>
+              <div>
+                <Tooltip
+                  id='tooltip-top'
+                  title='Save to Wishlist'
+                  placement='top'>
+                  <StyledButton justIcon link>
+                    <Favorite />
+                  </StyledButton>
+                </Tooltip>
+              </div>
+            </StyledCardFooter>
+          </Card>
+       
     )
 }
 

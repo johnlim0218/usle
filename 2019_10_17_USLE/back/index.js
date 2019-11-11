@@ -11,6 +11,7 @@ const passportConfig = require('./passport');
 const db = require('./models');
 const userAPIRouter = require('./routes/user');
 const productAPIRouter = require('./routes/product');
+const productsAPIRouter = require('./routes/products');
 const categoryAPIRouter = require('./routes/category');
 const brandAPIRouter = require('./routes/brand');
 
@@ -55,6 +56,7 @@ app.use(passport.session());
 
 app.use('/api/user', userAPIRouter);
 app.use('/api/product', productAPIRouter);
+app.use('/api/products', productsAPIRouter);
 app.use('/api/category', categoryAPIRouter);
 app.use('/api/brand', brandAPIRouter);
 

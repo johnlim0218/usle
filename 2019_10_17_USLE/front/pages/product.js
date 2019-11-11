@@ -1,4 +1,5 @@
 import React, { useState, useCallback } from 'react';
+import { useSelector } from 'react-redux';
 import styled, { css } from 'styled-components';
 import ImageGallery from "react-image-gallery";
 import Container from '@material-ui/core/Container';
@@ -23,6 +24,7 @@ import Accordion from '../components/Accordion';
 import Button from '../components/Button';
 import InfoArea from '../components/InfoArea';
 import ProductItemList from '../components/ProductItemList';
+import { LOAD_PRODUCT_DETAIL_REQUEST } from '../reducers/productReducer';
 
 // images
 export const cardProduct1 = "https://demos.creative-tim.com/material-kit-pro-react/static/media/product1.629c7883.jpg";
@@ -243,6 +245,7 @@ const StyledTypographyRelateditems = styled(Typography)`
 const Product = () => {
     const [colorSelect, setColorSelect] = useState("0");
     const [sizeSelect, setSizeSelect] = useState("0");
+
     const onChangeColor = useCallback((e) => {
       setColorSelect(e.target.value);
     },[colorSelect]);
@@ -421,7 +424,7 @@ const Product = () => {
                       </StyledGridContainer>               
                     </StyledDivPolicy>
 
-                    <StyledDivRelatedItems>
+                    {/* <StyledDivRelatedItems>
                       <StyledTypographyRelateditems variant="h4">
                         You may also be interested in:
                       </StyledTypographyRelateditems>
@@ -432,7 +435,7 @@ const Product = () => {
                           </GridItem>
                         ))} 
                       </StyledGridContainer>
-                    </StyledDivRelatedItems>                     
+                    </StyledDivRelatedItems>                      */}
 
                 </StyledDivContainer>
            </StyledDivProductLowerSection>
@@ -441,4 +444,12 @@ const Product = () => {
     )
 }
 
+Product.getInitialProps = async (context) => {
+  const id = context.query.id;
+  context.store.dispatch({
+    type: LOAD_PRODUCT_DETAIL_REQUEST,
+    data: id,
+  })
+  return { id };
+}
 export default Product;

@@ -34,6 +34,10 @@ app.prepare().then(() => {
     // server.get('/admin/category/:id', (req, res) => {
     //     return app.render(req, res, '/admin/category', { id: req.params.id });
     // })
+    
+    server.get('/product/:id', (req, res) => {
+        return app.render(req, res, '/product', { id: req.params.id });
+    })
 
     server.get('*', (req, res) => {
         return handle(req, res);

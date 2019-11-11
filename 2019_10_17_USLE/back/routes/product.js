@@ -26,13 +26,13 @@ const upload = multer({
 })
 
 router.post('/add', upload.none(), async(req, res, next) => {
-    
+    console.log(req.body);
     try{
         const newProduct = await db.Product.create({
             productName: req.body.name,
             description: req.body.description,
-            productBrandId: req.body.brand,
-            productCategoryId: req.body.category,
+            ProductBrandId: req.body.brand,
+            ProductCategoryId: req.body.category,
         });
         
         const newProductOptionJsonObj = JSON.parse(req.body.option);
@@ -96,6 +96,33 @@ router.post('/add', upload.none(), async(req, res, next) => {
 
 router.post('/add/images', upload.array('image'), async(req, res, next) => {
     return res.json(req.files.map(v => v.filename));
+});
+
+router.get('/:id', async(req, res, next) => {
+    try{
+        const productDetail = await db.Product.findOne({
+            where:{
+                id: req.params.id
+            },
+            include: [{
+                model: db.ProductCategory,
+                attributes: ['id', 'categoryName', 'description']
+            }, {
+                model: db.ProductBrand,
+                attributes: ['id', 'brandName', 'description']
+            }, {
+                model: db.ProductImage,
+            }, {
+                model: db.ProductInventory,
+                attributes: ['size', 'color', 'price', 'quantity']
+            }],
+        });
+        
+        return res.json(productDetail);
+    } catch(e) {
+        console.error(e);
+        return next(e);
+    }
 })
 
 module.exports = router;
