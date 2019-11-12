@@ -1,7 +1,8 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import styled, { css } from 'styled-components';
-import ImageGallery from "react-image-gallery";
+import ImageGallery from 'react-image-gallery';
+import { Editor, EditorState, convertFromRaw } from 'draft-js';
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 
@@ -24,6 +25,7 @@ import Accordion from '../components/Accordion';
 import Button from '../components/Button';
 import InfoArea from '../components/InfoArea';
 import ProductItemList from '../components/ProductItemList';
+import { imgSrcUrl } from '../components/ProductItemList';
 import { LOAD_PRODUCT_DETAIL_REQUEST } from '../reducers/productReducer';
 
 // images
@@ -97,9 +99,14 @@ export const StyledDivMain = styled.div`
 `;
 
 const StyledGridContainer = styled(GridContainer)`
+    & .image-gallery-slides {
+        height: 550px;
+    };
     & .image-gallery-slide img {
         border-radius: 3px;
-        max-width: 300px;
+        max-width: 450px;
+        max-height: 550px;
+        width: auto;
         height: auto;
     };
     & .image-gallery-swipe {
@@ -227,6 +234,13 @@ const StyledButtonCart = styled(Button)`
 
 `
 
+const StyledDivDescription = styled.div`
+        
+        padding-top: 120px;
+        padding-left: 40px;
+        padding-right: 40px;
+`;
+
 const StyledDivPolicy = styled.div`
         text-align: center;
         padding-top: 30px;
@@ -243,8 +257,13 @@ const StyledTypographyRelateditems = styled(Typography)`
 `;
 
 const Product = () => {
+    const [imageSrc, setImageSrc] = useState([]);
     const [colorSelect, setColorSelect] = useState("0");
     const [sizeSelect, setSizeSelect] = useState("0");
+    const [editorState, setEditorState] = useState(
+      EditorState.createEmpty()
+    );
+    const { productDetail } = useSelector(state => state.productReducer);
 
     const onChangeColor = useCallback((e) => {
       setColorSelect(e.target.value);
@@ -253,6 +272,23 @@ const Product = () => {
       setSizeSelect(e.target.value);
     },[sizeSelect])
     
+    useEffect(() => {
+      setImageSrc(productDetail.ProductImages.map((image, index) => ({
+        original: imgSrcUrl + image.src,
+        thumbnail: imgSrcUrl + image.src,
+      })))
+    }, [productDetail && productDetail.ProductImages])
+
+    useEffect(() => {
+      if(productDetail){
+        const description = convertFromRaw(JSON.parse(productDetail.description));
+        setEditorState(EditorState.createWithContent(description));
+      }
+
+    }, [productDetail && productDetail.description]);
+
+
+
     return(
        <div>
            {/* upper */}
@@ -262,139 +298,146 @@ const Product = () => {
            {/* lower */}
            <StyledDivProductLowerSection>
                <StyledDivContainer>
-                    <StyledDivMain>
-                        <StyledGridContainer>
-                            <GridItem md={6} sm={6}>
-                                <ImageGallery
-                                    showFullscreenButton={false}
-                                    showPlayButton={false}
-                                    startIndex={3}
-                                    items={images}
-                                    />
-                            </GridItem>
-                            <GridItem md={6} sm={6}>
-                              <StyledTypographyTitle variant='h4'>Becky Silk Blazer</StyledTypographyTitle>
-                              <StyledTypographyPrice variant='h4'>$150</StyledTypographyPrice>
-                              <Accordion
-                                active={0}
-                                activeColor='rose'
-                                collapses={[
-                                  {
-                                    title: "Description",
-                                    content: (
-                                      <p>
-                                        Eres{"'"} daring {"'"}Grigri Fortune{"'"} swimsuit has
-                                        the fit and coverage of a bikini in a one-piece
-                                        silhouette. This fuchsia style is crafted from the
-                                        label{"'"}s sculpting peau douce fabric and has
-                                        flattering cutouts through the torso and back. Wear
-                                        yours with mirrored sunglasses on vacation.
-                                      </p>
-                                    )
-                                  },
-                                  {
-                                    title: "Designer Information",
-                                    content: (
-                                      <p>
-                                        An infusion of West Coast cool and New York attitude,
-                                        Rebecca Minkoff is synonymous with It girl style.
-                                        Minkoff burst on the fashion scene with her
-                                        best-selling {"'"}Morning After Bag{"'"} and later
-                                        expanded her offering with the Rebecca Minkoff
-                                        Collection - a range of luxe city staples with a {'"'}
-                                        downtown romantic{'"'} theme.
-                                      </p>
-                                    )
-                                  },
-                                  {
-                                    title: "Details and Care",
-                                    content: (
-                                      <ul>
-                                        <li>Storm and midnight-blue stretch cotton-blend</li>
-                                        <li>
-                                          Notch lapels, functioning buttoned cuffs, two front
-                                          flap pockets, single vent, internal pocket
-                                        </li>
-                                        <li>Two button fastening</li>
-                                        <li>84% cotton, 14% nylon, 2% elastane</li>
-                                        <li>Dry clean</li>
-                                      </ul>
-                                    )
-                                  }
-                                ]}
-                              />
-                              <StyledGridContainerSelection>
-                                <GridItem md={6} sm={6}>
-                                  <label>
-                                    <Typography>Select color</Typography>
-                                  </label>
-                                  <StyledFormControl
-                                    fullWidth>
-                                      <StyledSelect
-                                        value={colorSelect}
-                                        onChange={onChangeColor}
-                                        inputProps={{
-                                          name: 'colorSelect',
-                                          id: 'color-select'
-                                        }}
-                                      >
-                                        <StyledMenuItem
-                                          value="0">
-                                            Rose
-                                        </StyledMenuItem>
-                                        <StyledMenuItem
-                                          value="1">
-                                            Gray
-                                        </StyledMenuItem>
-                                        <StyledMenuItem
-                                          value="2">
-                                            White
-                                        </StyledMenuItem>
-                                      </StyledSelect>
-                                  </StyledFormControl>
-                                </GridItem>
-                                <GridItem md={6} sm={6}>
-                                  <label>
-                                    <Typography>Select size</Typography>
-                                  </label>
-                                  <StyledFormControl
-                                    fullWidth>
-                                      <StyledSelect
-                                        value={sizeSelect}
-                                        onChange={onChangeSize}
-                                        inputProps={{
-                                          name: 'sizeSelect',
-                                          id: 'size-select'
-                                        }}
-                                      >
-                                        <StyledMenuItem
-                                          value="0">
-                                            Small
-                                        </StyledMenuItem>
-                                        <StyledMenuItem
-                                          value="1">
-                                            Medium
-                                        </StyledMenuItem>
-                                        <StyledMenuItem
-                                          value="2">
-                                            Large
-                                        </StyledMenuItem>
-                                      </StyledSelect>
-                                  </StyledFormControl>
-                                </GridItem>
-                              </StyledGridContainerSelection>
-                              <StyledGridContainerCart>
-                                <StyledButtonBuy>
-                                  Purchase it
-                                </StyledButtonBuy>
-                                <StyledButtonCart>
-                                  Add to Cart &nbsp; <ShoppingCart/>
-                                </StyledButtonCart>
-                              </StyledGridContainerCart>
-                            </GridItem>
-                        </StyledGridContainer>
-                      </StyledDivMain>
-                    
+                  <StyledDivMain>
+                      <StyledGridContainer>
+                          <GridItem md={6} sm={6}>
+                              <ImageGallery
+                                  showFullscreenButton={false}
+                                  showPlayButton={false}
+                                  showNav={false}
+                                  startIndex={3}
+                                  items={productDetail && imageSrc}
+                                  />
+                          </GridItem>
+                          <GridItem md={6} sm={6}>
+                            <StyledTypographyTitle variant='h5'>{productDetail && productDetail.productName}</StyledTypographyTitle>
+                            <StyledTypographyPrice variant='h3'>{productDetail && productDetail.ProductInventories[0].price}원</StyledTypographyPrice>
+                            <Accordion
+                              active={0}
+                              activeColor='rose'
+                              collapses={[
+                                {
+                                  title: "Description",
+                                  content: (
+                                    <p>
+                                      Eres{"'"} daring {"'"}Grigri Fortune{"'"} swimsuit has
+                                      the fit and coverage of a bikini in a one-piece
+                                      silhouette. This fuchsia style is crafted from the
+                                      label{"'"}s sculpting peau douce fabric and has
+                                      flattering cutouts through the torso and back. Wear
+                                      yours with mirrored sunglasses on vacation.
+                                    </p>
+                                  )
+                                },
+                                {
+                                  title: "Designer Information",
+                                  content: (
+                                    <p>
+                                      An infusion of West Coast cool and New York attitude,
+                                      Rebecca Minkoff is synonymous with It girl style.
+                                      Minkoff burst on the fashion scene with her
+                                      best-selling {"'"}Morning After Bag{"'"} and later
+                                      expanded her offering with the Rebecca Minkoff
+                                      Collection - a range of luxe city staples with a {'"'}
+                                      downtown romantic{'"'} theme.
+                                    </p>
+                                  )
+                                },
+                                {
+                                  title: "Details and Care",
+                                  content: (
+                                    <ul>
+                                      <li>Storm and midnight-blue stretch cotton-blend</li>
+                                      <li>
+                                        Notch lapels, functioning buttoned cuffs, two front
+                                        flap pockets, single vent, internal pocket
+                                      </li>
+                                      <li>Two button fastening</li>
+                                      <li>84% cotton, 14% nylon, 2% elastane</li>
+                                      <li>Dry clean</li>
+                                    </ul>
+                                  )
+                                }
+                              ]}
+                            />
+                            <StyledGridContainerSelection>
+                              <GridItem md={6} sm={6}>
+                                <label>
+                                  <Typography>Select color</Typography>
+                                </label>
+                                <StyledFormControl
+                                  fullWidth>
+                                    <StyledSelect
+                                      value={colorSelect}
+                                      onChange={onChangeColor}
+                                      inputProps={{
+                                        name: 'colorSelect',
+                                        id: 'color-select'
+                                      }}
+                                    >
+                                      <StyledMenuItem
+                                        value="0">
+                                          Rose
+                                      </StyledMenuItem>
+                                      <StyledMenuItem
+                                        value="1">
+                                          Gray
+                                      </StyledMenuItem>
+                                      <StyledMenuItem
+                                        value="2">
+                                          White
+                                      </StyledMenuItem>
+                                    </StyledSelect>
+                                </StyledFormControl>
+                              </GridItem>
+                              <GridItem md={6} sm={6}>
+                                <label>
+                                  <Typography>Select size</Typography>
+                                </label>
+                                <StyledFormControl
+                                  fullWidth>
+                                    <StyledSelect
+                                      value={sizeSelect}
+                                      onChange={onChangeSize}
+                                      inputProps={{
+                                        name: 'sizeSelect',
+                                        id: 'size-select'
+                                      }}
+                                    >
+                                      <StyledMenuItem
+                                        value="0">
+                                          Small
+                                      </StyledMenuItem>
+                                      <StyledMenuItem
+                                        value="1">
+                                          Medium
+                                      </StyledMenuItem>
+                                      <StyledMenuItem
+                                        value="2">
+                                          Large
+                                      </StyledMenuItem>
+                                    </StyledSelect>
+                                </StyledFormControl>
+                              </GridItem>
+                            </StyledGridContainerSelection>
+                            <StyledGridContainerCart>
+                              <StyledButtonBuy>
+                                Purchase it
+                              </StyledButtonBuy>
+                              <StyledButtonCart>
+                                Add to Cart &nbsp; <ShoppingCart/>
+                              </StyledButtonCart>
+                            </StyledGridContainerCart>
+                          </GridItem>
+                      </StyledGridContainer>
+                    </StyledDivMain>
+
+                    <StyledDivDescription>
+                      <Editor
+                        editorState={editorState}
+                      />                  
+                    </StyledDivDescription>
+
                     <StyledDivPolicy>
                       <StyledGridContainer>
                         <GridItem md={4} sm={4}>

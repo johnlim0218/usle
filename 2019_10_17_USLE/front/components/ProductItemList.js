@@ -52,13 +52,16 @@ const StyledButton = styled(Button)`
   }
 `;
 
-const imgSrcUrl = 'http://localhost:3065/images/';
+export const imgSrcUrl = 'http://localhost:3065/images/';
 
 const ProductItemList = (props) => {
   const { category, name, price, despcription, imgsrc, item } = props;
       
       return (
-        
+        <Link
+          href={{ pathname: '/product', query: { id: item.id }}}
+          as={`/product/${item.id}`}
+        >
           <Card product>
             <CardHeader image>
               <a>
@@ -100,6 +103,7 @@ const ProductItemList = (props) => {
               </div>
             </StyledCardFooter>
           </Card>
+        </Link>  
        
     )
 }

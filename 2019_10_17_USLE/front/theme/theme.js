@@ -67,7 +67,7 @@ const container = {
     maxWidth: 720
   },
   "@media (min-width: 1280px)": {
-    maxWidth: 960
+    maxWidth: 1020
   },
   "@media (min-width: 1920px)": {
     maxWidth: 1140

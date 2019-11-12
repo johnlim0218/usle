@@ -7,7 +7,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
 
-import CategoryAdd from '../../components/Admin/BrandAdd';
+import CategoryAdd from '../../components/Admin/CategoryAdd';
 
 import Tooltip from '../../components/Tooltip';
 import Typography from '../../components/Typography'
