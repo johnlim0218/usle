@@ -115,13 +115,13 @@ const AppAppBarLogOut = () => {
                 <StyeldDivInfoBar>
                     <a>FREE ZERO WASTE + PLASTIC FREE SHIPPING ON ALL USA ORDERS OVER $25*</a>
                     <StyledBreadCrumbs aria-label="breadcrumb">
-                        <Link>
-                            <StyledATag href='/signin'>
+                        <Link href='/signin'>
+                            <StyledATag>
                                 Log In
                             </StyledATag>
                         </Link>
-                        <Link>
-                            <StyledATag href='/signup'>
+                        <Link href='/signup'>
+                            <StyledATag>
                                 Sign Up
                             </StyledATag>
                         </Link>

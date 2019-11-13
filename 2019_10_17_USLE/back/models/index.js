@@ -12,7 +12,8 @@ db.Product = require('./product')(sequelize, Sequelize);
 db.ProductBrand = require('./productBrand')(sequelize, Sequelize);
 db.ProductCategory = require('./productCategory')(sequelize, Sequelize);
 db.ProductImage = require('./productImage')(sequelize, Sequelize);
-db.ProductInventory = require('./productInventory')(sequelize, Sequelize);
+db.ProductOption = require('./productOption')(sequelize, Sequelize);
+db.ProductOptionSelection = require('./productOptionSelection')(sequelize, Sequelize);
 
 db.Order = require('./order')(sequelize, Sequelize);
 db.OrderDetail = require('./orderDetail')(sequelize, Sequelize);

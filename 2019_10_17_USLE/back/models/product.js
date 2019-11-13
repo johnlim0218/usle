@@ -20,7 +20,7 @@ module.exports = (sequelize, DataTypes) => {
 
     Product.associate = (db) => {
         db.Product.hasMany(db.ProductImage);
-        db.Product.hasMany(db.ProductInventory);
+        db.Product.hasMany(db.ProductOption);
         db.Product.hasMany(db.Comment, {as: 'review'});
         db.Product.belongsTo(db.ProductBrand);
         db.Product.belongsTo(db.ProductCategory);

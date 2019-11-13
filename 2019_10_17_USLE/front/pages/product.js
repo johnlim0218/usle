@@ -77,12 +77,12 @@ const MainRaised = css`
     @media (max-width: 576px) {
         margin-top: -30px;
     };
-    @media (max-width: 830px) {
-        margin-left: 10px;
-        margin-right: 10px;
-    };
+    // @media (max-width: 830px) {
+    //     margin-left: 10px;
+    //     margin-right: 10px;
+    // };
     // margin: -40vh 0 0;
-    padding: 40px;
+    padding: 35px;
     
     border-radius: 6px;
     box-shadow: 0 16px 24px 2px rgba(0, 0, 0, 0.14), 0 6px 30px 5px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(0, 0, 0, 0.2);
@@ -100,14 +100,18 @@ export const StyledDivMain = styled.div`
 
 const StyledGridContainer = styled(GridContainer)`
     & .image-gallery-slides {
-        height: 550px;
+        height: 560px;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
     };
     & .image-gallery-slide img {
-        border-radius: 3px;
-        max-width: 450px;
-        max-height: 550px;
-        width: auto;
-        height: auto;
+        // border-radius: 3px;
+        // max-width: 450px;
+        // max-height: 550px;
+        // width: auto;
+        // height: auto;
     };
     & .image-gallery-swipe {
         margin: 30px 0px;
@@ -144,10 +148,13 @@ const StyledGridContainer = styled(GridContainer)`
         }
       }
 `
+const StyledDivShortDescriptionWrapper = styled.div`
+      height: 500px
+`
 const StyledGridContainerSelection = styled(GridContainer)`
     padding-top: 50px;
 `
-const StyledGridContainerCart = styled(GridContainer)`
+const StyledGridContainerButton = styled(GridContainer)`
     width: auto;
     float: right;
     padding-top: 20px
@@ -258,8 +265,8 @@ const StyledTypographyRelateditems = styled(Typography)`
 
 const Product = () => {
     const [imageSrc, setImageSrc] = useState([]);
-    const [colorSelect, setColorSelect] = useState("0");
-    const [sizeSelect, setSizeSelect] = useState("0");
+    const [colorSelect, setColorSelect] = useState(null);
+    const [sizeSelect, setSizeSelect] = useState(null);
     const [editorState, setEditorState] = useState(
       EditorState.createEmpty()
     );
@@ -267,10 +274,15 @@ const Product = () => {
 
     const onChangeColor = useCallback((e) => {
       setColorSelect(e.target.value);
-    },[colorSelect]);
+    },[colorSelect, sizeSelect]);
+
     const onChangeSize = useCallback((e) => {
+      if(colorSelect === null){
+        
+        return null;
+      }
       setSizeSelect(e.target.value);
-    },[sizeSelect])
+    },[colorSelect, sizeSelect])
     
     useEffect(() => {
       setImageSrc(productDetail.ProductImages.map((image, index) => ({
@@ -309,57 +321,62 @@ const Product = () => {
                                   items={productDetail && imageSrc}
                                   />
                           </GridItem>
+                          
                           <GridItem md={6} sm={6}>
-                            <StyledTypographyTitle variant='h5'>{productDetail && productDetail.productName}</StyledTypographyTitle>
-                            <StyledTypographyPrice variant='h3'>{productDetail && productDetail.ProductInventories[0].price}원</StyledTypographyPrice>
-                            <Accordion
-                              active={0}
-                              activeColor='rose'
-                              collapses={[
-                                {
-                                  title: "Description",
-                                  content: (
-                                    <p>
-                                      Eres{"'"} daring {"'"}Grigri Fortune{"'"} swimsuit has
-                                      the fit and coverage of a bikini in a one-piece
-                                      silhouette. This fuchsia style is crafted from the
-                                      label{"'"}s sculpting peau douce fabric and has
-                                      flattering cutouts through the torso and back. Wear
-                                      yours with mirrored sunglasses on vacation.
-                                    </p>
-                                  )
-                                },
-                                {
-                                  title: "Designer Information",
-                                  content: (
-                                    <p>
-                                      An infusion of West Coast cool and New York attitude,
-                                      Rebecca Minkoff is synonymous with It girl style.
-                                      Minkoff burst on the fashion scene with her
-                                      best-selling {"'"}Morning After Bag{"'"} and later
-                                      expanded her offering with the Rebecca Minkoff
-                                      Collection - a range of luxe city staples with a {'"'}
-                                      downtown romantic{'"'} theme.
-                                    </p>
-                                  )
-                                },
-                                {
-                                  title: "Details and Care",
-                                  content: (
-                                    <ul>
-                                      <li>Storm and midnight-blue stretch cotton-blend</li>
-                                      <li>
-                                        Notch lapels, functioning buttoned cuffs, two front
-                                        flap pockets, single vent, internal pocket
-                                      </li>
-                                      <li>Two button fastening</li>
-                                      <li>84% cotton, 14% nylon, 2% elastane</li>
-                                      <li>Dry clean</li>
-                                    </ul>
-                                  )
-                                }
-                              ]}
-                            />
+                            <StyledDivShortDescriptionWrapper>
+                              <StyledTypographyTitle variant='h5'>{productDetail && productDetail.productName}</StyledTypographyTitle>
+                              <StyledTypographyPrice variant='h3'>{productDetail && productDetail.ProductInventories[0].price}원</StyledTypographyPrice>
+                              <Accordion
+                                active={0}
+                                activeColor='rose'
+                                collapses={[
+                                  {
+                                    title: "Description",
+                                    content: (
+                                      <p>
+                                        Eres{"'"} daring {"'"}Grigri Fortune{"'"} swimsuit has
+                                        the fit and coverage of a bikini in a one-piece
+                                        silhouette. This fuchsia style is crafted from the
+                                        label{"'"}s sculpting peau douce fabric and has
+                                        flattering cutouts through the torso and back. Wear
+                                        yours with mirrored sunglasses on vacation.
+                                      </p>
+                                    )
+                                  },
+                                  {
+                                    title: "Designer Information",
+                                    content: (
+                                      <p>
+                                        An infusion of West Coast cool and New York attitude,
+                                        Rebecca Minkoff is synonymous with It girl style.
+                                        Minkoff burst on the fashion scene with her
+                                        best-selling {"'"}Morning After Bag{"'"} and later
+                                        expanded her offering with the Rebecca Minkoff
+                                        Collection - a range of luxe city staples with a {'"'}
+                                        downtown romantic{'"'} theme.
+                                      </p>
+                                    )
+                                  },
+                                  {
+                                    title: "Details and Care",
+                                    content: (
+                                      <ul>
+                                        <li>Storm and midnight-blue stretch cotton-blend</li>
+                                        <li>
+                                          Notch lapels, functioning buttoned cuffs, two front
+                                          flap pockets, single vent, internal pocket
+                                        </li>
+                                        <li>Two button fastening</li>
+                                        <li>84% cotton, 14% nylon, 2% elastane</li>
+                                        <li>Dry clean</li>
+                                      </ul>
+                                    )
+                                  }
+                                ]}
+                              />
+                            </StyledDivShortDescriptionWrapper>
+
+
                             <StyledGridContainerSelection>
                               <GridItem md={6} sm={6}>
                                 <label>
@@ -375,21 +392,17 @@ const Product = () => {
                                         id: 'color-select'
                                       }}
                                     >
-                                      <StyledMenuItem
-                                        value="0">
-                                          Rose
-                                      </StyledMenuItem>
-                                      <StyledMenuItem
-                                        value="1">
-                                          Gray
-                                      </StyledMenuItem>
-                                      <StyledMenuItem
-                                        value="2">
-                                          White
-                                      </StyledMenuItem>
+                                      {productDetail && productDetail.ProductInventories.map((value, index) => (
+                                        <StyledMenuItem
+                                          value={index}>
+                                            {value.color}
+                                        </StyledMenuItem>  
+                                      ))}
                                     </StyledSelect>
                                 </StyledFormControl>
                               </GridItem>
+
+
                               <GridItem md={6} sm={6}>
                                 <label>
                                   <Typography>Select size</Typography>
@@ -420,14 +433,16 @@ const Product = () => {
                                 </StyledFormControl>
                               </GridItem>
                             </StyledGridContainerSelection>
-                            <StyledGridContainerCart>
+                            
+                            
+                            <StyledGridContainerButton>
                               <StyledButtonBuy>
                                 Purchase it
                               </StyledButtonBuy>
                               <StyledButtonCart>
                                 Add to Cart &nbsp; <ShoppingCart/>
                               </StyledButtonCart>
-                            </StyledGridContainerCart>
+                            </StyledGridContainerButton>
                           </GridItem>
                       </StyledGridContainer>
                     </StyledDivMain>

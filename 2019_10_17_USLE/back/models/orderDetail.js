@@ -20,7 +20,7 @@ module.exports = (sequelize, DataTypes) => {
 
     OrderDetail.associate = (db) => {
         db.OrderDetail.belongsTo(db.Coupon);
-        db.OrderDetail.belongsTo(db.ProductInventory);
+        db.OrderDetail.belongsTo(db.ProductOption);
         db.OrderDetail.belongsTo(db.Order);
     }
 

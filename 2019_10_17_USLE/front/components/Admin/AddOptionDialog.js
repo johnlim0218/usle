@@ -35,13 +35,25 @@ const StyledTextField = styled(RFTextField)`
 
 const AddOptionDialog = (props) => {
     const { open, close, option, setOption, ...others } = props;
-    
+    const [color, setColor] = useState(null);
     const dispatch = useDispatch();
 
     const validate = ((values) => {
         // const errors = required(['categoryName'], values);
         return null;
     })
+
+    const value = ((value) => {
+        console.log(value);
+    })
+
+    const onChangeColorField = useCallback((e) => {
+        console.log(e);
+    }, []);
+
+    const onChangeSizeField = useCallback((e) => {
+        
+    }, [])
 
     const onSubmit = useCallback((values) => {
       
@@ -58,7 +70,7 @@ const AddOptionDialog = (props) => {
             <DialogTitle>Add Option</DialogTitle>
             <Form 
                 onSubmit={onSubmit}
-                // subscriptrion - true로 설정한 Field의 속성 값이 바뀔 때 마다 렌더링 해준다.
+                // subscription - true로 설정한 Field의 속성 값이 바뀔 때 마다 렌더링 해준다.
                 subscription={{ submitting: true }}
                 validate={validate}
                 render={({ handleSubmit, submitting }) => (
@@ -77,6 +89,8 @@ const AddOptionDialog = (props) => {
                                 required
                                 size="small"
                                 noBorder={false}
+                                inputOnChange={onChangeColorField}
+                                
                             />
                             <Field
                                 autoComplete="Size"
@@ -89,6 +103,7 @@ const AddOptionDialog = (props) => {
                                 required
                                 size="small"
                                 noBorder={false}
+                                
                             />
                             <Field
                                 autoComplete="Quantity"
