@@ -6,16 +6,6 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false,
             defaultValue: 'one', 
         },
-        quantity: {
-            type: DataTypes.INTEGER,
-            allowNull: false,
-            defaultValue: 100,
-        },
-        price: {
-            type: DataTypes.INTEGER,
-            allowNull: false,
-            defaultValue: 1,
-        }
     }, {
         timeStamps: true,
         paranoid: true,
@@ -25,8 +15,7 @@ module.exports = (sequelize, DataTypes) => {
     });
 
     ProductOptionSelection.associate = (db) => {
-        db.ProductOptionSelection.hasMany(db.ProductOptionSelection);
-        db.ProductOptionSelection.belongsTo(db.ProductOptionSelection);
+        db.ProductOptionSelection.hasMany(db.ProductInventory);
         db.ProductOptionSelection.belongsTo(db.ProductOption);
     }
 

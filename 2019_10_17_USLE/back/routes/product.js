@@ -26,7 +26,7 @@ const upload = multer({
 })
 
 router.post('/add', upload.none(), async(req, res, next) => {
-    console.log(req.body);
+    
     try{
         const newProduct = await db.Product.create({
             productName: req.body.name,
@@ -63,6 +63,7 @@ router.post('/add', upload.none(), async(req, res, next) => {
                 await newProduct.addProductInventory(newProductOption);
             }
         } 
+        
         
         if(req.body.image){
             if(Array.isArray(req.body.image)){
@@ -123,6 +124,26 @@ router.get('/:id', async(req, res, next) => {
         console.error(e);
         return next(e);
     }
-})
+});
+
+router.get('/option/name/:name', async(req, res, next) => {
+    try{
+        const productOption = await db.ProductOption.findOne({
+            where: {
+                optionName: req.params.name,
+            },
+            include: [{
+                model: db.ProductOptionSelection,
+                attributes: ['id', 'selectionName'],
+            }]
+        });
+
+        return res.json(productOption);
+        
+    } catch(e) {
+        console.error(e);
+        return next(e);
+    }
+});
 
 module.exports = router;

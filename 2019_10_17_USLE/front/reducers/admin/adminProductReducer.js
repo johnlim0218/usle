@@ -7,6 +7,9 @@ const initialState = {
   uploadImagesErrorReason: '',
   isRemovingImage: false,
   removeImageErrorReason: '',
+  optionData: null,
+  isSearchingOptionName: false,
+  searchOptionNameErrorReason: '',
 };
 
 export const NEW_PRODUCT_POST_REQUEST = "NEW_PRODUCT_POST_REQUEST";
@@ -20,6 +23,10 @@ export const UPLOAD_IMAGES_FAILURE = "UPLOAD_IMAGES_FAILURE";
 export const REMOVE_IMAGE_REQUEST = "REMOVE_IMAGE_REQUEST";
 export const REMOVE_IMAGE_SUCCESS = "REMOVE_IMAGE_SUCCESS";
 export const REMOVE_IMAGE_FAILURE = "REMOVE_IMAGE_FAILURE";
+
+export const SEARCH_OPTION_NAME_REQUEST = "SEARCH_OPTION_NAME_REQUEST";
+export const SEARCH_OPTION_NAME_SUCCESS = "SEARCH_OPTION_NAME_SUCCESS";
+export const SEARCH_OPTION_NAME_FAILURE = "SEARCH_OPTION_NAME_FAILURE";
 
 const adminProductReducer = (state = initialState, action) => {
     switch(action.type){
@@ -84,6 +91,29 @@ const adminProductReducer = (state = initialState, action) => {
                 removeImageErrorReason: action.error
             }
         };
+
+        case SEARCH_OPTION_NAME_REQUEST: {
+            return{
+                ...state,
+                isSearchingOptionName: true,
+            }
+        }
+
+        case SEARCH_OPTION_NAME_SUCCESS: {
+            return{
+                ...state,
+                isSearchingOptionName: false,
+                optionData: action.data,
+            }
+        }
+
+        case SEARCH_OPTION_NAME_FAILURE: {
+            return{
+                ...state,
+                isSearchingOptionName: false,
+                searchOptionNameErrorReason: action.error,
+            }
+        }
 
         default:
             return{

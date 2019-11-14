@@ -16,7 +16,7 @@ module.exports = (sequelize, DataTypes) => {
 
     Cart.associate = (db) => {
         db.Cart.belongsTo(db.User);
-        db.Cart.belongsTo(db.ProductOption);
+        db.Cart.belongsTo(db.ProductInventory);
     }
 
     return Cart;

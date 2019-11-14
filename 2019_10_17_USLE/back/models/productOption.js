@@ -16,11 +16,7 @@ module.exports = (sequelize, DataTypes) => {
     });
 
     ProductOption.associate = (db) => {
-        db.ProductOption.hasMany(db.Cart);
-        db.ProductOption.hasMany(db.OrderDetail);
         db.ProductOption.hasMany(db.ProductOptionSelection);
-        db.ProductOption.belongsTo(db.Product);
-        db.ProductOption.belongsToMany(db.Coupon, {through: 'Applicable', as:'ApplicableProduct'})
     }
 
     return ProductOption;

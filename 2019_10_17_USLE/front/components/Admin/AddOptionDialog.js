@@ -9,6 +9,7 @@ import Container from '@material-ui/core/Container';
 import TextField from '@material-ui/core/TextField';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import RemoveCircleOutlineIcon from '@material-ui/icons/RemoveCircleOutline';
+import CreateIcon from '@material-ui/icons/Create';
 
 import Link from 'next/link';
 import Router from 'next/router';
@@ -18,9 +19,15 @@ import { required } from '../../form/validation';
 import Button from '../Button';
 import Typography from '../Typography';
 import RFTextField from '../../form/RFTextField';
+import GridContainer from '../../components/Grid/GridContainer';
+import GridItem from '../../components/Grid/GridItem';
 import AppForm from '../../views/AppForm';
 import FormFeedback from '../../form/FormFeedback';
 import FormButton from '../../form/FormButton';
+
+import {
+    SEARCH_OPTION_NAME_REQUEST
+} from '../../reducers/admin/adminProductReducer';
 
 const StyledForm = styled.form`
     padding:30px;
@@ -29,33 +36,42 @@ const StyledContainter = styled(Container)`
     ${props => props.theme.container}
     display: flex;
 `
+const StyledFormButton = styled(FormButton)`
+    width: 100%;
+    margin-top: 25px;
+    
+`
+const StyledDivCenter = styled.div`
+    text-align: center;
+`
 const StyledTextField = styled(RFTextField)`
     padding-right: 5px;
 `
 
 const AddOptionDialog = (props) => {
     const { open, close, option, setOption, ...others } = props;
-    const [color, setColor] = useState(null);
+    const [optionIndex, setOptionIndex] = useState(0);
+    const { optionData } = useSelector(state => state.adminProductReducer);
+                                            
     const dispatch = useDispatch();
-
+    
     const validate = ((values) => {
         // const errors = required(['categoryName'], values);
         return null;
     })
-
-    const value = ((value) => {
-        console.log(value);
-    })
-
-    const onChangeColorField = useCallback((e) => {
-        console.log(e);
+    
+    const onSubmitOptionName = useCallback((value) => {
+        dispatch({
+            type: SEARCH_OPTION_NAME_REQUEST,
+            data: value.optionName,
+        })
     }, []);
 
-    const onChangeSizeField = useCallback((e) => {
-        
-    }, [])
+    const onSubmitOptionSelections = useCallback((values) => {
 
-    const onSubmit = useCallback((values) => {
+    }, []);
+
+    const onSubmitAddOptions = useCallback((values) => {
       
         setOption((prevState) => ([
           ...prevState,
@@ -66,10 +82,10 @@ const AddOptionDialog = (props) => {
     
 
     return(
-        <Dialog maxWidth='md' open={open}>
+        <Dialog maxWidth='xl' open={open}>
             <DialogTitle>Add Option</DialogTitle>
             <Form 
-                onSubmit={onSubmit}
+                onSubmit={onSubmitOptionName}
                 // subscription - true로 설정한 Field의 속성 값이 바뀔 때 마다 렌더링 해준다.
                 subscription={{ submitting: true }}
                 validate={validate}
@@ -77,20 +93,110 @@ const AddOptionDialog = (props) => {
                     <StyledForm 
                         onSubmit={handleSubmit}
                         noValidate>
-                        <StyledContainter>
+                            <GridContainer>
+                                <GridItem xs={3}>
+                                    <Field
+                                        component={StyledTextField}
+                                        disabled={submitting}
+                                        label="OptionName"
+                                        margin="normal"
+                                        name="optionName"
+                                        required
+                                        size="small"
+                                        noBorder={false}
+                                        fullWidth
+                                    />
+                                </GridItem>
+                             
+                                <GridItem xs={5}>
+                                    <StyledFormButton
+                                        type="submit"
+                                        disabled={submitting}
+                                    >
+                                        {submitting ? 'In progress…' : 'Add'}
+                                    </StyledFormButton>    
+                                </GridItem>
+                            </GridContainer>
+                        </StyledForm>
+                    )}/>
+
+            <Form
+                onSubmit={onSubmitOptionSelections}
+                subscription={{ submitting: true}}
+                validate={validate}
+                render={({ handleSubmit, submitting }) => (
+                    <StyledForm 
+                        onSubmit={handleSubmit}
+                        noValidate>
+                             <GridContainer>
+                                <GridItem xs={3}>
+                                    <Field
+                                        component={StyledTextField}
+                                        disabled={submitting}
+                                        label="OptionName"
+                                        margin="normal"
+                                        name="optionName"
+                                        required
+                                        size="small"
+                                        noBorder={false}
+                                        fullWidth
+                                    />
+                                </GridItem>
+                                <GridItem xs={6}>
+                                    <Field
+                                        component={StyledTextField}
+                                        disabled={submitting}
+                                        label="OptionSelection"
+                                        margin="normal"
+                                        name="optionSelection"
+                                        required
+                                        size="small"
+                                        noBorder={false}
+                                        fullWidth
+                                    />
+                                </GridItem>
+                                <GridItem xs={1}>
+                                    <StyledFormButton
+                                        size='small'
+                                        justIcon
+                                        round
+                                    >
+                                    <CreateIcon/>
+                                    </StyledFormButton>
+                                </GridItem>
+                                <GridItem xs={1}>
+                                    <StyledFormButton
+                                        size='small'
+                                        justIcon
+                                        round
+                                    >
+                                        <RemoveCircleOutlineIcon/>
+                                    </StyledFormButton>
+                                </GridItem>
+                            </GridContainer>
+                    </StyledForm>         
+                )}/>
+
+            <Form 
+                onSubmit={onSubmitAddOptions}
+                // subscription - true로 설정한 Field의 속성 값이 바뀔 때 마다 렌더링 해준다.
+                subscription={{ submitting: true }}
+                validate={validate}
+                render={({ handleSubmit, submitting }) => (
+                    <StyledForm 
+                        onSubmit={handleSubmit}
+                        noValidate> 
                             <Field
-                                autoComplete="Color"
-                                autoFocus
                                 component={StyledTextField}
                                 disabled={submitting}
-                                label="Color"
+                                label="optionIndex"
                                 margin="normal"
-                                name="color"
+                                name="optionIndex"
                                 required
                                 size="small"
                                 noBorder={false}
-                                inputOnChange={onChangeColorField}
-                                
+                                initialValue={optionIndex}
+                                hidden
                             />
                             <Field
                                 autoComplete="Size"
@@ -103,7 +209,18 @@ const AddOptionDialog = (props) => {
                                 required
                                 size="small"
                                 noBorder={false}
-                                
+                            />
+                        
+                            <Field
+                                autoComplete="Price"
+                                component={StyledTextField}
+                                disabled={submitting}
+                                label="Price"
+                                margin="normal"
+                                name="price"
+                                required
+                                size="small"
+                                noBorder={false}
                             />
                             <Field
                                 autoComplete="Quantity"
@@ -116,8 +233,8 @@ const AddOptionDialog = (props) => {
                                 size="small"
                                 noBorder={false}
                             />
-                        
-                            <Button
+
+                            {/* <Button
                                 size='small'
                                 justIcon
                                 round
@@ -130,9 +247,9 @@ const AddOptionDialog = (props) => {
                                 round
                             >
                                 <RemoveCircleOutlineIcon/>
-                            </Button>
-                        </StyledContainter>
-                       
+                            </Button> */}
+                        
+                    
                         <FormButton
                             type="submit"
                             disabled={submitting}
