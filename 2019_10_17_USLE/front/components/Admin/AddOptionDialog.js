@@ -21,6 +21,7 @@ import Typography from '../Typography';
 import RFTextField from '../../form/RFTextField';
 import GridContainer from '../../components/Grid/GridContainer';
 import GridItem from '../../components/Grid/GridItem';
+import CheckboxGroup from '../../components/Admin/CheckboxGroup';
 import AppForm from '../../views/AppForm';
 import FormFeedback from '../../form/FormFeedback';
 import FormButton from '../../form/FormButton';
@@ -128,52 +129,63 @@ const AddOptionDialog = (props) => {
                     <StyledForm 
                         onSubmit={handleSubmit}
                         noValidate>
-                             <GridContainer>
-                                <GridItem xs={3}>
-                                    <Field
-                                        component={StyledTextField}
-                                        disabled={submitting}
-                                        label="OptionName"
-                                        margin="normal"
-                                        name="optionName"
-                                        required
-                                        size="small"
-                                        noBorder={false}
-                                        fullWidth
-                                    />
-                                </GridItem>
-                                <GridItem xs={6}>
-                                    <Field
-                                        component={StyledTextField}
-                                        disabled={submitting}
-                                        label="OptionSelection"
-                                        margin="normal"
-                                        name="optionSelection"
-                                        required
-                                        size="small"
-                                        noBorder={false}
-                                        fullWidth
-                                    />
-                                </GridItem>
-                                <GridItem xs={1}>
-                                    <StyledFormButton
-                                        size='small'
-                                        justIcon
-                                        round
-                                    >
-                                    <CreateIcon/>
-                                    </StyledFormButton>
-                                </GridItem>
-                                <GridItem xs={1}>
-                                    <StyledFormButton
-                                        size='small'
-                                        justIcon
-                                        round
-                                    >
-                                        <RemoveCircleOutlineIcon/>
-                                    </StyledFormButton>
-                                </GridItem>
-                            </GridContainer>
+                            <GridContainer>
+                                    <GridItem xs={3}>
+                                        Option
+                                    </GridItem>
+                                    <GridItem xs={6}>
+                                        Selection
+                                    </GridItem>
+                                </GridContainer>
+                            {optionData && optionData.map((option, index) => (
+                                <GridContainer>
+                                    <GridItem xs={3}>
+                                        <Field
+                                            component={StyledTextField}
+                                            disabled={submitting}
+                                            margin="normal"
+                                            name={option.optionName}
+                                            initialValue={option.optionName}
+                                            required
+                                            size="small"
+                                            noBorder={false}
+                                            fullWidth
+                                        />
+                                    </GridItem>
+                                    <GridItem xs={7}>
+                                        <Field
+                                            component={CheckboxGroup}
+                                            ProductOptionSelections={option && option.ProductOptionSelections}
+                                            disabled={submitting}
+                                            margin="normal"
+                                            name="optionSelection"
+                                            required
+                                            size="small"
+                                            noBorder={false}
+                                            fullWidth
+                                        />
+                                    </GridItem>
+                                    <GridItem xs={1}>
+                                        <StyledFormButton
+                                            size='small'
+                                            justIcon
+                                            round
+                                        >
+                                        <CreateIcon/>
+                                        </StyledFormButton>
+                                    </GridItem>
+                                    <GridItem xs={1}>
+                                        <StyledFormButton
+                                            size='small'
+                                            justIcon
+                                            round
+                                        >
+                                            <RemoveCircleOutlineIcon/>
+                                        </StyledFormButton>
+                                    </GridItem>
+                                </GridContainer>
+                            ))}
+                             
                     </StyledForm>         
                 )}/>
 

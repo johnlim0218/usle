@@ -7,7 +7,7 @@ const initialState = {
   uploadImagesErrorReason: '',
   isRemovingImage: false,
   removeImageErrorReason: '',
-  optionData: null,
+  optionData: [],
   isSearchingOptionName: false,
   searchOptionNameErrorReason: '',
 };
@@ -100,10 +100,18 @@ const adminProductReducer = (state = initialState, action) => {
         }
 
         case SEARCH_OPTION_NAME_SUCCESS: {
+            const optionDataIndex = state.optionData.findIndex(v => v.id === action.data.id);
+            if(optionDataIndex === -1){
+                return{
+                    ...state,
+                    isSearchingOptionName: false,
+                    optionData : [...state.optionData, action.data],
+                }
+            } 
             return{
                 ...state,
                 isSearchingOptionName: false,
-                optionData: action.data,
+                optionData : [...state.optionData],
             }
         }
 
