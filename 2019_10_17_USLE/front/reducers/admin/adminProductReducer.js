@@ -100,7 +100,8 @@ const adminProductReducer = (state = initialState, action) => {
         }
 
         case SEARCH_OPTION_NAME_SUCCESS: {
-            const optionDataIndex = state.optionData.findIndex(v => v.id === action.data.id);
+            const optionDataIndex = state.optionData.findIndex(v => v.id && v.id === action.data.id);
+            
             if(optionDataIndex === -1){
                 return{
                     ...state,

@@ -68,7 +68,6 @@ function* watchUploadImages(){
 
 
 function searchOptionNameAPI(optionName){
-    console.log(optionName);
     return axios.get(`/product/option/name/${optionName}`, {
         withCredentials: true,
     })
@@ -76,9 +75,10 @@ function searchOptionNameAPI(optionName){
 function* searchOptionName(action){
     try{
         const result = yield call(searchOptionNameAPI, action.data);
+        
         yield put({
             type: SEARCH_OPTION_NAME_SUCCESS,
-            data: result.data,
+            data: result.data ? result.data : {optionName: action.data},
         })
     } catch(e){
         console.error(e);

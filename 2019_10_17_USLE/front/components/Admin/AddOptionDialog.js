@@ -6,7 +6,6 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Container from '@material-ui/core/Container';
-import TextField from '@material-ui/core/TextField';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import RemoveCircleOutlineIcon from '@material-ui/icons/RemoveCircleOutline';
 import CreateIcon from '@material-ui/icons/Create';
@@ -69,7 +68,7 @@ const AddOptionDialog = (props) => {
     }, []);
 
     const onSubmitOptionSelections = useCallback((values) => {
-
+        console.log(values);
     }, []);
 
     const onSubmitAddOptions = useCallback((values) => {
@@ -109,10 +108,11 @@ const AddOptionDialog = (props) => {
                                     />
                                 </GridItem>
                              
-                                <GridItem xs={5}>
+                                <GridItem xs={1}>
                                     <StyledFormButton
                                         type="submit"
                                         disabled={submitting}
+                                        
                                     >
                                         {submitting ? 'In progress…' : 'Add'}
                                     </StyledFormButton>    
@@ -126,6 +126,7 @@ const AddOptionDialog = (props) => {
                 subscription={{ submitting: true}}
                 validate={validate}
                 render={({ handleSubmit, submitting }) => (
+                    
                     <StyledForm 
                         onSubmit={handleSubmit}
                         noValidate>
@@ -138,6 +139,7 @@ const AddOptionDialog = (props) => {
                                     </GridItem>
                                 </GridContainer>
                             {optionData && optionData.map((option, index) => (
+                                <>
                                 <GridContainer>
                                     <GridItem xs={3}>
                                         <Field
@@ -170,7 +172,7 @@ const AddOptionDialog = (props) => {
                                             size='small'
                                             justIcon
                                             round
-                                        >
+                                        > 
                                         <CreateIcon/>
                                         </StyledFormButton>
                                     </GridItem>
@@ -184,8 +186,19 @@ const AddOptionDialog = (props) => {
                                         </StyledFormButton>
                                     </GridItem>
                                 </GridContainer>
+                                <GridContainer>
+                                    
+                                </GridContainer>
+                                </>
                             ))}
-                             
+                            <StyledFormButton
+                                type='submit'
+                                size='small'
+                                justIcon
+                                round
+                            >
+                                GENERATE
+                            </StyledFormButton>     
                     </StyledForm>         
                 )}/>
 
