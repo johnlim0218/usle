@@ -9,6 +9,9 @@ import Container from '@material-ui/core/Container';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import RemoveCircleOutlineIcon from '@material-ui/icons/RemoveCircleOutline';
 import CreateIcon from '@material-ui/icons/Create';
+import FormControl from '@material-ui/core/FormControl';
+import FormGroup from '@material-ui/core/FormGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
 
 import Link from 'next/link';
 import Router from 'next/router';
@@ -20,7 +23,7 @@ import Typography from '../Typography';
 import RFTextField from '../../form/RFTextField';
 import GridContainer from '../../components/Grid/GridContainer';
 import GridItem from '../../components/Grid/GridItem';
-import CheckboxGroup from '../../components/Admin/CheckboxGroup';
+import Checkbox from './Checkbox';
 import AppForm from '../../views/AppForm';
 import FormFeedback from '../../form/FormFeedback';
 import FormButton from '../../form/FormButton';
@@ -155,17 +158,19 @@ const AddOptionDialog = (props) => {
                                         />
                                     </GridItem>
                                     <GridItem xs={7}>
-                                        <Field
-                                            component={CheckboxGroup}
-                                            ProductOptionSelections={option && option.ProductOptionSelections}
-                                            disabled={submitting}
-                                            margin="normal"
-                                            name="optionSelection"
-                                            required
-                                            size="small"
-                                            noBorder={false}
-                                            fullWidth
-                                        />
+                                        <FormControl 
+                                            label={option.optionName}
+                                            component="fieldset">
+                                            <FormGroup row>
+                                                {option.ProductOptionSelections && option.ProductOptionSelections.map((selection, index) => (
+                                                    <Checkbox
+                                                        key={selection}
+                                                        selection={selection}
+                                                        submitting={submitting}
+                                                    />
+                                                ))}
+                                            </FormGroup>
+                                        </FormControl>   
                                     </GridItem>
                                     <GridItem xs={1}>
                                         <StyledFormButton
