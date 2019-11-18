@@ -16,6 +16,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Link from 'next/link';
 import Router from 'next/router';
 import { Field, Form, FormSpy } from 'react-final-form';
+// import { Checkbox } from 'final-form-material-ui';
 
 import { required } from '../../form/validation';
 import Button from '../Button';
@@ -23,7 +24,7 @@ import Typography from '../Typography';
 import RFTextField from '../../form/RFTextField';
 import GridContainer from '../../components/Grid/GridContainer';
 import GridItem from '../../components/Grid/GridItem';
-import Checkbox from './Checkbox';
+// import Checkbox from './Checkbox';
 import AppForm from '../../views/AppForm';
 import FormFeedback from '../../form/FormFeedback';
 import FormButton from '../../form/FormButton';
@@ -142,59 +143,68 @@ const AddOptionDialog = (props) => {
                                     </GridItem>
                                 </GridContainer>
                             {optionData && optionData.map((option, index) => (
-                                <>
-                                <GridContainer>
-                                    <GridItem xs={3}>
-                                        <Field
-                                            component={StyledTextField}
-                                            disabled={submitting}
-                                            margin="normal"
-                                            name={option.optionName}
-                                            initialValue={option.optionName}
-                                            required
-                                            size="small"
-                                            noBorder={false}
-                                            fullWidth
-                                        />
-                                    </GridItem>
-                                    <GridItem xs={7}>
-                                        <FormControl 
-                                            label={option.optionName}
-                                            component="fieldset">
-                                            <FormGroup row>
-                                                {option.ProductOptionSelections && option.ProductOptionSelections.map((selection, index) => (
-                                                    <Checkbox
-                                                        key={selection}
-                                                        selection={selection}
-                                                        submitting={submitting}
-                                                    />
-                                                ))}
-                                            </FormGroup>
-                                        </FormControl>   
-                                    </GridItem>
-                                    <GridItem xs={1}>
-                                        <StyledFormButton
-                                            size='small'
-                                            justIcon
-                                            round
-                                        > 
-                                        <CreateIcon/>
-                                        </StyledFormButton>
-                                    </GridItem>
-                                    <GridItem xs={1}>
-                                        <StyledFormButton
-                                            size='small'
-                                            justIcon
-                                            round
-                                        >
-                                            <RemoveCircleOutlineIcon/>
-                                        </StyledFormButton>
-                                    </GridItem>
-                                </GridContainer>
-                                <GridContainer>
-                                    
-                                </GridContainer>
-                                </>
+                                <div key={option}>
+                                    <GridContainer>
+                                        <GridItem xs={3}>
+                                            <Field
+                                                component={StyledTextField}
+                                                type='text'
+                                                disabled={submitting}
+                                                margin="normal"
+                                                name={'option'+index}
+                                                initialValue={option.optionName}
+                                                required
+                                                size="small"
+                                                noBorder={false}
+                                                fullWidth
+                                            />
+                                        </GridItem>
+                                        <GridItem xs={7}>
+                                            <FormControl 
+                                                component="fieldset">
+                                                <FormGroup row>
+                                                    
+                                                    {option.ProductOptionSelections && option.ProductOptionSelections.map((selection, index) => (
+                                                        <FormControlLabel
+                                                            key={selection}
+                                                            label={selection.selectionName}
+                                                            control={
+                                                                <Field
+                                                                    component='input'
+                                                                    type='checkbox'
+                                                                    name={option.optionName}
+                                                                    value={selection}
+                                                                />
+                                                            }
+                                                        />
+                                                    ))}
+                                                         
+                                                </FormGroup>
+                                            </FormControl>   
+                                        </GridItem>
+                                        <GridItem xs={1}>
+                                            <StyledFormButton
+                                                size='small'
+                                                justIcon
+                                                round
+                                            > 
+                                            <CreateIcon/>
+                                            </StyledFormButton>
+                                        </GridItem>
+                                        <GridItem xs={1}>
+                                            <StyledFormButton
+                                                size='small'
+                                                justIcon
+                                                round
+                                            >
+                                                <RemoveCircleOutlineIcon/>
+                                            </StyledFormButton>
+                                        </GridItem>
+                                    </GridContainer>
+                                    <GridContainer>
+                                        
+                                    </GridContainer>
+                                </div>
                             ))}
                             <StyledFormButton
                                 type='submit'

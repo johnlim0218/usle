@@ -83,7 +83,7 @@ const configureStore = (initialState, options) => {
         // 로깅 미들웨어
         (store) => (next) => (action) => {
             console.log(action);
-            next(action)
+            next(action);
         }
     ];
 
