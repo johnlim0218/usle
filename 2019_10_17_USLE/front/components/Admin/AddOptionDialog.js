@@ -55,6 +55,7 @@ const StyledTextField = styled(RFTextField)`
 const AddOptionDialog = (props) => {
     const { open, close, option, setOption, ...others } = props;
     const [optionIndex, setOptionIndex] = useState(0);
+    const [options, setOptions] = useState([]);
     const { optionData } = useSelector(state => state.adminProductReducer);
                                             
     const dispatch = useDispatch();
@@ -68,20 +69,132 @@ const AddOptionDialog = (props) => {
         dispatch({
             type: SEARCH_OPTION_NAME_REQUEST,
             data: value.optionName,
-        })
-    }, []);
+        });
+
+        setOptions((prevState) => ([
+            ...prevState,
+            value.optionName,
+        ]));
+    }, [options]);
 
     const onSubmitOptionSelections = useCallback((values) => {
-        console.log(values);
-    }, []);
+       
+        // let optionLength = [];
+        // let optionArray = [];
+        // let needMultipleArray = [];
+        
+        // options.map((optionName, index) => {
+        //     optionLength.push(values[optionName].length);
+        // });
+        // optionLength.map((optionLengthI, i) => {
+        //     let needMultiple = 1;
+        //     optionLength.map((optionLengthJ, j) => {
+        //         if(i !== j) {
+        //             needMultiple *= optionLengthJ;
+        //         }
+        //     })
+        //     needMultipleArray.push(needMultiple);
+        // });
+
+        // options.map((optionName, i) => {
+        //     for(let j = 0; j < values[optionName].length; j++){
+        //         for(let k = 0; k < needMultipleArray[i]; k++){
+        //             console.log(values[optionName][j]);    
+        //         }
+                
+        //     }
+        // })
+
+        const a = ['1','2','3','4'];
+        const b = ['5','6','7'];
+        const c = ['8','9'];
+        const arrayABC = [a, b, c];
+        var allArrays = [['a', 'b'], ['c', 'z'], ['d', 'e', 'f']];
+        const allPossibleCases = (arr) => {
+            console.log(arr);
+            if(arr.length === 1){
+                return arr[0]
+            } else {
+                let result = [];
+                let allCasesOfRest = allPossibleCases(arr.slice(1));
+                for(let i = 0; i < allCasesOfRest.length; i++) {
+                    for(let j = 0; j < arr[0].length; j++){
+                        result.push(arr[0][j] + allCasesOfRest[i]);
+                    }
+                }
+                return result;
+            }
+        }
+
+        const test = allPossibleCases(arrayABC);
+        console.log(test);
+
+        
+        let coordination = [];
+
+        arrayABC.forEach((currentValue, indexI, arrayI) => {
+            currentValue.forEach((value, indexJ, arrayJ) => {
+               if(indexI === arrayABC.length){
+
+               }   
+            })
+        })
+
+    
+
+        // [0,0] [0,1] [0,2] [0,3]
+        // [1,0] [1,1] [1,2] 
+        // [2,0] [2,1] 
+
+        // [0,0] [1,0] [2,0]
+        // [0,0] [1,0] [2,1]
+
+        // [0,0] [1,1] [2,0]
+        // [0,0] [1,1] [2,1]
+
+        // let flag = false;
+        
+        // let inner = [];
+        // let temp = {};
+                            
+        // for(let i = 0; i < arrayABC.length; i++){
+        //     inner = [];
+            
+        //     for(let j = 0; j < arrayABC[i].length; j++){
+
+        //         inner.push(arrayABC[i][j]);
+
+        //         for(let k = 0; k < arrayABC[i].length; k++){
+                    
+        //                 inner.push(arrayABC[i][k]);
+                    
+        //             coordination.push(inner);
+        //         }
+
+                
+        //     }    
+        // }
+
+        // console.log(coordination);
+
+        // for(let i = 0; i < a.length; i++ ){
+        //     for(let j = 0; j < b.length; j++){
+        //         for(let k = 0; k < c.length; k++) {
+        //             coordination.push([a[i],b[j],c[k]]);
+        //         }
+                
+        //     }
+
+        // }
+        // console.log(coordination);
+
+    }, [options]);
 
     const onSubmitAddOptions = useCallback((values) => {
-      
         setOption((prevState) => ([
           ...prevState,
           values,
       ]))
-      
     }, []);
     
 
@@ -127,7 +240,7 @@ const AddOptionDialog = (props) => {
 
             <Form
                 onSubmit={onSubmitOptionSelections}
-                subscription={{ submitting: true}}
+                subscription={{ submitting: true }}
                 validate={validate}
                 render={({ handleSubmit, submitting }) => (
                     
@@ -142,70 +255,75 @@ const AddOptionDialog = (props) => {
                                         Selection
                                     </GridItem>
                                 </GridContainer>
-                            {optionData && optionData.map((option, index) => (
-                                <div key={option}>
-                                    <GridContainer>
-                                        <GridItem xs={3}>
-                                            <Field
-                                                component={StyledTextField}
-                                                type='text'
-                                                disabled={submitting}
-                                                margin="normal"
-                                                name={'option'+index}
-                                                initialValue={option.optionName}
-                                                required
-                                                size="small"
-                                                noBorder={false}
-                                                fullWidth
-                                            />
-                                        </GridItem>
-                                        <GridItem xs={7}>
-                                            <FormControl 
-                                                component="fieldset">
-                                                <FormGroup row>
-                                                    
-                                                    {option.ProductOptionSelections && option.ProductOptionSelections.map((selection, index) => (
-                                                        <FormControlLabel
-                                                            key={selection}
-                                                            label={selection.selectionName}
-                                                            control={
-                                                                <Field
-                                                                    component='input'
-                                                                    type='checkbox'
-                                                                    name={option.optionName}
-                                                                    value={selection}
-                                                                />
-                                                            }
-                                                        />
-                                                    ))}
-                                                         
-                                                </FormGroup>
-                                            </FormControl>   
-                                        </GridItem>
-                                        <GridItem xs={1}>
-                                            <StyledFormButton
-                                                size='small'
-                                                justIcon
-                                                round
-                                            > 
-                                            <CreateIcon/>
-                                            </StyledFormButton>
-                                        </GridItem>
-                                        <GridItem xs={1}>
-                                            <StyledFormButton
-                                                size='small'
-                                                justIcon
-                                                round
-                                            >
-                                                <RemoveCircleOutlineIcon/>
-                                            </StyledFormButton>
-                                        </GridItem>
-                                    </GridContainer>
-                                    <GridContainer>
-                                        
-                                    </GridContainer>
-                                </div>
-                            ))}
+
+                                {optionData && optionData.map((option, index) => (
+                                    <div key={option}>
+                                        <GridContainer>
+                                            <GridItem xs={3}>
+                                                {/* <Field
+                                                    component={StyledTextField}
+                                                    type='text'
+                                                    disabled={true}
+                                                    margin="normal"
+                                                    name='OptionName'
+                                                    initialValue={option.optionName}
+                                                    required
+                                                    size="small"
+                                                    noBorder={true}
+                                                    fullWidth
+                                                /> */}
+                                                <h3>
+                                                    {option.optionName}
+                                                </h3>
+                                            </GridItem>
+                                            <GridItem xs={7}>
+                                                <FormControl 
+                                                    component="fieldset">
+                                                    <FormGroup row>
+                                                        
+                                                        {option.ProductOptionSelections && option.ProductOptionSelections.map((selection, index) => (
+                                                            <FormControlLabel
+                                                                key={selection}
+                                                                label={selection.selectionName}
+                                                                control={
+                                                                    <Field
+                                                                        component='input'
+                                                                        type='checkbox'
+                                                                        name={option.optionName}
+                                                                        value={selection}
+                                                                    />
+                                                                }
+                                                            />
+                                                        ))}
+                                                            
+                                                    </FormGroup>
+                                                </FormControl>   
+                                            </GridItem>
+                                            <GridItem xs={1}>
+                                                <StyledFormButton
+                                                    size='small'
+                                                    justIcon
+                                                    round
+                                                > 
+                                                <CreateIcon/>
+                                                </StyledFormButton>
+                                            </GridItem>
+                                            <GridItem xs={1}>
+                                                <StyledFormButton
+                                                    size='small'
+                                                    justIcon
+                                                    round
+                                                >
+                                                    <RemoveCircleOutlineIcon/>
+                                                </StyledFormButton>
+                                            </GridItem>
+                                        </GridContainer>
+                                        <GridContainer>
+                                            
+                                        </GridContainer>
+                                    </div>
+                                ))}
+
                             <StyledFormButton
                                 type='submit'
                                 size='small'
