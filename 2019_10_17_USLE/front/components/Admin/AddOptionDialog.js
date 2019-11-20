@@ -54,8 +54,8 @@ const StyledTextField = styled(RFTextField)`
 
 const AddOptionDialog = (props) => {
     const { open, close, option, setOption, ...others } = props;
-    const [optionIndex, setOptionIndex] = useState(0);
-    const [options, setOptions] = useState([]);
+    const [options, setOptions] = useState([]); // 옵션 명
+    const [optionArray, setOptionArray] = useState([]); // 옵션 조합
     const { optionData } = useSelector(state => state.adminProductReducer);
                                             
     const dispatch = useDispatch();
@@ -78,40 +78,19 @@ const AddOptionDialog = (props) => {
     }, [options]);
 
     const onSubmitOptionSelections = useCallback((values) => {
-       
-        // let optionLength = [];
-        // let optionArray = [];
-        // let needMultipleArray = [];
+        let optionArray = [];
+        options.map((optionName, index) => {
+            optionArray.push(values[optionName]);
+         })
         
-        // options.map((optionName, index) => {
-        //     optionLength.push(values[optionName].length);
-        // });
-        // optionLength.map((optionLengthI, i) => {
-        //     let needMultiple = 1;
-        //     optionLength.map((optionLengthJ, j) => {
-        //         if(i !== j) {
-        //             needMultiple *= optionLengthJ;
-        //         }
-        //     })
-        //     needMultipleArray.push(needMultiple);
-        // });
-
-        // options.map((optionName, i) => {
-        //     for(let j = 0; j < values[optionName].length; j++){
-        //         for(let k = 0; k < needMultipleArray[i]; k++){
-        //             console.log(values[optionName][j]);    
-        //         }
-                
-        //     }
-        // })
 
         const a = ['1','2','3','4'];
         const b = ['5','6','7'];
         const c = ['8','9'];
-        const arrayABC = [a, b, c];
-        var allArrays = [['a', 'b'], ['c', 'z'], ['d', 'e', 'f']];
+        const d = ['10', '11'];
+        const arrayABC = [a, b, c, d];
+        
         const allPossibleCases = (arr) => {
-            console.log(arr);
             if(arr.length === 1){
                 return arr[0]
             } else {
@@ -129,64 +108,8 @@ const AddOptionDialog = (props) => {
         const test = allPossibleCases(arrayABC);
         console.log(test);
 
-        
-        let coordination = [];
-
-        arrayABC.forEach((currentValue, indexI, arrayI) => {
-            currentValue.forEach((value, indexJ, arrayJ) => {
-               if(indexI === arrayABC.length){
-
-               }   
-            })
-        })
-
+        setOptionArray(allPossibleCases(optionArray));
     
-
-        // [0,0] [0,1] [0,2] [0,3]
-        // [1,0] [1,1] [1,2] 
-        // [2,0] [2,1] 
-
-        // [0,0] [1,0] [2,0]
-        // [0,0] [1,0] [2,1]
-
-        // [0,0] [1,1] [2,0]
-        // [0,0] [1,1] [2,1]
-
-        // let flag = false;
-        
-        // let inner = [];
-        // let temp = {};
-                            
-        // for(let i = 0; i < arrayABC.length; i++){
-        //     inner = [];
-            
-        //     for(let j = 0; j < arrayABC[i].length; j++){
-
-        //         inner.push(arrayABC[i][j]);
-
-        //         for(let k = 0; k < arrayABC[i].length; k++){
-                    
-        //                 inner.push(arrayABC[i][k]);
-                    
-        //             coordination.push(inner);
-        //         }
-
-                
-        //     }    
-        // }
-
-        // console.log(coordination);
-
-        // for(let i = 0; i < a.length; i++ ){
-        //     for(let j = 0; j < b.length; j++){
-        //         for(let k = 0; k < c.length; k++) {
-        //             coordination.push([a[i],b[j],c[k]]);
-        //         }
-                
-        //     }
-
-        // }
-        // console.log(coordination);
 
     }, [options]);
 
@@ -248,13 +171,13 @@ const AddOptionDialog = (props) => {
                         onSubmit={handleSubmit}
                         noValidate>
                             <GridContainer>
-                                    <GridItem xs={3}>
-                                        Option
-                                    </GridItem>
-                                    <GridItem xs={6}>
-                                        Selection
-                                    </GridItem>
-                                </GridContainer>
+                                <GridItem xs={3}>
+                                    Option
+                                </GridItem>
+                                <GridItem xs={6}>
+                                    Selection
+                                </GridItem>
+                            </GridContainer>
 
                                 {optionData && optionData.map((option, index) => (
                                     <div key={option}>
@@ -344,18 +267,21 @@ const AddOptionDialog = (props) => {
                     <StyledForm 
                         onSubmit={handleSubmit}
                         noValidate> 
-                            <Field
-                                component={StyledTextField}
-                                disabled={submitting}
-                                label="optionIndex"
-                                margin="normal"
-                                name="optionIndex"
-                                required
-                                size="small"
-                                noBorder={false}
-                                initialValue={optionIndex}
-                                hidden
-                            />
+                            <GridContainer>
+                                {options.map((optionName, index) => {
+                                    <GridItem>
+                                        {optionName}
+                                    </GridItem>
+                                })}
+                                <GridItem>
+                                    Additional Price
+                                </GridItem>
+                                <GridItem>
+                                    Quantity
+                                </GridItem>
+                            </GridContainer>
+
+                         
                             <Field
                                 autoComplete="Size"
                                 autoFocus
