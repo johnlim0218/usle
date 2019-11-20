@@ -79,10 +79,23 @@ const AddOptionDialog = (props) => {
 
     const onSubmitOptionSelections = useCallback((values) => {
         let optionArray = [];
+        let inner = [];
         options.map((optionName, index) => {
-            optionArray.push(values[optionName]);
+            inner = [];
+            values[optionName].map((v, i) => {
+                // console.log(v.selectionName);
+                // inner.push(v.selectionName);
+                inner.push(JSON.stringify(v));
+            })
+            // optionArray.push(values[optionName]);
+            optionArray.push(inner);
          })
-        
+
+        // options.map((optionName, index) => {
+        //     optionArray.push(JSON.stringify(values[optionName]));
+        // })
+
+        console.log(optionArray);
 
         const a = ['1','2','3','4'];
         const b = ['5','6','7'];
@@ -96,23 +109,30 @@ const AddOptionDialog = (props) => {
             } else {
                 let result = [];
                 let allCasesOfRest = allPossibleCases(arr.slice(1));
+                
                 for(let i = 0; i < allCasesOfRest.length; i++) {
                     for(let j = 0; j < arr[0].length; j++){
-                        result.push(arr[0][j] + allCasesOfRest[i]);
+                        result.push(arr[0][j] + ',' + allCasesOfRest[i]);
                     }
                 }
                 return result;
             }
         }
 
-        const test = allPossibleCases(arrayABC);
-        console.log(test);
-
         setOptionArray(allPossibleCases(optionArray));
-    
+        
 
     }, [options]);
 
+    useEffect(() => {
+        
+        let jsonArray = [];
+        optionArray.map((value, index) => {
+            jsonArray.push(JSON.parse('['+value+']'));
+        })
+        console.log(jsonArray);
+    }, [optionArray])
+    
     const onSubmitAddOptions = useCallback((values) => {
         setOption((prevState) => ([
           ...prevState,
@@ -257,7 +277,7 @@ const AddOptionDialog = (props) => {
                             </StyledFormButton>     
                     </StyledForm>         
                 )}/>
-
+ 
             <Form 
                 onSubmit={onSubmitAddOptions}
                 // subscription - true로 설정한 Field의 속성 값이 바뀔 때 마다 렌더링 해준다.
