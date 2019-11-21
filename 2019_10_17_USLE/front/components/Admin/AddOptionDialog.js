@@ -115,18 +115,31 @@ const AddOptionDialog = (props) => {
 
         let resultArray = allPossibleCases(optionArray);
         let jsonArray = [];
+        // 추가 가격, 재고 
+        const additionalProps = {
+            additionalPrice: 0,
+            quantity: 1,
+        };
+        let selection = '';
+        let selectionProps = {};
 
         resultArray.map((value, index) => {
+            selection = JSON.parse('['+value+']');
+            selectionProps = {
+                selection,
+                additionalProps,
+            }
             // JSON을 객체의 형태로 다시 변환
-            jsonArray.push(JSON.parse('['+value+']'));
+            jsonArray.push(selectionProps);
         })
         setOptionArray(jsonArray);
-            
+        
     }, [options]);
 
     useEffect(() => {
        
        console.log(optionArray);
+       
     }, [optionArray])
     
     const onSubmitAddOptions = useCallback((values) => {
@@ -270,10 +283,11 @@ const AddOptionDialog = (props) => {
                 // subscription - true로 설정한 Field의 속성 값이 바뀔 때 마다 렌더링 해준다.
                 subscription={{ submitting: true }}
                 initialValues={{
-                    optionsss: [
-                     ...optionArray
+                    options: [
+                     ...optionArray,
+                     
                     ]
-                  }}
+                }}
                 mutators={{
                     ...arrayMutators
                 }}
@@ -305,7 +319,7 @@ const AddOptionDialog = (props) => {
                                 </GridItem>
                             </GridContainer>
                             
-                            <FieldArray name="optionsss">
+                            <FieldArray name="options">
                                 {({ fields }) => (
                                         fields.map((selection, selectionIndex) => (
                                             <GridContainer
@@ -320,7 +334,7 @@ const AddOptionDialog = (props) => {
                                                             component={StyledTextField}
                                                             disabled={submitting}
                                                             margin="normal"
-                                                            name={`${selection}.${[optionNameIndex]}.selectionName`}
+                                                            name={`${selection}.selection.${optionNameIndex}.selectionName`}
                                                             size="small"
                                                             disabled
                                                             noBorder={false}
