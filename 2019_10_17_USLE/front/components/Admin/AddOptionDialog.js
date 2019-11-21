@@ -16,6 +16,8 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Link from 'next/link';
 import Router from 'next/router';
 import { Field, Form, FormSpy } from 'react-final-form';
+import arrayMutators from 'final-form-arrays'
+import { FieldArray } from 'react-final-form-arrays'
 // import { Checkbox } from 'final-form-material-ui';
 
 import { required } from '../../form/validation';
@@ -84,7 +86,12 @@ const AddOptionDialog = (props) => {
             inner = [];
             values[optionName].map((v, i) => {
                 // 재귀함수를 돌리기 위해 JSON의 형태로 변환
-                inner.push(JSON.stringify(v));
+                // optionName 프로퍼티를 삽입해준다.
+                let addProps = {
+                    ...v,
+                    optionName: optionName
+                }
+                inner.push(JSON.stringify(addProps));
             })
             optionArray.push(inner);
          })
@@ -102,7 +109,6 @@ const AddOptionDialog = (props) => {
                         result.push(arrValue + ' , ' + allCasesOfRestValue);
                     })
                 })
-                
                 return result;
             }
         }
@@ -119,15 +125,17 @@ const AddOptionDialog = (props) => {
     }, [options]);
 
     useEffect(() => {
-        
+       
        console.log(optionArray);
     }, [optionArray])
     
     const onSubmitAddOptions = useCallback((values) => {
+        console.log(values);
         setOption((prevState) => ([
           ...prevState,
           values,
-      ]))
+        ]))
+        
     }, []);
     
 
@@ -162,7 +170,6 @@ const AddOptionDialog = (props) => {
                                     <StyledFormButton
                                         type="submit"
                                         disabled={submitting}
-                                        
                                     >
                                         {submitting ? 'In progress…' : 'Add'}
                                     </StyledFormButton>    
@@ -190,21 +197,11 @@ const AddOptionDialog = (props) => {
                             </GridContainer>
 
                                 {optionData && optionData.map((option, index) => (
-                                    <div key={option}>
+                                    <div 
+                                        key={option}
+                                    >
                                         <GridContainer>
                                             <GridItem xs={3}>
-                                                {/* <Field
-                                                    component={StyledTextField}
-                                                    type='text'
-                                                    disabled={true}
-                                                    margin="normal"
-                                                    name='OptionName'
-                                                    initialValue={option.optionName}
-                                                    required
-                                                    size="small"
-                                                    noBorder={true}
-                                                    fullWidth
-                                                /> */}
                                                 <h3>
                                                     {option.optionName}
                                                 </h3>
@@ -272,99 +269,181 @@ const AddOptionDialog = (props) => {
                 onSubmit={onSubmitAddOptions}
                 // subscription - true로 설정한 Field의 속성 값이 바뀔 때 마다 렌더링 해준다.
                 subscription={{ submitting: true }}
+                initialValues={{
+                    optionsss: [
+                     ...optionArray
+                    ]
+                  }}
+                mutators={{
+                    ...arrayMutators
+                }}
                 validate={validate}
-                render={({ handleSubmit, submitting }) => (
+                render={({ 
+                    values,
+                    handleSubmit, 
+                    submitting,
+                    form:{
+                        mutators: { push, pop }
+                    }}) => (
                     <StyledForm 
                         onSubmit={handleSubmit}
                         noValidate> 
                             <GridContainer>
-                                {options.map((optionName, index) => {
-                                    <GridItem>
+                                {options && options.map((optionName, index) => (
+                                    <GridItem 
+                                        key={optionName}
+                                        xs={2}
+                                    >
                                         {optionName}
                                     </GridItem>
-                                })}
-                                <GridItem>
+                                ))}
+                                <GridItem xs={3}>
                                     Additional Price
                                 </GridItem>
-                                <GridItem>
+                                <GridItem xs={2}>
                                     Quantity
                                 </GridItem>
                             </GridContainer>
+                            
+                            <FieldArray name="optionsss">
+                                {({ fields }) => (
+                                        fields.map((selection, selectionIndex) => (
+                                            <GridContainer
+                                                key={selection}
+                                            >
+                                                {options.map((optionName, optionNameIndex) => (
+                                                    <GridItem
+                                                        key={optionName}
+                                                        xs={2}
+                                                    >
+                                                        <Field
+                                                            component={StyledTextField}
+                                                            disabled={submitting}
+                                                            margin="normal"
+                                                            name={`${selection}.${[optionNameIndex]}.selectionName`}
+                                                            size="small"
+                                                            disabled
+                                                            noBorder={false}
+                                                        />
+                                                    </GridItem>
+                                                    
+                                                ))}
+                                                <GridItem xs={3}>
+                                                    <Field
+                                                        component={StyledTextField}
+                                                        disabled={submitting}
+                                                        margin="normal"
+                                                        name={`${selection}.additionalPrice`}
+                                                        required
+                                                        size="small"
+                                                        noBorder={false}
+                                                    />
+                                                </GridItem>
+                                                <GridItem xs={2}>
+                                                    <Field
+                                                        component={StyledTextField}
+                                                        disabled={submitting}
+                                                        margin="normal"
+                                                        name={`${selection}.quantity`}
+                                                        required
+                                                        size="small"
+                                                        noBorder={false}
+                                                    />
+                                                </GridItem>
+                                            </GridContainer>
+                                            // <GridContainer
+                                            //     key={selection}
+                                            // >
+                                            //     {selection.map((selectionName, indexJ) => (
+                                            //        <GridItem
+                                            //             key={selectionName}
+                                            //             xs={2}
+                                            //         >
+                                            //             <Field
 
-                         
-                            <Field
-                                autoComplete="Size"
-                                autoFocus
-                                component={StyledTextField}
-                                disabled={submitting}
-                                label="Size"
-                                margin="normal"
-                                name="size"
-                                required
-                                size="small"
-                                noBorder={false}
-                            />
-                        
-                            <Field
-                                autoComplete="Price"
-                                component={StyledTextField}
-                                disabled={submitting}
-                                label="Price"
-                                margin="normal"
-                                name="price"
-                                required
-                                size="small"
-                                noBorder={false}
-                            />
-                            <Field
-                                autoComplete="Quantity"
-                                component={StyledTextField}
-                                disabled={submitting}
-                                label="Quantity"
-                                margin="normal"
-                                name="quantity"
-                                required
-                                size="small"
-                                noBorder={false}
-                            />
+                                            //             />
+                                            //         </GridItem>
+                                            //     ))}
+                                            // </GridContainer>
 
-                            {/* <Button
-                                size='small'
-                                justIcon
-                                round
+
+
+                                            // optionArray && optionArray.map((optionRow, indexI) => (
+                                            //     <GridContainer
+                                            //         key={optionRow}
+                                            //     >
+                                            //     {optionRow && optionRow.map((optionColumn, indexJ) => (
+                                            //         <GridItem 
+                                            //             key={optionColumn}
+                                            //             xs={2}
+                                            //         >
+                                            //             <Field
+                                            //                 autoFocus
+                                            //                 component={StyledTextField}
+                                            //                 disabled={submitting}
+                                            //                 margin="normal"
+                                            //                 name={optionColumn.optionName}
+                                            //                 initialValue={optionColumn.selectionName}
+                                            //                 required
+                                            //                 size="small"
+                                            //                 disabled
+                                            //                 noBorder={false}
+                                            //             />
+                                            //         </GridItem>
+                                                    
+                                            //     ))}
+                                            //         <GridItem xs={3}>
+                                            //             <Field
+                                            //                 component={StyledTextField}
+                                            //                 disabled={submitting}
+                                            //                 margin="normal"
+                                            //                 name="additionalPrice"
+                                            //                 required
+                                            //                 size="small"
+                                            //                 noBorder={false}
+                                            //             />
+                                            //         </GridItem>
+                                            //         <GridItem xs={2}>
+                                            //             <Field
+                                            //                 component={StyledTextField}
+                                            //                 disabled={submitting}
+                                            //                 margin="normal"
+                                            //                 name="quantity"
+                                            //                 required
+                                            //                 size="small"
+                                            //                 noBorder={false}
+                                            //             />
+                                            //         </GridItem>
+                                            //     </GridContainer>
+                                            // ))   
+                                        ))                 
+
+                                )}
+                            </FieldArray>
+
+                            <FormButton
+                                type="submit"
+                                disabled={submitting}
+                                size="small"
+                                color="secondary"
+                                fullWidth
                             >
-                                <AddCircleIcon/>
-                            </Button>
-                            <Button
-                                size='small'
-                                justIcon
-                                round
+                                {submitting ? 'In progress…' : 'Add'}
+                            </FormButton>
+                            <FormButton
+                                fullWidth
+                                size="small"
+                                onClick={close}
                             >
-                                <RemoveCircleOutlineIcon/>
-                            </Button> */}
-                        
-                    
-                        <FormButton
-                            type="submit"
-                            disabled={submitting}
-                            size="large"
-                            color="secondary"
-                            fullWidth
-                        >
-                            {submitting ? 'In progress…' : 'Add'}
-                        </FormButton>
-                        <FormButton
-                            fullWidth
-                            onClick={close}
-                        >
-                            Close
-                        </FormButton>
-                        {/* FormSpy는 기본적으로 form을 subscript하고 있다? */}
-                        <FormSpy
-                            subscription={{ submitError:true }}
-                            render={({ submitError }) => (
-                                null
-                        )}/>
+                                Close
+                            </FormButton>
+                            {/* FormSpy는 기본적으로 form을 subscript하고 있다? */}
+                            <FormSpy
+                                subscription={{ submitError:true }}
+                                render={({ submitError }) => (
+                                    null
+                            )}/>
+
                     </StyledForm>
                 )}/>            
         </Dialog>
