@@ -83,26 +83,13 @@ const AddOptionDialog = (props) => {
         options.map((optionName, index) => {
             inner = [];
             values[optionName].map((v, i) => {
-                // console.log(v.selectionName);
-                // inner.push(v.selectionName);
+                // 재귀함수를 돌리기 위해 JSON의 형태로 변환
                 inner.push(JSON.stringify(v));
             })
-            // optionArray.push(values[optionName]);
             optionArray.push(inner);
          })
-
-        // options.map((optionName, index) => {
-        //     optionArray.push(JSON.stringify(values[optionName]));
-        // })
-
-        console.log(optionArray);
-
-        const a = ['1','2','3','4'];
-        const b = ['5','6','7'];
-        const c = ['8','9'];
-        const d = ['10', '11'];
-        const arrayABC = [a, b, c, d];
-        
+         
+         // 옵션 상세 사항들의 모든 조합을 도출해내는 재귀함수
         const allPossibleCases = (arr) => {
             if(arr.length === 1){
                 return arr[0]
@@ -110,27 +97,30 @@ const AddOptionDialog = (props) => {
                 let result = [];
                 let allCasesOfRest = allPossibleCases(arr.slice(1));
                 
-                for(let i = 0; i < allCasesOfRest.length; i++) {
-                    for(let j = 0; j < arr[0].length; j++){
-                        result.push(arr[0][j] + ',' + allCasesOfRest[i]);
-                    }
-                }
+                allCasesOfRest.map((allCasesOfRestValue, indexI) => {
+                    arr[0].map((arrValue, indexJ) => {
+                        result.push(arrValue + ' , ' + allCasesOfRestValue);
+                    })
+                })
+                
                 return result;
             }
         }
 
-        setOptionArray(allPossibleCases(optionArray));
-        
+        let resultArray = allPossibleCases(optionArray);
+        let jsonArray = [];
 
+        resultArray.map((value, index) => {
+            // JSON을 객체의 형태로 다시 변환
+            jsonArray.push(JSON.parse('['+value+']'));
+        })
+        setOptionArray(jsonArray);
+            
     }, [options]);
 
     useEffect(() => {
         
-        let jsonArray = [];
-        optionArray.map((value, index) => {
-            jsonArray.push(JSON.parse('['+value+']'));
-        })
-        console.log(jsonArray);
+       console.log(optionArray);
     }, [optionArray])
     
     const onSubmitAddOptions = useCallback((values) => {
