@@ -139,6 +139,10 @@ const Product = () => {
         })
     }, []);
 
+    useEffect(() => {
+        
+    }, [option])
+
     const validate = (values) => {
         const errors = required(['name', 'price'], values);
         // if(!errors.email){
@@ -325,9 +329,8 @@ const Product = () => {
     const RenderOptionList = ({index, style}) => {
         return (
             <ListItem button style={style} key={index}>
-                <ListItemText>COLOR : {option[index].color}</ListItemText>
-                <ListItemText>SIZE : {option[index].size}</ListItemText>
-                <ListItemText>QUANTITY : {option[index].quantity}</ListItemText>
+                <ListItemText>ADDITIONAL PRICE : {option.options[index].additionalProps.additionalPrice}</ListItemText>
+                <ListItemText>QUANTITY : {option.options[index].additionalProps.quantity}</ListItemText>
             </ListItem>
         );
     }
@@ -446,14 +449,14 @@ const Product = () => {
 
                     {/* 상품 옵션 추가 */}
                     <StyledDivSection>            
-                        <StyledButton onClick={onClickOption}>
+                        <StyledButton fullWidth onClick={onClickOption}>
                                 Add Option
                         </StyledButton>
                         <AddOptionDialog open={optionDialog} close={onClickOption} option={option} setOption={setOption}/>
                         
-                        <FixedSizeList height={100} width='100%' itemSize={46} itemCount={option.length}>
+                        {/* <FixedSizeList height={100} width='100%' itemSize={30} itemCount={option.options && option.options.length}>
                             {RenderOptionList}
-                        </FixedSizeList>
+                        </FixedSizeList> */}
                     </StyledDivSection>
 
                     {/* 상품 상세 정보 작성 폼 */}

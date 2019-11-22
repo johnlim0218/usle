@@ -16,6 +16,10 @@ function isDirty(value) {
   return value || value === 0;
 }
 
+function isDirtyCheckbox(value){
+
+}
+
 export function required(requiredFields, values) {
   return requiredFields.reduce((fields, field) => ({
       ...fields,
@@ -24,3 +28,4 @@ export function required(requiredFields, values) {
     {},
   );
 }
+
