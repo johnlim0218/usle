@@ -16,11 +16,18 @@ function isDirty(value) {
   return value || value === 0;
 }
 
-function isDirtyCheckbox(value){
-
+export function required(requiredFields, values) {
+  return requiredFields.reduce((fields, field) => ({
+      ...fields,
+      ...(isDirty(values[field]) ? undefined : { [field]: 'Required' }),
+    }),
+    {},
+  );
 }
 
-export function required(requiredFields, values) {
+export function requiredCheckbox(requiredFields, values) {
+  console.log(requiredFields);
+    console.log(values);
   return requiredFields.reduce((fields, field) => ({
       ...fields,
       ...(isDirty(values[field]) ? undefined : { [field]: 'Required' }),
