@@ -20,7 +20,7 @@ import arrayMutators from 'final-form-arrays'
 import { FieldArray } from 'react-final-form-arrays'
 // import { Checkbox } from 'final-form-material-ui';
 
-import { required, requiredCheckbox } from '../../form/validation';
+import { required } from '../../form/validation';
 import Button from '../Button';
 import Typography from '../Typography';
 import RFTextField from '../../form/RFTextField';
@@ -70,8 +70,9 @@ const AddOptionDialog = (props) => {
 
     // 상세 옵션 정보 checkbox validation
     const validateSelection = ((values) => {
-        const errors = requiredCheckbox(options, values);
+        const errors = required(options, values);
         
+        return errors;
     })
     
     // 전체 옵션 정보 validation
