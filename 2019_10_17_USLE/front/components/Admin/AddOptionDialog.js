@@ -56,9 +56,9 @@ const StyledTextField = styled(RFTextField)`
 
 const AddOptionDialog = (props) => {
     const { open, close, option, setOption, ...others } = props;
-    const [options, setOptions] = useState([]); // 옵션 명
+    // const [options, setOptions] = useState([]); // 옵션 명
     const [optionArray, setOptionArray] = useState([]); // 옵션 조합
-    const { optionData } = useSelector(state => state.adminProductReducer);
+    const { optionData, options } = useSelector(state => state.adminProductReducer);
                                             
     const dispatch = useDispatch();
     
@@ -70,9 +70,13 @@ const AddOptionDialog = (props) => {
 
     // 상세 옵션 정보 checkbox validation
     const validateSelection = ((values) => {
-        // const errors = required(options, values);
+        let optionsValidate = [];
+        options.map((optionsValue, index) => {
+            optionsValidate.push(optionsValue.optionName);
+        })
+        const errors = required(optionsValidate, values);
         
-        // return errors;
+        return errors;
     })
     
     // 전체 옵션 정보 validation
@@ -87,25 +91,15 @@ const AddOptionDialog = (props) => {
             data: value.optionName,
         });
         
-        // setOptions((prevState) => ([
-        //     ...prevState,
-        //     value.optionName,
-        // ]));
     }, [options]);
 
     useEffect(() => {
-        
-        
-    },[options]);
+      
+        console.log(options);
+    },[optionData]);
 
     const onSubmitOptionSelections = useCallback((values) => {
-        optionData.map((optionDataValue, index) => {
-            options.push({
-                optionName: optionDataValue.optionName,
-                optionId: optionDataValue.id,
-            });
-        })
-        console.log(options);
+        
         let optionArrayTemp = [];
         let inner = [];
         options.map((optionsValue, index) => {
