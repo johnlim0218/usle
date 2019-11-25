@@ -26,68 +26,68 @@ const upload = multer({
 })
 
 router.post('/add', upload.none(), async(req, res, next) => {
-    
+    console.log(req.body.option);
     try{
-        const newProduct = await db.Product.create({
-            productName: req.body.name,
-            description: req.body.description,
-            ProductBrandId: req.body.brand,
-            ProductCategoryId: req.body.category,
-        });
+        // const newProduct = await db.Product.create({
+        //     productName: req.body.name,
+        //     description: req.body.description,
+        //     ProductBrandId: req.body.brand,
+        //     ProductCategoryId: req.body.category,
+        // });
         
-        const newProductOptionJsonObj = JSON.parse(req.body.option);
+        // const newProductOptionJsonObj = JSON.parse(req.body.option);
 
-        // option을 기입했을 때 (1개 이상)
-        if(newProductOptionJsonObj){
-            // option이 2개 이상일 때
-            if(newProductOptionJsonObj.length >= 2) {
-                const newProductOption = await Promise.all(newProductOptionJsonObj.map((option, index) => {
-                    return (
-                        db.ProductInventory.create({
-                            size: option.size,
-                            color: option.color,
-                            price: req.body.price,
-                            quantity: option.quantity,
-                        })
-                    )
-                }));
-                await newProduct.addProductInventory(newProductOption);
-            } else {
-                // option이 1개 일 때
-                const newProductOption = await db.ProductInventory.create({
-                    size: newProductOptionJsonObj.size,
-                    color: newProductOptionJsonObj.color,
-                    price: req.body.price,
-                    quantity: newProductOptionJsonObj.quantity,
-                })
-                await newProduct.addProductInventory(newProductOption);
-            }
-        } 
+        // // option을 기입했을 때 (1개 이상)
+        // if(newProductOptionJsonObj){
+        //     // option이 2개 이상일 때
+        //     if(newProductOptionJsonObj.length >= 2) {
+        //         const newProductOption = await Promise.all(newProductOptionJsonObj.map((option, index) => {
+        //             return (
+        //                 db.ProductInventory.create({
+        //                     size: option.size,
+        //                     color: option.color,
+        //                     price: req.body.price,
+        //                     quantity: option.quantity,
+        //                 })
+        //             )
+        //         }));
+        //         await newProduct.addProductInventory(newProductOption);
+        //     } else {
+        //         // option이 1개 일 때
+        //         const newProductOption = await db.ProductInventory.create({
+        //             size: newProductOptionJsonObj.size,
+        //             color: newProductOptionJsonObj.color,
+        //             price: req.body.price,
+        //             quantity: newProductOptionJsonObj.quantity,
+        //         })
+        //         await newProduct.addProductInventory(newProductOption);
+        //     }
+        // } 
         
         
-        if(req.body.image){
-            if(Array.isArray(req.body.image)){
-                const images = await Promise.all(req.body.image.map((image) => {
-                    return db.ProductImage.create({
-                        src: image,
-                    })
-                }));
-                await newProduct.addProductImage(images);
-            } else {
-                const image = await db.ProductImage.create({
-                    src: req.body.image,
-                })
-                await newProduct.addProductImage(image);
-            }
-        }
+        // if(req.body.image){
+        //     if(Array.isArray(req.body.image)){
+        //         const images = await Promise.all(req.body.image.map((image) => {
+        //             return db.ProductImage.create({
+        //                 src: image,
+        //             })
+        //         }));
+        //         await newProduct.addProductImage(images);
+        //     } else {
+        //         const image = await db.ProductImage.create({
+        //             src: req.body.image,
+        //         })
+        //         await newProduct.addProductImage(image);
+        //     }
+        // }
 
-        const newProductPostId = await db.Product.findOne({
-            where: {
-                id: newProduct.id
-            }
-        });
+        // const newProductPostId = await db.Product.findOne({
+        //     where: {
+        //         id: newProduct.id
+        //     }
+        // });
 
-        return res.json(newProductPostId);
+        // return res.json(newProductPostId);
         
     } catch(e) {
         console.error(e);

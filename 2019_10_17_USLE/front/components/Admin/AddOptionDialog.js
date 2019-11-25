@@ -70,9 +70,9 @@ const AddOptionDialog = (props) => {
 
     // 상세 옵션 정보 checkbox validation
     const validateSelection = ((values) => {
-        const errors = required(options, values);
+        // const errors = required(options, values);
         
-        return errors;
+        // return errors;
     })
     
     // 전체 옵션 정보 validation
@@ -86,29 +86,41 @@ const AddOptionDialog = (props) => {
             type: SEARCH_OPTION_NAME_REQUEST,
             data: value.optionName,
         });
-
-        setOptions((prevState) => ([
-            ...prevState,
-            value.optionName,
-        ]));
+        
+        // setOptions((prevState) => ([
+        //     ...prevState,
+        //     value.optionName,
+        // ]));
     }, [options]);
 
-    const onSubmitOptionSelections = useCallback((values) => {
+    useEffect(() => {
         
-        let optionArray = [];
+        
+    },[options]);
+
+    const onSubmitOptionSelections = useCallback((values) => {
+        optionData.map((optionDataValue, index) => {
+            options.push({
+                optionName: optionDataValue.optionName,
+                optionId: optionDataValue.id,
+            });
+        })
+        console.log(options);
+        let optionArrayTemp = [];
         let inner = [];
-        options.map((optionName, index) => {
+        options.map((optionsValue, index) => {
             inner = [];
-            values[optionName].map((v, i) => {
+            values[optionsValue.optionName].map((v, i) => {
                 // 재귀함수를 돌리기 위해 JSON의 형태로 변환
                 // optionName 프로퍼티를 삽입해준다.
-                let addProps = {
+                let valuesAddProps = {
                     ...v,
-                    optionName: optionName
+                    optionName: optionsValue.optionName,
+                    optionId: optionsValue.optionId,
                 }
-                inner.push(JSON.stringify(addProps));
+                inner.push(JSON.stringify(valuesAddProps));
             })
-            optionArray.push(inner);
+            optionArrayTemp.push(inner);
          })
          
          // 옵션 상세 사항들의 모든 조합을 도출해내는 재귀함수
@@ -128,7 +140,7 @@ const AddOptionDialog = (props) => {
             }
         }
 
-        let resultArray = allPossibleCases(optionArray);
+        let resultArray = allPossibleCases(optionArrayTemp);
         let jsonArray = [];
         // 추가 가격, 재고 
         const additionalProps = {
@@ -146,16 +158,19 @@ const AddOptionDialog = (props) => {
             }
             // JSON을 객체의 형태로 다시 변환
             jsonArray.push(selectionProps);
+            
         })
         setOptionArray(jsonArray);
         
-    }, [options]);
+    }, [options, optionData]); 
 
     useEffect(() => {
-       
+    //    setOptionArray((prevState) => ({
+    //        ...prevState,
+    //    }))
        console.log(optionArray);
        
-    }, [optionArray])
+    }, [optionArray.length !== 0 && optionArray])
     
     const onSubmitAddOptions = useCallback((values) => {
         console.log(values);
@@ -321,32 +336,34 @@ const AddOptionDialog = (props) => {
                         onSubmit={handleSubmit}
                         noValidate
                     > 
-                            <GridContainer>
-                                {options && options.map((optionName, index) => (
-                                    <GridItem 
-                                        key={optionName}
-                                        xs={2}
-                                    >
-                                        {optionName}
+                            {options && options.length !== 0 && 
+                                <GridContainer>
+                                    {options && options.map((optionsValue, index) => (
+                                        <GridItem 
+                                            key={optionsValue}
+                                            xs={2}
+                                        >
+                                            {optionsValue.optionName}
+                                        </GridItem>
+                                    ))}
+                                    <GridItem xs={3}>
+                                        Additional Price
                                     </GridItem>
-                                ))}
-                                <GridItem xs={3}>
-                                    Additional Price
-                                </GridItem>
-                                <GridItem xs={2}>
-                                    Quantity
-                                </GridItem>
-                            </GridContainer>
-                            
+                                    <GridItem xs={2}>
+                                        Quantity
+                                    </GridItem>
+                                </GridContainer>
+                             }
+
                             <FieldArray name="options">
                                 {({ fields }) => (
                                         fields.map((selection, selectionIndex) => (
                                             <GridContainer
                                                 key={selection}
                                             >
-                                                {options.map((optionName, optionNameIndex) => (
+                                                {options.map((optionsValue, optionNameIndex) => (
                                                     <GridItem
-                                                        key={optionName}
+                                                        key={optionsValue}
                                                         xs={2}
                                                     >
                                                         <Field
