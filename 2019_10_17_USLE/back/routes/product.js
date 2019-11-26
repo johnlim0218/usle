@@ -26,17 +26,38 @@ const upload = multer({
 })
 
 router.post('/add', upload.none(), async(req, res, next) => {
-    console.log(req.body.option);
     try{
-        // const newProduct = await db.Product.create({
-        //     productName: req.body.name,
-        //     description: req.body.description,
-        //     ProductBrandId: req.body.brand,
-        //     ProductCategoryId: req.body.category,
-        // });
+        const newProduct = await db.Product.create({
+            productName: req.body.name,
+            description: req.body.description,
+            ProductBrandId: req.body.brand,
+            ProductCategoryId: req.body.category,
+        });
         
-        // const newProductOptionJsonObj = JSON.parse(req.body.option);
-
+        const newProductOptionJsonObj = JSON.parse(req.body.option);
+        
+        if(newProductOptionJsonObj){
+            await Promise.all(newProductOptionJsonObj.options.map((optionsValue, optionsIndex) => {
+                Promise.resolve(db.ProductInventory.create({
+                    quantity: optionsValue.additionalProps.quantity,
+                    additionalPrice: optionsValue.additionalProps.additionalPrice,
+                })).then(async function(newInventoryResult){
+                    await Promise.all(optionsValue.selection.map((selectionValue, selectionIndex) => {
+                            Promise.resolve(db.ProductOptionSelection.findOne({
+                                where: {
+                                    id: selectionValue.id
+                                }
+                            })).then(function(selectionResult){
+                                
+                                eval("selectionResult.addProductOptionSelection" + selectionIndex + "(newInventoryResult)");
+                                newProduct.addProductInventory(newInventoryResult);
+                            }).then(function(test){
+                               
+                            })
+                    }))
+            })}));
+        }
+           
         // // option을 기입했을 때 (1개 이상)
         // if(newProductOptionJsonObj){
         //     // option이 2개 이상일 때

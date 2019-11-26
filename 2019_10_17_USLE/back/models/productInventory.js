@@ -6,7 +6,7 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false,
             defaultValue: 100,
         },
-        price: {
+        additionalPrice: {
             type: DataTypes.INTEGER,
             allowNull: false,
             defaultValue: 1,
@@ -22,11 +22,18 @@ module.exports = (sequelize, DataTypes) => {
     ProductInventory.associate = (db) => {
         db.ProductInventory.hasMany(db.Cart);
         db.ProductInventory.hasMany(db.OrderDetail);
-        db.ProductInventory.hasMany(db.ProductInventory);
-        db.ProductInventory.belongsTo(db.ProductInventory);
-        db.ProductInventory.belongsTo(db.ProductOptionSelection);
+        // db.ProductInventory.hasMany(db.ProductInventory);
+        // db.ProductInventory.belongsTo(db.ProductInventory);
+        // db.ProductInventory.belongsTo(db.ProductOptionSelection);
         db.ProductInventory.belongsTo(db.Product);
         db.ProductInventory.belongsToMany(db.Coupon, {through: 'Applicable', as:'ApplicableProduct'})
+
+        db.ProductInventory.belongsTo(db.ProductOptionSelection, {as:'ProductOptionSelection0'});
+        db.ProductInventory.belongsTo(db.ProductOptionSelection, {as:'ProductOptionSelection1'});
+        db.ProductInventory.belongsTo(db.ProductOptionSelection, {as:'ProductOptionSelection2'});
+        db.ProductInventory.belongsTo(db.ProductOptionSelection, {as:'ProductOptionSelection3'});
+        db.ProductInventory.belongsTo(db.ProductOptionSelection, {as:'ProductOptionSelection4'});
+        db.ProductInventory.belongsTo(db.ProductOptionSelection, {as:'ProductOptionSelection5'});
     }
  
     return ProductInventory;
