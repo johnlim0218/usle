@@ -267,6 +267,7 @@ const Product = () => {
     const [imageSrc, setImageSrc] = useState([]);
     const [colorSelect, setColorSelect] = useState(null);
     const [sizeSelect, setSizeSelect] = useState(null);
+    const [options, setOptions] = useState([]);
     const [editorState, setEditorState] = useState(
       EditorState.createEmpty()
     );
@@ -283,6 +284,36 @@ const Product = () => {
       }
       setSizeSelect(e.target.value);
     },[colorSelect, sizeSelect])
+
+    useEffect(() => {
+      
+      let option = [];
+      let dupCheckOption = [];
+      productDetail && productDetail.ProductInventories.map((productInventoryValue, productInventoryIndex) => {
+        [0,1,2,3,4,5].map((value, index) => {
+          if(eval("productInventoryValue.ProductOptionSelection"+value) !== null){
+            option.push(eval("productInventoryValue.ProductOptionSelection"+value));
+          }
+        })
+      })
+      
+      // 옵션 중복 제거해서 배열에 정렬
+      dupCheckOption = option.reduce((optionReducedArray, optionValue) => {
+        if(optionReducedArray.map((value, index) => {
+          return value.id
+        }).indexOf(optionValue.id) < 0) {
+          optionReducedArray.push(optionValue);
+        }
+        return optionReducedArray;
+      }, []);
+
+      console.log(dupCheckOption);
+      
+      dupCheckOption.map((optionValue, optionIndex) => {
+
+      })
+
+    }, [productDetail & productDetail.ProductInventories])
     
     useEffect(() => {
       setImageSrc(productDetail.ProductImages.map((image, index) => ({

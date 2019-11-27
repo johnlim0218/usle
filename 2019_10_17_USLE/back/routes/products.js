@@ -16,7 +16,7 @@ router.get('/', async(req, res, next) => {
                 model: db.ProductImage,
             },{
                 model: db.ProductInventory,
-                attributes:['price', 'quantity'],
+                attributes:['additionalPrice', 'quantity'],
             }],
             order: [['createdAt', 'DESC']],
         });

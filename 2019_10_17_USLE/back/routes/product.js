@@ -29,6 +29,7 @@ router.post('/add', upload.none(), async(req, res, next) => {
     try{
         const newProduct = await db.Product.create({
             productName: req.body.name,
+            price: req.body.price,
             description: req.body.description,
             ProductBrandId: req.body.brand,
             ProductCategoryId: req.body.category,
@@ -36,79 +37,66 @@ router.post('/add', upload.none(), async(req, res, next) => {
         
         const newProductOptionJsonObj = JSON.parse(req.body.option);
         
-        if(newProductOptionJsonObj){
-            await Promise.all(newProductOptionJsonObj.options.map((optionsValue, optionsIndex) => {
-                Promise.resolve(db.ProductInventory.create({
-                    quantity: optionsValue.additionalProps.quantity,
-                    additionalPrice: optionsValue.additionalProps.additionalPrice,
-                })).then(async function(newInventoryResult){
-                    await Promise.all(optionsValue.selection.map((selectionValue, selectionIndex) => {
-                            Promise.resolve(db.ProductOptionSelection.findOne({
-                                where: {
-                                    id: selectionValue.id
-                                }
-                            })).then(function(selectionResult){
-                                
-                                eval("selectionResult.addProductOptionSelection" + selectionIndex + "(newInventoryResult)");
-                                newProduct.addProductInventory(newInventoryResult);
-                            }).then(function(test){
-                               
-                            })
-                    }))
-            })}));
+        // option을 기입했을 때 (1개 이상)
+        if(newProductOptionJsonObj.length !== 0){
+            await Promise.resolve(newProductOptionJsonObj.options.map((optionsValue, optionsIndex) => {
+                
+                return(
+                    Promise.resolve(db.ProductInventory.create({
+                        quantity: optionsValue.additionalProps.quantity,
+                        additionalPrice: optionsValue.additionalProps.additionalPrice,
+                    }))).then(async function(newInventoryResult){
+                        return(
+                            Promise.all(optionsValue.selection.map((selectionValue, selectionIndex) => {
+                                    return(
+                                        Promise.resolve(db.ProductOptionSelection.findOne({
+                                            where: {
+                                                id: selectionValue.id
+                                            }
+                                        })).then(function(selectionResult){
+                                           
+                                            eval("selectionResult.addProductOptionSelection" + selectionIndex + "(newInventoryResult)");
+                                            newProduct.addProductInventory(newInventoryResult);
+                                        })
+                                    )
+                                })
+                            )
+                        )
+                    })
+                }    
+            ));
+        // option을 기입하지 않았을 때 (1개 이상)
+        } else {
+            const newInventoryResult = await Promise.resolve(db.ProductInventory.create({
+                quantity: 100,
+            }));
+            
+            await newProduct.addProductInventory(newInventoryResult);
         }
-           
-        // // option을 기입했을 때 (1개 이상)
-        // if(newProductOptionJsonObj){
-        //     // option이 2개 이상일 때
-        //     if(newProductOptionJsonObj.length >= 2) {
-        //         const newProductOption = await Promise.all(newProductOptionJsonObj.map((option, index) => {
-        //             return (
-        //                 db.ProductInventory.create({
-        //                     size: option.size,
-        //                     color: option.color,
-        //                     price: req.body.price,
-        //                     quantity: option.quantity,
-        //                 })
-        //             )
-        //         }));
-        //         await newProduct.addProductInventory(newProductOption);
-        //     } else {
-        //         // option이 1개 일 때
-        //         const newProductOption = await db.ProductInventory.create({
-        //             size: newProductOptionJsonObj.size,
-        //             color: newProductOptionJsonObj.color,
-        //             price: req.body.price,
-        //             quantity: newProductOptionJsonObj.quantity,
-        //         })
-        //         await newProduct.addProductInventory(newProductOption);
-        //     }
-        // } 
         
-        
-        // if(req.body.image){
-        //     if(Array.isArray(req.body.image)){
-        //         const images = await Promise.all(req.body.image.map((image) => {
-        //             return db.ProductImage.create({
-        //                 src: image,
-        //             })
-        //         }));
-        //         await newProduct.addProductImage(images);
-        //     } else {
-        //         const image = await db.ProductImage.create({
-        //             src: req.body.image,
-        //         })
-        //         await newProduct.addProductImage(image);
-        //     }
-        // }
+        if(req.body.image){
+            if(Array.isArray(req.body.image)){
+                const images = await Promise.all(req.body.image.map((image) => {
+                    return db.ProductImage.create({
+                        src: image,
+                    })
+                }));
+                await newProduct.addProductImage(images);
+            } else {
+                const image = await db.ProductImage.create({
+                    src: req.body.image,
+                })
+                await newProduct.addProductImage(image);
+            }
+        }
 
-        // const newProductPostId = await db.Product.findOne({
-        //     where: {
-        //         id: newProduct.id
-        //     }
-        // });
+        const newProductPostId = await db.Product.findOne({
+            where: {
+                id: newProduct.id
+            }
+        });
 
-        // return res.json(newProductPostId);
+        return res.json(newProductPostId);
         
     } catch(e) {
         console.error(e);
@@ -136,10 +124,61 @@ router.get('/:id', async(req, res, next) => {
                 model: db.ProductImage,
             }, {
                 model: db.ProductInventory,
-                attributes: ['size', 'color', 'price', 'quantity']
+                attributes: ['additionalPrice'],
+                include: [{
+                    model: db.ProductOptionSelection,
+                    as: 'ProductOptionSelection0',
+                    attributes: ['id', 'selectionName'],
+                    include: [{
+                        model: db.ProductOption,
+                        attributes: ['id','optionName'],
+                    }]
+                },{
+                    model: db.ProductOptionSelection,
+                    as: 'ProductOptionSelection1',
+                    attributes: ['id','selectionName'],
+                    include: [{
+                        model: db.ProductOption,
+                        attributes: ['id','optionName'],
+                    }]
+                },{
+                    model: db.ProductOptionSelection,
+                    as: 'ProductOptionSelection2',
+                    attributes: ['id','selectionName'],
+                    include: [{
+                        model: db.ProductOption,
+                        attributes: ['id','optionName'],
+                    }]
+                },{
+                    model: db.ProductOptionSelection,
+                    as: 'ProductOptionSelection3',
+                    attributes: ['id','selectionName'],
+                    include: [{
+                        model: db.ProductOption,
+                        attributes: ['id','optionName'],
+                    }]
+                },{
+                    model: db.ProductOptionSelection,
+                    as: 'ProductOptionSelection4',
+                    attributes: ['id','selectionName'],
+                    include: [{
+                        model: db.ProductOption,
+                        attributes: ['id','optionName'],
+                    }]
+                },{
+                    model: db.ProductOptionSelection,
+                    as: 'ProductOptionSelection5',
+                    attributes: ['id','selectionName'],
+                    include: [{
+                        model: db.ProductOption,
+                        attributes: ['id','optionName'],
+                    }]
+                }]
             }],
         });
         
+        console.log(productDetail);
+
         return res.json(productDetail);
     } catch(e) {
         console.error(e);

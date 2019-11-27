@@ -75,7 +75,7 @@ const AddOptionDialog = (props) => {
             optionsValidate.push(optionsValue.optionName);
         })
         const errors = required(optionsValidate, values);
-        
+
         return errors;
     })
     

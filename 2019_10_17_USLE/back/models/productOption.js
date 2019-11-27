@@ -5,7 +5,7 @@ module.exports = (sequelize, DataTypes) => {
         optionName: {
             type: DataTypes.STRING(100),
             allowNull: false,
-            defaultValue: 'one', 
+            unique: true, 
         }
     },{
         timestamps: true,

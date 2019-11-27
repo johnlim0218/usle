@@ -9,7 +9,7 @@ module.exports = (sequelize, DataTypes) => {
         additionalPrice: {
             type: DataTypes.INTEGER,
             allowNull: false,
-            defaultValue: 1,
+            defaultValue: 0,
         }
     }, {
         timeStamps: true,

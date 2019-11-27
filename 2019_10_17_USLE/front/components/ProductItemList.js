@@ -88,7 +88,7 @@ const ProductItemList = (props) => {
             <StyledCardFooter>
               <div>
                 <Typography variant='body1'>
-                  ￦{item.ProductInventories ? item.ProductInventories[0].price : '0'}
+                  ￦{item.price ? item.price : '0'}
                 </Typography>
               </div>
               <div>
