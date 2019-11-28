@@ -268,25 +268,25 @@ const Product = () => {
     const [colorSelect, setColorSelect] = useState(null);
     const [sizeSelect, setSizeSelect] = useState(null);
     const [options, setOptions] = useState([]);
+    const [selectedOption, setSelectedOption] = useState({})
+
     const [editorState, setEditorState] = useState(
       EditorState.createEmpty()
     );
     const { productDetail } = useSelector(state => state.productReducer);
-
-    const onChangeColor = useCallback((e) => {
-      setColorSelect(e.target.value);
-    },[colorSelect, sizeSelect]);
-
-    const onChangeSize = useCallback((e) => {
-      if(colorSelect === null){
-        
-        return null;
-      }
-      setSizeSelect(e.target.value);
-    },[colorSelect, sizeSelect])
+      
+    const onChangeOption = useCallback((index) => (e) =>{
+      setSelectedOption((prevState) => ({ 
+          ...prevState,
+          [index] : e.target.value
+      }));  
+    }, [selectedOption]);
 
     useEffect(() => {
-      
+      console.log(selectedOption);
+    }, [selectedOption])
+
+    useEffect(() => {
       let option = [];
       let dupCheckOption = [];
       productDetail && productDetail.ProductInventories.map((productInventoryValue, productInventoryIndex) => {
@@ -304,14 +304,11 @@ const Product = () => {
         }).indexOf(optionValue.id) < 0) {
           optionReducedArray.push(optionValue);
         }
-        
         return optionReducedArray;
       }, []);
       
-
       // 옵션 별로 분류하는 재귀함수
       let classificationResult = [];
-
       const classification = (arr) => {
        if(arr.length === 0) {
          return null;
@@ -319,7 +316,7 @@ const Product = () => {
         let target = arr[0];
         let newArray = [];
 
-        let generateNewArray = arr.reduce((newGeneratedArray, curValue) => {
+        let generatedNewArray = arr.reduce((newGeneratedArray, curValue) => {
           if(target.ProductOption.id === curValue.ProductOption.id){
             newGeneratedArray.push(curValue);
           } else {
@@ -327,26 +324,25 @@ const Product = () => {
           }
           return newGeneratedArray;
         }, [])
-        classificationResult.push(generateNewArray);
+        classificationResult.push(generatedNewArray);
         classification(newArray);
        }
        return null;
       }
 
       classification(dupCheckOption);
-
-
-      console.log(classificationResult);
       
-
-    }, [productDetail & productDetail.ProductInventories])
+      setOptions(classificationResult);
+      
+    }, [productDetail])
+    
     
     useEffect(() => {
-      setImageSrc(productDetail.ProductImages.map((image, index) => ({
+      productDetail.ProductImages && setImageSrc(productDetail.ProductImages.map((image, index) => ({
         original: imgSrcUrl + image.src,
         thumbnail: imgSrcUrl + image.src,
       })))
-    }, [productDetail && productDetail.ProductImages])
+    }, [productDetail.ProductImages && productDetail.ProductImages])
 
     useEffect(() => {
       if(productDetail){
@@ -355,8 +351,6 @@ const Product = () => {
       }
 
     }, [productDetail && productDetail.description]);
-
-
 
     return(
        <div>
@@ -435,60 +429,29 @@ const Product = () => {
 
 
                             <StyledGridContainerSelection>
-                              <GridItem md={6} sm={6}>
+                              {options && options.map((optionsValue, optionsIndex) => (
+                                <GridItem xs={12}>
                                 <label>
-                                  <Typography>Select color</Typography>
+                                  <Typography>Select {optionsValue[0].ProductOption.optionName}</Typography>
                                 </label>
                                 <StyledFormControl
                                   fullWidth>
                                     <StyledSelect
-                                      value={colorSelect}
-                                      onChange={onChangeColor}
-                                      inputProps={{
-                                        name: 'colorSelect',
-                                        id: 'color-select'
-                                      }}
+                                      value={selectedOption[optionsIndex]}
+                                      onChange={onChangeOption(optionsIndex)}
+                                     
                                     >
-                                      {productDetail && productDetail.ProductInventories.map((value, index) => (
+                                      {optionsValue.map((optionValue, optionIndex) => (
                                         <StyledMenuItem
-                                          value={index}>
-                                            {value.color}
+                                          value={optionValue}>
+                                            {optionValue.selectionName}
                                         </StyledMenuItem>  
                                       ))}
                                     </StyledSelect>
                                 </StyledFormControl>
                               </GridItem>
+                              ))}
 
-
-                              <GridItem md={6} sm={6}>
-                                <label>
-                                  <Typography>Select size</Typography>
-                                </label>
-                                <StyledFormControl
-                                  fullWidth>
-                                    <StyledSelect
-                                      value={sizeSelect}
-                                      onChange={onChangeSize}
-                                      inputProps={{
-                                        name: 'sizeSelect',
-                                        id: 'size-select'
-                                      }}
-                                    >
-                                      <StyledMenuItem
-                                        value="0">
-                                          Small
-                                      </StyledMenuItem>
-                                      <StyledMenuItem
-                                        value="1">
-                                          Medium
-                                      </StyledMenuItem>
-                                      <StyledMenuItem
-                                        value="2">
-                                          Large
-                                      </StyledMenuItem>
-                                    </StyledSelect>
-                                </StyledFormControl>
-                              </GridItem>
                             </StyledGridContainerSelection>
                             
                             
