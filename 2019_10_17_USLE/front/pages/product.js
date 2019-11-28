@@ -297,21 +297,47 @@ const Product = () => {
         })
       })
       
-      // 옵션 중복 제거해서 배열에 정렬
+      // 옵션 중복 제거해서 배열에 넣는다
       dupCheckOption = option.reduce((optionReducedArray, optionValue) => {
         if(optionReducedArray.map((value, index) => {
           return value.id
         }).indexOf(optionValue.id) < 0) {
           optionReducedArray.push(optionValue);
         }
+        
         return optionReducedArray;
       }, []);
-
-      console.log(dupCheckOption);
       
-      dupCheckOption.map((optionValue, optionIndex) => {
 
-      })
+      // 옵션 별로 분류하는 재귀함수
+      let classificationResult = [];
+
+      const classification = (arr) => {
+       if(arr.length === 0) {
+         return null;
+       }  else {
+        let target = arr[0];
+        let newArray = [];
+
+        let generateNewArray = arr.reduce((newGeneratedArray, curValue) => {
+          if(target.ProductOption.id === curValue.ProductOption.id){
+            newGeneratedArray.push(curValue);
+          } else {
+            newArray.push(curValue);
+          }
+          return newGeneratedArray;
+        }, [])
+        classificationResult.push(generateNewArray);
+        classification(newArray);
+       }
+       return null;
+      }
+
+      classification(dupCheckOption);
+
+
+      console.log(classificationResult);
+      
 
     }, [productDetail & productDetail.ProductInventories])
     
