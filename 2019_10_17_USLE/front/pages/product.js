@@ -278,9 +278,14 @@ const Product = () => {
           ...prevState,
           [index] : e.target.value
       }));
-
+      
     }, [selectedOption, options]);
 
+    useEffect(() => {
+      console.log(options);
+    }, [options])
+
+    // 추가 가격(additionalPrice) 검색
     useEffect(() => {
       let result = [];
       options.map((value, index) => {
@@ -289,9 +294,20 @@ const Product = () => {
         }
         result.push(selectedOption[index]);
       })
-      console.log(result);
-    }, [options, selectedOption])
 
+      let copiedList = productDetail.ProductInventories;
+      if(result.length === options.length){
+        result.map((value, index) => {
+          copiedList = copiedList.filter((arrayItem) => {
+          return value.id === eval('arrayItem.ProductOptionSelection' + index +'.id');
+           })
+        })
+      }
+      console.log(copiedList);
+      
+    }, [options, selectedOption]);
+
+    // 옵션 정렬
     useEffect(() => {
       let selection = [];
       let sortedSelectionArray = [];
@@ -300,12 +316,12 @@ const Product = () => {
         selection = [];
         let propsName = 'ProductOptionSelection' + value;
         
-        productDetail.ProductInventories.map((productInventoryValue, productInventoryIndex) => {
+        productDetail && productDetail.ProductInventories.map((productInventoryValue, productInventoryIndex) => {
           if(eval("productInventoryValue.ProductOptionSelection"+value) !== null){
              selection.push(eval("productInventoryValue.ProductOptionSelection"+value));
           }
         })
-        // 옵션 중복 제거해서 배열에 넣는다
+        // 옵션 중복을 제거해서 배열에 넣는다
         let result = selection.reduce((selectionReducedArray, selectionCurValue) => {
           if(selectionReducedArray.map((thisValue, thisIndex) => {
             return thisValue.id;
@@ -314,12 +330,15 @@ const Product = () => {
           }
           return selectionReducedArray
         }, []);
-        sortedSelectionArray.push({[propsName]:result});
+        if(result.length !== 0) {
+          sortedSelectionArray.push(result);
+        }
       })
       
-      console.log(sortedSelectionArray);
+      setOptions(sortedSelectionArray);
     }, [productDetail]);
     
+    // ImageGallery 용 이미지 소스
     useEffect(() => {
       let imageSrcs = [];
       productDetail && productDetail.ProductImages.map((image, index) => {
@@ -332,6 +351,7 @@ const Product = () => {
 
     }, [productDetail])
 
+    // 제품 상세 설명 parser (draft.js)
     useEffect(() => {
       if(productDetail){
         const description = convertFromRaw(JSON.parse(productDetail.description));
@@ -417,26 +437,28 @@ const Product = () => {
 
                             <StyledGridContainerSelection>
                               {options && options.map((optionsValue, optionsIndex) => (
+                              
                                 <GridItem xs={12}>
-                                <label>
-                                  <Typography>Select {optionsValue[0].ProductOption.optionName}</Typography>
-                                </label>
-                                <StyledFormControl
-                                  fullWidth>
-                                    <StyledSelect
-                                      value={selectedOption[optionsIndex]}
-                                      onChange={onChangeOption(optionsIndex)}
-                                     
-                                    >
-                                      {optionsValue.map((optionValue, optionIndex) => (
-                                        <StyledMenuItem
-                                          value={optionValue}>
-                                            {optionValue.selectionName}
-                                        </StyledMenuItem>  
-                                      ))}
-                                    </StyledSelect>
-                                </StyledFormControl>
-                              </GridItem>
+                                  <label>
+                                    <Typography>Select {optionsValue[0].ProductOption.optionName}</Typography>
+                                  </label>
+                                  <StyledFormControl
+                                    fullWidth>
+                                      <StyledSelect
+                                        value={selectedOption[optionsIndex]}
+                                        onChange={onChangeOption(optionsIndex)}
+                                      
+                                      >
+                                        {optionsValue.map((optionValue, optionIndex) => (
+                                          <StyledMenuItem
+                                            value={optionValue}>
+                                              {optionValue.selectionName}
+                                          </StyledMenuItem>  
+                                        ))}
+                                      </StyledSelect>
+                                  </StyledFormControl>
+                                </GridItem>
+                                
                               ))}
 
                             </StyledGridContainerSelection>
