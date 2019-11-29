@@ -273,7 +273,7 @@ const Product = () => {
     const [editorState, setEditorState] = useState(
       EditorState.createEmpty()
     );
-    const { productDetail } = useSelector(state => state.productReducer);
+    const { productDetail, isLoadingProductDetail } = useSelector(state => state.productReducer);
       
     const onChangeOption = useCallback((index) => (e) =>{
       setSelectedOption((prevState) => ({ 
@@ -338,18 +338,26 @@ const Product = () => {
     
     
     useEffect(() => {
-      productDetail.ProductImages && setImageSrc(productDetail.ProductImages.map((image, index) => ({
-        original: imgSrcUrl + image.src,
-        thumbnail: imgSrcUrl + image.src,
-      })))
-    }, [productDetail.ProductImages && productDetail.ProductImages])
+      let imageSrcs = [];
+      productDetail && productDetail.ProductImages.map((image, index) => {
+        imageSrcs.push({
+          original: imgSrcUrl + image.src,
+          thumbnail: imgSrcUrl + image.src,
+        });
+      });
+      setImageSrc(imageSrcs);
+
+    }, [productDetail])
+
+    useEffect(() => {
+      console.log(imageSrc);
+    }, [imageSrc])
 
     useEffect(() => {
       if(productDetail){
         const description = convertFromRaw(JSON.parse(productDetail.description));
         setEditorState(EditorState.createWithContent(description));
       }
-
     }, [productDetail && productDetail.description]);
 
     return(
@@ -369,7 +377,7 @@ const Product = () => {
                                   showPlayButton={false}
                                   showNav={false}
                                   startIndex={3}
-                                  items={productDetail && imageSrc}
+                                  items={imageSrc}
                                   />
                           </GridItem>
                           
