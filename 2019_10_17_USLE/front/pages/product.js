@@ -265,77 +265,60 @@ const StyledTypographyRelateditems = styled(Typography)`
 
 const Product = () => {
     const [imageSrc, setImageSrc] = useState([]);
-    const [colorSelect, setColorSelect] = useState(null);
-    const [sizeSelect, setSizeSelect] = useState(null);
     const [options, setOptions] = useState([]);
     const [selectedOption, setSelectedOption] = useState({})
-
+    const [additionalPrice, setAdditionalPrice] = useState(0);
     const [editorState, setEditorState] = useState(
       EditorState.createEmpty()
     );
     const { productDetail, isLoadingProductDetail } = useSelector(state => state.productReducer);
       
-    const onChangeOption = useCallback((index) => (e) =>{
+    const onChangeOption = useCallback((index) => (e) => {
       setSelectedOption((prevState) => ({ 
           ...prevState,
           [index] : e.target.value
-      }));  
-    }, [selectedOption]);
+      }));
+
+    }, [selectedOption, options]);
 
     useEffect(() => {
-      console.log(selectedOption);
-    }, [selectedOption])
+      let result = [];
+      options.map((value, index) => {
+        if(selectedOption[index] === undefined){
+          return null;
+        }
+        result.push(selectedOption[index]);
+      })
+      console.log(result);
+    }, [options, selectedOption])
 
     useEffect(() => {
-      let option = [];
-      let dupCheckOption = [];
-      productDetail && productDetail.ProductInventories.map((productInventoryValue, productInventoryIndex) => {
-        [0,1,2,3,4,5].map((value, index) => {
+      let selection = [];
+      let sortedSelectionArray = [];
+      
+      [0,1,2,3,4,5].map((value, index) => {
+        selection = [];
+        let propsName = 'ProductOptionSelection' + value;
+        
+        productDetail.ProductInventories.map((productInventoryValue, productInventoryIndex) => {
           if(eval("productInventoryValue.ProductOptionSelection"+value) !== null){
-            option.push(eval("productInventoryValue.ProductOptionSelection"+value));
+             selection.push(eval("productInventoryValue.ProductOptionSelection"+value));
           }
         })
+        // 옵션 중복 제거해서 배열에 넣는다
+        let result = selection.reduce((selectionReducedArray, selectionCurValue) => {
+          if(selectionReducedArray.map((thisValue, thisIndex) => {
+            return thisValue.id;
+          }).indexOf(selectionCurValue.id) < 0) {
+            selectionReducedArray.push(selectionCurValue);
+          }
+          return selectionReducedArray
+        }, []);
+        sortedSelectionArray.push({[propsName]:result});
       })
       
-      // 옵션 중복 제거해서 배열에 넣는다
-      dupCheckOption = option.reduce((optionReducedArray, optionValue) => {
-        if(optionReducedArray.map((value, index) => {
-          return value.id
-        }).indexOf(optionValue.id) < 0) {
-          optionReducedArray.push(optionValue);
-        }
-        return optionReducedArray;
-      }, []);
-      
-      // 옵션 별로 분류하는 재귀함수
-      let classificationResult = [];
-      const classification = (arr) => {
-       if(arr.length === 0) {
-         return null;
-       }  else {
-        let target = arr[0];
-        let newArray = [];
-
-        let generatedNewArray = arr.reduce((newGeneratedArray, curValue) => {
-          if(target.ProductOption.id === curValue.ProductOption.id){
-            newGeneratedArray.push(curValue);
-          } else {
-            newArray.push(curValue);
-          }
-          return newGeneratedArray;
-        }, [])
-        classificationResult.push(generatedNewArray);
-        classification(newArray);
-       }
-       return null;
-      }
-
-      classification(dupCheckOption);
-      
-      setOptions(classificationResult);
-      
-    }, [productDetail])
-    
+      console.log(sortedSelectionArray);
+    }, [productDetail]);
     
     useEffect(() => {
       let imageSrcs = [];
@@ -348,10 +331,6 @@ const Product = () => {
       setImageSrc(imageSrcs);
 
     }, [productDetail])
-
-    useEffect(() => {
-      console.log(imageSrc);
-    }, [imageSrc])
 
     useEffect(() => {
       if(productDetail){
@@ -384,7 +363,7 @@ const Product = () => {
                           <GridItem md={6} sm={6}>
                             <StyledDivShortDescriptionWrapper>
                               <StyledTypographyTitle variant='h5'>{productDetail && productDetail.productName}</StyledTypographyTitle>
-                              <StyledTypographyPrice variant='h3'>{productDetail && productDetail.ProductInventories[0].price}원</StyledTypographyPrice>
+                              <StyledTypographyPrice variant='h3'>{productDetail && productDetail.price}원</StyledTypographyPrice>
                               <Accordion
                                 active={0}
                                 activeColor='rose'
