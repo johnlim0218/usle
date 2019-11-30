@@ -282,8 +282,8 @@ const Product = () => {
     }, [selectedOption, options]);
 
     useEffect(() => {
-      console.log(options);
-    }, [options])
+      console.log(additionalPrice);
+    }, [additionalPrice])
 
     // 추가 가격(additionalPrice) 검색
     useEffect(() => {
@@ -295,16 +295,17 @@ const Product = () => {
         result.push(selectedOption[index]);
       })
 
-      let copiedList = productDetail.ProductInventories;
-      if(result.length === options.length){
+      let filteredList = '';
+      if(options.length > 0 && result.length > 0 && (result.length === options.length)){
+        filteredList = productDetail.ProductInventories;
         result.map((value, index) => {
-          copiedList = copiedList.filter((arrayItem) => {
+          filteredList = filteredList.filter((arrayItem) => {
           return value.id === eval('arrayItem.ProductOptionSelection' + index +'.id');
            })
         })
+        setAdditionalPrice(filteredList[0].additionalPrice);
       }
-      console.log(copiedList);
-      
+
     }, [options, selectedOption]);
 
     // 옵션 정렬
@@ -460,7 +461,9 @@ const Product = () => {
                                 </GridItem>
                                 
                               ))}
-
+                              <div>
+                                <span>{additionalPrice !== 0 && additionalPrice}원</span>
+                              </div>
                             </StyledGridContainerSelection>
                             
                             
