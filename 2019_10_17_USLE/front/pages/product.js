@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import styled, { css } from 'styled-components';
 import ImageGallery from 'react-image-gallery';
 import { Editor, EditorState, convertFromRaw } from 'draft-js';
@@ -27,6 +27,7 @@ import InfoArea from '../components/InfoArea';
 import ProductItemList from '../components/ProductItemList';
 import { imgSrcUrl } from '../components/ProductItemList';
 import { LOAD_PRODUCT_DETAIL_REQUEST } from '../reducers/productReducer';
+import { ADD_CART_REQUEST } from '../reducers/cartReducer';
 
 // images
 export const cardProduct1 = "https://demos.creative-tim.com/material-kit-pro-react/static/media/product1.629c7883.jpg";
@@ -188,6 +189,9 @@ const StyledTypographyPrice = styled(Typography)`
     margin: 10px 0 25px;
     color: #3c4858;
 `
+const StyledTypographyAdditionalPrice = styled(Typography)`
+
+`
 
 export const StyledSelect = styled(Select)`
         padding: 12px 0 7px;
@@ -268,11 +272,14 @@ const Product = () => {
     const [options, setOptions] = useState([]);
     const [selectedOption, setSelectedOption] = useState({})
     const [additionalPrice, setAdditionalPrice] = useState(0);
+    const [selectedOptionList, setSelectedOptionList] = useState([]);
     const [editorState, setEditorState] = useState(
       EditorState.createEmpty()
     );
     const { productDetail, isLoadingProductDetail } = useSelector(state => state.productReducer);
-      
+    const { me } = useSelector(state => state.userReducer);  
+    const dispatch = useDispatch(); 
+
     const onChangeOption = useCallback((index) => (e) => {
       setSelectedOption((prevState) => ({ 
           ...prevState,
@@ -281,11 +288,7 @@ const Product = () => {
       
     }, [selectedOption, options]);
 
-    useEffect(() => {
-      console.log(additionalPrice);
-    }, [additionalPrice])
-
-    // 추가 가격(additionalPrice) 검색
+    // 상세 옵션 목록에서 client가 선택한 상품 검색
     useEffect(() => {
       let result = [];
       options.map((value, index) => {
@@ -303,10 +306,23 @@ const Product = () => {
           return value.id === eval('arrayItem.ProductOptionSelection' + index +'.id');
            })
         })
-        setAdditionalPrice(filteredList[0].additionalPrice);
+        // setAdditionalPrice(filteredList[0].additionalPrice);
+        setSelectedOptionList((prevState) => ([
+          ...prevState,
+          filteredList[0]
+        ]));
       }
 
     }, [options, selectedOption]);
+
+    useEffect(() => {
+      let additionalPrice = 0;
+      selectedOptionList.length > 0 && selectedOptionList.map((optionValue, optionIndex) => {
+        additionalPrice += optionValue.additionalPrice;
+      })
+      setAdditionalPrice(additionalPrice);
+      console.log(selectedOptionList);
+    }, [selectedOptionList])
 
     // 옵션 정렬
     useEffect(() => {
@@ -359,6 +375,35 @@ const Product = () => {
         setEditorState(EditorState.createWithContent(description));
       }
     }, [productDetail && productDetail.description]);
+
+    const onClickAddCart = useCallback((e) => {
+      e.preventDefault();
+     
+      let listForAddCart = [];
+      if(selectedOptionList.length === 0) {
+        return '';
+      } else {
+        selectedOptionList.map((optionListValue, optionListIndex) => {
+          listForAddCart.push({
+            id: optionListValue.id
+          });
+        })
+        // 로그인이 되어있지 않을 때
+        if(!me) {
+          dispatch({
+            type: ADD_CART_REQUEST,
+            data: listForAddCart, 
+          })
+          // 로그인이 되어있을 때
+        } else {
+          dispatch({
+            type: ADD_CART_REQUEST,
+            data: listForAddCart, 
+          })
+        }
+      }
+    
+    }, [selectedOptionList]);
 
     return(
        <div>
@@ -461,17 +506,19 @@ const Product = () => {
                                 </GridItem>
                                 
                               ))}
-                              <div>
-                                <span>{additionalPrice !== 0 && additionalPrice}원</span>
-                              </div>
+                               <GridItem>
+                                {additionalPrice !== 0 && <StyledTypographyAdditionalPrice variant="h5"> 추가가격 {additionalPrice}원</StyledTypographyAdditionalPrice>}
+                              </GridItem>
                             </StyledGridContainerSelection>
                             
-                            
+
                             <StyledGridContainerButton>
                               <StyledButtonBuy>
                                 Purchase it
                               </StyledButtonBuy>
-                              <StyledButtonCart>
+                              <StyledButtonCart
+                                onClick={onClickAddCart}
+                              >
                                 Add to Cart &nbsp; <ShoppingCart/>
                               </StyledButtonCart>
                             </StyledGridContainerButton>

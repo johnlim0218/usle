@@ -134,8 +134,11 @@ const AppAppBar = () => {
                             MyAccount
                         <StyledFavoriteIcon/>
                             Favorite
-                        <StyledShoppingCartIcon/>
-                            ShoppingCart
+                        <Link href='/cart'>
+                            <StyledShoppingCartIcon>
+                                ShoppingCart
+                            </StyledShoppingCartIcon>
+                        </Link>
                         <StyledExitToAppIcon onClick={onClickLogOut}/>
                             LogOut       
                     </StyledBreadCrumbs>

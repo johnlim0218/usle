@@ -34,6 +34,10 @@ const StyledBreadCrumbs = styled(Breadcrumbs)`
 const StyledATag = styled.a`
     font-size: 15px;
 `
+const StyledShoppingCartIcon = styled(ShoppingCartIcon)`
+    width: 20px;
+    height: 20px;
+`;
 // ul tag
 const StyledList = styled(List)`
     font-size: 14px;
@@ -124,6 +128,11 @@ const AppAppBarLogOut = () => {
                             <StyledATag>
                                 Sign Up
                             </StyledATag>
+                        </Link>
+                        <Link href='/cart'>
+                            <StyledShoppingCartIcon>
+                                ShoppingCart
+                            </StyledShoppingCartIcon>
                         </Link>
                     </StyledBreadCrumbs>
                 </StyeldDivInfoBar>

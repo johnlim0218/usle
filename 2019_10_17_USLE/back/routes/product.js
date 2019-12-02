@@ -124,7 +124,7 @@ router.get('/:id', async(req, res, next) => {
                 model: db.ProductImage,
             }, {
                 model: db.ProductInventory,
-                attributes: ['additionalPrice', 'quantity'],
+                attributes: ['id', 'additionalPrice', 'quantity'],
                 include: [{
                     model: db.ProductOptionSelection,
                     as: 'ProductOptionSelection0',
@@ -177,8 +177,6 @@ router.get('/:id', async(req, res, next) => {
             }],
         });
         
-        console.log(productDetail);
-
         return res.json(productDetail);
     } catch(e) {
         console.error(e);

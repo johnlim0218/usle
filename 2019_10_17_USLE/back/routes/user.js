@@ -20,7 +20,6 @@ router.post('/login', isNotLoggedIn, (req, res, next) => {
             return next(err);
         };
         if(info){
-            console.log(info);
             return res.status(403).send(info.reason);
         };
         

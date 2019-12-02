@@ -15,6 +15,8 @@ import rootSaga from '../sagas';
 import AppLayout from '../layout/AppLayout';
 import AdminLayout from '../layout/AdminLayout';
 import theme from '../theme/theme';
+import axios from 'axios';
+import { LOAD_USER_REQUEST } from '../reducers/userReducer';
 
 const Usle = ({ Component, store, pageProps }) => {
     const [isAdmin, setIsAdmin] = useState(false);
@@ -67,9 +69,21 @@ Usle.propTypes = {
 
 Usle.getInitialProps = async (context) => {
     const { ctx, Component, router } = context;
-    console.log(context.router.route);
     let pageProps = {};
     let pageUrl = '';
+    const state = ctx.store.getState();
+    const cookie = ctx.isServer ? ctx.req.headers.cookie : '';
+    
+    if(ctx.isServer && cookie) {
+        axios.defaults.headers.Cookie = '';
+        axios.defaults.headers.Cookie = cookie;
+    }
+    if(!state.userReducer.me) {
+        ctx.store.dispatch({
+            type: LOAD_USER_REQUEST
+        });
+    }
+
     if(Component.getInitialProps) {
         pageProps = await Component.getInitialProps(ctx) || {};
     }

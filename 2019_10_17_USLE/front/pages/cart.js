@@ -1,11 +1,13 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import KeyboardArrowRight from "@material-ui/icons/KeyboardArrowRight";
 import Remove from '@material-ui/icons/Remove';
 import Add from '@material-ui/icons/Add';
 import Close from '@material-ui/icons/Close';
-import Tooltip from '../components/Tooltip';
+import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 
+import Tooltip from '../components/Tooltip';
 import Typography from '../components/Typography';
 import { StyledDivMain, StyledDivContainer } from '../pages/product';
 
@@ -18,6 +20,7 @@ import GridContainer from '../components/Grid/GridContainer';
 import GridItem from '../components/Grid/GridItem';
 
 import { dummyCartData } from '../dummy/dummy';
+import { LOAD_CART_REQUEST } from '../reducers/cartReducer';
 
 const StyledDivImgContainer = styled.div`
     width: 120px;
@@ -41,6 +44,13 @@ const StyledAddRemoveButton = styled(Button)`
 
 const Cart = () => {
     const [qty, setQty] = useState(1);
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        dispatch({
+            type: LOAD_CART_REQUEST,
+        })
+    }, [])
 
     return(
         <div>
