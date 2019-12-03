@@ -10,7 +10,9 @@ function* cartSaga(){
 }
 
 function addCartAPI(newCartData){
-    return axios.post('/cart/add', newCartData);
+    return axios.post('/cart/add', newCartData, {
+        withCredentials: true
+    });
 }
 function* addCart(action){
     try{
@@ -31,7 +33,9 @@ function* watchAddCart(){
 }
 
 function loadCartAPI(){
-    return axios.get('/cart/get');
+    return axios.get('/cart/get', {
+        withCredentials: true
+    });
 }
 function* loadCart(){
     try {

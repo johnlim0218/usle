@@ -109,6 +109,7 @@ router.post('/add/images', upload.array('image'), async(req, res, next) => {
 });
 
 router.get('/:id', async(req, res, next) => {
+    
     try{
         const productDetail = await db.Product.findOne({
             where:{
@@ -176,7 +177,7 @@ router.get('/:id', async(req, res, next) => {
                 }]
             }],
         });
-        
+        console.log(req.cookies);
         return res.json(productDetail);
     } catch(e) {
         console.error(e);

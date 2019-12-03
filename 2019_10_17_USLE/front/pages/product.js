@@ -385,7 +385,8 @@ const Product = () => {
       } else {
         selectedOptionList.map((optionListValue, optionListIndex) => {
           listForAddCart.push({
-            id: optionListValue.id
+            id: optionListValue.id,
+            qty: 1,
           });
         })
         // 로그인이 되어있지 않을 때

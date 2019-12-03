@@ -15,7 +15,9 @@ function* productSaga(){
 }
 
 function loadProductsAPI(){
-    return axios.get('/products');
+    return axios.get('/products', {
+        withCredentials: true
+    });
 }
 function* loadProducts(action){
     try{
@@ -36,7 +38,9 @@ function* watchLoadProducts(){
 }
 
 function loadProductDetailAPI(productId){
-    return axios.get(`/product/${productId}`);
+    return axios.get(`/product/${productId}` ,{
+        withCredentials: true
+    });
 }
 function* loadProductDetail(action){
     try{
