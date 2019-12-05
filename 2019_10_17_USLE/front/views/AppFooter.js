@@ -73,8 +73,8 @@ const Copyright = () => {
     return(
         <>
             {'Copyright @ '}
-            <Link>
-                <a color="inherit" href="https://material-ui.com">
+            <Link href="/">
+                <a color="inherit">
                     Usle
                 </a>
             </Link>{' '}
@@ -109,10 +109,18 @@ const AppFooter = () => {
                         </Typography> 
                         <StyledUl>
                             <StyledLi>
-                                <Link><a href="/premium-themes/onepirate/terms/">Terms</a></Link>
+                                <Link href="/terms">
+                                    <a>
+                                        Terms
+                                    </a>
+                                </Link>
                             </StyledLi>
                             <StyledLi>
-                                <Link><a href="/premium-themes/onepirate/privacy/">Privacy</a></Link>
+                                <Link href="/privacy">
+                                    <a>
+                                        Privacy
+                                    </a>
+                                </Link>
                             </StyledLi>
                         </StyledUl>
                     </Grid>
@@ -133,28 +141,36 @@ const AppFooter = () => {
                     <Grid item>
                         <Typography variant="caption">
                         {'Icons made by '}
-                        <Link>
-                            <a href="https://www.freepik.com" rel="nofollow" title="Freepik">
-                                Freepik
-                            </a>
-                        </Link>
+                        
+                        <a 
+                            href="https://www.freepik.com"
+                            rel="nofollow" 
+                            title="Freepik"
+                        >
+                            Freepik
+                        </a>
+                        
                         {' from '}
-                        <Link>
-                            <a href="https://www.flaticon.com" rel="nofollow" title="Flaticon">
-                                www.flaticon.com
-                            </a>
-                        </Link>
+                        
+                        <a 
+                            href="https://www.flaticon.com"
+                            rel="nofollow" 
+                            title="Flaticon"
+                        >
+                            www.flaticon.com
+                        </a>
+                        
                         {' is licensed by '}
-                        <Link>
-                            <a
+                        
+                        <a
                             href="https://creativecommons.org/licenses/by/3.0/"
                             title="Creative Commons BY 3.0"
                             target="_blank"
                             rel="noopener noreferrer"
-                            >
-                                CC 3.0 BY
-                            </a>
-                        </Link>
+                        >
+                            CC 3.0 BY
+                        </a>
+                        
                         </Typography>
                     </Grid>
                 </Grid>

@@ -63,7 +63,8 @@ const StyledArrowDownImage = styled.img.attrs((prosp) => ({
     position: absolute;
 `;
 
-const IndexImageLayout = ({ children }) => {
+const IndexImageLayout = (props) => {
+    const { children, ...others } = props;
     return(
         <StyledSection>
             <StyledContainer>
@@ -78,7 +79,7 @@ const IndexImageLayout = ({ children }) => {
 }
 
 IndexImageLayout.propTypes = {
-    children: PropTypes.node.isRequires,
+    children: PropTypes.node,
 }
 
 export default IndexImageLayout;

@@ -142,16 +142,13 @@ const AppAppBarLogOut = () => {
                     <StyledListItem>
                         <StyledButton
                             href="#pablo"
-                            color="transparent"
                         >
                          About
                         </StyledButton>
                     </StyledListItem>
                     <StyledListItem>
                         <Link href='/shopAll'>
-                            <StyledButton
-                                color="transparent"
-                            >
+                            <StyledButton>
                                 Shop All 
                             </StyledButton>
                         </Link>
@@ -159,7 +156,6 @@ const AppAppBarLogOut = () => {
                     <StyledListItem>
                         <StyledButton
                             href="#pablo"
-                            color="transparent"
                         >
                          Category
                         </StyledButton>
@@ -167,7 +163,6 @@ const AppAppBarLogOut = () => {
                     <StyledListItem>
                         <StyledButton
                             href="#pablo"
-                            color="transparent"
                         >
                          Category
                         </StyledButton>
@@ -177,7 +172,7 @@ const AppAppBarLogOut = () => {
             rightLinks={
                 <div>
                     <form style={{display: 'flex'}}>
-                        <TextField noBorder placeholder="Search"/>
+                        <TextField noBorder={true} placeholder="Search"/>
                         <Button justIcon>
                             <Search/>
                         </Button>

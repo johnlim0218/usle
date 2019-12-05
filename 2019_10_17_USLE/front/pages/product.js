@@ -24,6 +24,7 @@ import GridItem from '../components/Grid/GridItem';
 import Accordion from '../components/Accordion';
 import Button from '../components/Button';
 import InfoArea from '../components/InfoArea';
+import Dialog from '../components/Dialog';
 import ProductItemList from '../components/ProductItemList';
 import { imgSrcUrl } from '../components/ProductItemList';
 import { LOAD_PRODUCT_DETAIL_REQUEST } from '../reducers/productReducer';
@@ -273,11 +274,14 @@ const Product = () => {
     const [selectedOption, setSelectedOption] = useState({})
     const [additionalPrice, setAdditionalPrice] = useState(0);
     const [selectedOptionList, setSelectedOptionList] = useState([]);
+    const [checkCart, setCheckCart] = useState(false);
+    const [dialogMessage, setDialogMessage] = useState('');
     const [editorState, setEditorState] = useState(
       EditorState.createEmpty()
     );
     const { productDetail, isLoadingProductDetail } = useSelector(state => state.productReducer);
-    const { me } = useSelector(state => state.userReducer);  
+    const { me } = useSelector(state => state.userReducer);
+    const { addCartMessage, addCartErrorReason } = useSelector(state => state.cartReducer);
     const dispatch = useDispatch(); 
 
     const onChangeOption = useCallback((index) => (e) => {
@@ -287,6 +291,25 @@ const Product = () => {
       }));
       
     }, [selectedOption, options]);
+
+    const onClickCheckCart = useCallback((e) => {
+      
+      setCheckCart(!checkCart);
+    }, [checkCart]);
+
+    useEffect(() => {
+      // 카트 추가 실패 메시지
+      if(addCartErrorReason !== '') {
+        setDialogMessage('Failure Messge');
+        setCheckCart(true);
+      }
+      // 카트 추가 성공 메시지
+      if(addCartMessage !== '') {
+        setDialogMessage('Success Messge');
+        setCheckCart(true);
+      }
+
+    }, [addCartMessage, addCartErrorReason]);
 
     // 상세 옵션 목록에서 client가 선택한 상품 검색
     useEffect(() => {
@@ -389,22 +412,16 @@ const Product = () => {
             qty: 1,
           });
         })
-        // 로그인이 되어있지 않을 때
-        if(!me) {
-          dispatch({
-            type: ADD_CART_REQUEST,
-            data: listForAddCart, 
-          })
-          // 로그인이 되어있을 때
-        } else {
-          dispatch({
-            type: ADD_CART_REQUEST,
-            data: listForAddCart, 
-          })
-        }
+        
+        dispatch({
+          type: ADD_CART_REQUEST,
+          data: listForAddCart, 
+        })
       }
-    
+
     }, [selectedOptionList]);
+
+    
 
     return(
        <div>
@@ -522,6 +539,8 @@ const Product = () => {
                               >
                                 Add to Cart &nbsp; <ShoppingCart/>
                               </StyledButtonCart>
+                              <Dialog open={checkCart} close={onClickCheckCart} message={dialogMessage} redirectLink={'/cart'}/>
+
                             </StyledGridContainerButton>
                           </GridItem>
                       </StyledGridContainer>

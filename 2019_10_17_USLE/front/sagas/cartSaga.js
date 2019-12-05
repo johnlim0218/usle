@@ -19,7 +19,7 @@ function* addCart(action){
         const result = yield call(addCartAPI, action.data);
         yield put({
             type: ADD_CART_SUCCESS,
-            data: result,
+            data: result.data,
         })
     } catch(e) {
         yield put({
@@ -40,10 +40,9 @@ function loadCartAPI(){
 function* loadCart(){
     try {
         const result = yield call(loadCartAPI);
-        console.log(result);
         yield put({
             type: LOAD_CART_SUCCESS,
-            data: result,
+            data: result.data !== '' ? result.data : null,
         })
     } catch(e) {
         yield put({

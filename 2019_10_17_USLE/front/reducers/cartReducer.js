@@ -1,7 +1,9 @@
 const initialState = {
     isAddingCart : false,
+    addCartMessage: '',
     addCartErrorReason : '',
     isLoadingCart : false,
+    cartList: null,
     loadCartErrorReason : '',
 }
 
@@ -18,12 +20,14 @@ const cartReducer = (state = initialState, action) => {
             return {
                 ...state,
                 isAddingCart: true,
+                addCartMessage: '',
             }
         }
         case ADD_CART_SUCCESS : {
             return {
                 ...state,
                 isAddingCart: false,
+                addCartMessage: action.data,
             }
         }
         case ADD_CART_FAILURE : {
@@ -44,6 +48,7 @@ const cartReducer = (state = initialState, action) => {
             return {
                 ...state,
                 isLoadingCart: false,
+                cartList: action.data,
             }
         }
         case LOAD_CART_FAILURE : {

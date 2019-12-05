@@ -10,7 +10,7 @@ router.post('/add', async(req, res, next) => {
         let cartList = req.body;
         console.log(cartList);
         // 카트 쿠키가 없을때
-        if(req.cookies.dq45o8w5 == undefined){
+        if(req.cookies.dq45o8w5 === undefined){
             res.cookie('dq45o8w5', cartList);
         
         // 카트 쿠키가 있을때
@@ -25,11 +25,11 @@ router.post('/add', async(req, res, next) => {
                     filteredData[0].qty += cartValue.qty;
                 }
             })
-            
+
             res.cookie('dq45o8w5', req.cookies.dq45o8w5);
         }
         
-        // 사용자 로그인이 되어있는 경우 - cart DB에 저장
+        // 사용자 로그인이 되어있는 경우 - cart DB에 저장 후 쿠키 초기화
         if(req.user){
             
             const cart = await Promise.resolve(db.Cart.findAll({
@@ -83,14 +83,16 @@ router.post('/add', async(req, res, next) => {
                     )})
                 )
             }
-            
+            res.clearCookie('dq45o8w5');
+
+          
         // 사용자 로그인이 되어있지 않은 경우    
         } else {
 
-
+            
         }
 
-        res.send('cartList');
+        return res.send('addCartList');
 
     } catch(e) {
         console.error(e);
@@ -102,11 +104,160 @@ router.get('/get', async(req, res, next) => {
     try{
         // 로그인이 되어 있는 경우
         if(req.user){
+            const cartList = await db.Cart.findAll({
+                where:{
+                    UserId: req.user.id,
+                },
+                include:[{
+                    model: db.ProductInventory,
+                    attribute: ['id', 'quantity', 'additionalPrice'],
+                    include: [{
+                        model: db.Product,
+                        attributes: ['id', 'productName', 'price'],
+                        include: [{
+                            model: db.ProductBrand,
+                            attributes: ['id', 'brandName'],
+                        }, {
+                            model: db.ProductCategory,
+                            attributes: ['id', 'categoryName'],  
+                        },{
+                            model: db.ProductImage,
+                        }]
+                    }, {
+                        model: db.ProductOptionSelection,
+                        as: 'ProductOptionSelection0',
+                        attributes: ['id', 'selectionName'],
+                        include: [{
+                            model: db.ProductOption,
+                            attributes: ['id','optionName'],
+                        }]
+                    },{
+                        model: db.ProductOptionSelection,
+                        as: 'ProductOptionSelection1',
+                        attributes: ['id','selectionName'],
+                        include: [{
+                            model: db.ProductOption,
+                            attributes: ['id','optionName'],
+                        }]
+                    },{
+                        model: db.ProductOptionSelection,
+                        as: 'ProductOptionSelection2',
+                        attributes: ['id','selectionName'],
+                        include: [{
+                            model: db.ProductOption,
+                            attributes: ['id','optionName'],
+                        }]
+                    },{
+                        model: db.ProductOptionSelection,
+                        as: 'ProductOptionSelection3',
+                        attributes: ['id','selectionName'],
+                        include: [{
+                            model: db.ProductOption,
+                            attributes: ['id','optionName'],
+                        }]
+                    },{
+                        model: db.ProductOptionSelection,
+                        as: 'ProductOptionSelection4',
+                        attributes: ['id','selectionName'],
+                        include: [{
+                            model: db.ProductOption,
+                            attributes: ['id','optionName'],
+                        }]
+                    },{
+                        model: db.ProductOptionSelection,
+                        as: 'ProductOptionSelection5',
+                        attributes: ['id','selectionName'],
+                        include: [{
+                            model: db.ProductOption,
+                            attributes: ['id','optionName'],
+                        }]
+                    }]
+                }],
+                order: [['createdAt', 'ASC']],
+            })
             
+            return res.json(cartList);
 
         // 로그인이 되어 있지 않은 경우     
         } else {
-
+            if(req.cookies.dq45o8w5 !== undefined){
+                console.log(req.cookies.dq45o8w5);
+                const cartList = await Promise.all(req.cookies.dq45o8w5.map((cookieValue, cookieIndex) => {
+                    return(
+                        db.ProductInventory.findOne({
+                            where:{
+                                id: cookieValue.id,
+                            },
+                            attribute: ['id', 'quantity', 'additionalPrice'],
+                            include: [{
+                                model: db.Product,
+                                attributes: ['id', 'productName', 'price'],
+                                include: [{
+                                    model: db.ProductBrand,
+                                    attributes: ['id', 'brandName'],
+                                }, {
+                                    model: db.ProductCategory,
+                                    attributes: ['id', 'categoryName'],  
+                                },{
+                                    model: db.ProductImage,
+                                }]
+                            }, {
+                                model: db.ProductOptionSelection,
+                                as: 'ProductOptionSelection0',
+                                attributes: ['id', 'selectionName'],
+                                include: [{
+                                    model: db.ProductOption,
+                                    attributes: ['id','optionName'],
+                                }]
+                            },{
+                                model: db.ProductOptionSelection,
+                                as: 'ProductOptionSelection1',
+                                attributes: ['id','selectionName'],
+                                include: [{
+                                    model: db.ProductOption,
+                                    attributes: ['id','optionName'],
+                                }]
+                            },{
+                                model: db.ProductOptionSelection,
+                                as: 'ProductOptionSelection2',
+                                attributes: ['id','selectionName'],
+                                include: [{
+                                    model: db.ProductOption,
+                                    attributes: ['id','optionName'],
+                                }]
+                            },{
+                                model: db.ProductOptionSelection,
+                                as: 'ProductOptionSelection3',
+                                attributes: ['id','selectionName'],
+                                include: [{
+                                    model: db.ProductOption,
+                                    attributes: ['id','optionName'],
+                                }]
+                            },{
+                                model: db.ProductOptionSelection,
+                                as: 'ProductOptionSelection4',
+                                attributes: ['id','selectionName'],
+                                include: [{
+                                    model: db.ProductOption,
+                                    attributes: ['id','optionName'],
+                                }]
+                            },{
+                                model: db.ProductOptionSelection,
+                                as: 'ProductOptionSelection5',
+                                attributes: ['id','selectionName'],
+                                include: [{
+                                    model: db.ProductOption,
+                                    attributes: ['id','optionName'],
+                                }]
+                            }],
+                            order: [['createdAt', 'ASC']],
+                        })
+                    )
+                }))
+                
+                return res.json(cartList);
+            }
+            return res.json();
         }
         
     } catch(e) {

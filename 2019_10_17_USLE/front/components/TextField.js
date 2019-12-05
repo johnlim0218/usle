@@ -52,11 +52,9 @@ const ModifiedTextField = styled(MuiTextField).attrs((props) => ({
         }
         `}
     }
-
     .MuiInputLabel-root {
         font-size: 18px;
     }
-    
     .MuiSelect-select {
         height: auto;
         border-radius: 0;
@@ -68,7 +66,7 @@ const ModifiedTextField = styled(MuiTextField).attrs((props) => ({
 `;
 
 const TextField = (props) => {
-    
+    const { noBorder, SelectProps, size, ...others } = props;
     return (
         <ModifiedTextField
             {...props}

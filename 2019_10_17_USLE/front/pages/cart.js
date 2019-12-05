@@ -45,13 +45,8 @@ const StyledAddRemoveButton = styled(Button)`
 const Cart = () => {
     const [qty, setQty] = useState(1);
     const dispatch = useDispatch();
-
-    useEffect(() => {
-        dispatch({
-            type: LOAD_CART_REQUEST,
-        })
-    }, [])
-
+    const { cartList } = useSelector(state => state.cartReducer);
+   
     return(
         <div>
             <div>
@@ -148,6 +143,12 @@ const Cart = () => {
 
         </div>
     )
+}
+
+Cart.getInitialProps = async (context) => {
+    context.store.dispatch({
+        type: LOAD_CART_REQUEST,
+    })
 }
 
 export default Cart;

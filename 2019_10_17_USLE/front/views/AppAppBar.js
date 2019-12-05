@@ -149,16 +149,13 @@ const AppAppBar = () => {
                     <StyledListItem>
                         <StyledButton
                             href="#pablo"
-                            color="transparent"
                         >
                          About
                         </StyledButton>
                     </StyledListItem>
                     <StyledListItem>
                         <Link href='/shopAll'>
-                            <StyledButton
-                                color="transparent"
-                            >
+                            <StyledButton>
                                 Shop All 
                             </StyledButton>
                         </Link>
@@ -166,7 +163,6 @@ const AppAppBar = () => {
                     <StyledListItem>
                         <StyledButton
                             href="#pablo"
-                            color="transparent"
                         >
                          Category
                         </StyledButton>
@@ -174,7 +170,6 @@ const AppAppBar = () => {
                     <StyledListItem>
                         <StyledButton
                             href="#pablo"
-                            color="transparent"
                         >
                          Category
                         </StyledButton>

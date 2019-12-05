@@ -156,6 +156,10 @@ const ModifiedAppBar = ({ infoBar, leftLinks, rightLinks, ...props }) => {
 
 
 ModifiedAppBar.propTypes = {
+    infoBar: PropTypes.node,
+    rightLinks: PropTypes.node,
+    leftLinks: PropTypes.node,
+
     color: PropTypes.oneOf([
       "primary",
       "info",
@@ -167,9 +171,7 @@ ModifiedAppBar.propTypes = {
       "rose",
       "dark"
     ]),
-    infoBar: PropTypes.node,
-    rightLinks: PropTypes.node,
-    leftLinks: PropTypes.node,
+    
     // brand: PropTypes.string,
     // fixed: PropTypes.bool,
     // absolute: PropTypes.bool,
