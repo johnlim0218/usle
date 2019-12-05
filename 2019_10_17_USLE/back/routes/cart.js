@@ -15,86 +15,78 @@ router.post('/add', async(req, res, next) => {
         
         // 카트 쿠키가 있을때
         } else {
-           
-            let copiedCookieValue = req.cookies.dq45o8w5;
-            let newCookieValue = [];
-            cartList.map((cartValue, cartIndex) => {
-                if(copiedCookieValue.map((thisValue, thisIndex) => {
+           cartList.map((cartValue, cartIndex) => {
+                if(req.cookies.dq45o8w5.map((thisValue, thisIndex) => {
                     return thisValue.id
                 }).indexOf(cartValue.id) < 0){
-                    copiedCookieValue.push(cartValue);
+                    req.cookies.dq45o8w5.push(cartValue);
                 } else {
-                    let filteredData = copiedCookieValue.filter((innerArrayValue) => innerArrayValue.id === cartValue.id);
+                    let filteredData = req.cookies.dq45o8w5.filter((innerArrayValue) => innerArrayValue.id === cartValue.id);
                     filteredData[0].qty += cartValue.qty;
                 }
             })
             
-            res.cookie('dq45o8w5', copiedCookieValue);
+            res.cookie('dq45o8w5', req.cookies.dq45o8w5);
         }
         
         // 사용자 로그인이 되어있는 경우 - cart DB에 저장
         if(req.user){
-
+            
             const cart = await Promise.resolve(db.Cart.findAll({
                 where: {
                     UserId: req.user.id,
                 }
             }))
             
-            console.log('---------------------');
-
             let newCartValue = [];
 
-            const classification = (arr) => {
-                if(arr.length === 0) {
-                    return null
+            req.cookies.dq45o8w5.map((cookieValue, cookieIndex) => {
+                if(cart.map((cartValue, cartIndex) => {
+                    return cartValue.ProductInventoryId
+                }).indexOf(cookieValue.id) < 0) {
+                    newCartValue.push(cookieValue);
                 } else {
-                    let target = arr[0];
-                    cart.reduce((newCartArray, curCartValue) => {
-                        if(newCartArray.map((thisValue, thisIndex) => {
-                            
-                            return thisValue.ProductInventoryId
-                        }).indexOf(target.id) < 0) {
-                            newCartArray.push(curCartValue)
-                        } else {
-                            newCartValue.push(target);
-                        } 
-                        return newCartArray;
-                    }, []);
-
-                    arr.splice(0, 1);
-                    console.log(arr.ProductInventoryId);
-                    classification(arr);
+                    let filteredCartData = cart.filter((innerCartValue) => innerCartValue.ProductInventoryId === cookieValue.id);
+                    filteredCartData[0].quantity += cookieValue.qty;
                 }
+            })
+            
+            // Cart DB에 이미 존재하는 값 update
+            await Promise.all(cart.map((cartValue, cartIndex) => {
+                return(
+                    db.Cart.update({
+                        quantity: cartValue.quantity,
+                    }, {
+                        where: {
+                            id: cartValue.id
+                        },
+                    })
+                )
+            }))
+            
+            // 새로운 값 create(카트 쿠키에 추가된 내용 중 DB에 존재하지 않는 값)
+            if(newCartValue.length > 0){
+                await Promise.all(newCartValue.map((newValue, newIndex) => {
+                    return(
+                        Promise.resolve(db.ProductInventory.findOne({
+                            where:{
+                                id: newValue.id
+                            }
+                        })).then(function(inventoryResult){
+                            Promise.resolve(db.Cart.create({
+                                quantity: newValue.qty,
+                                UserId: req.user.id,
+                            })).then(function(createNewCartResult){
+                                inventoryResult.addCart(createNewCartResult);
+                            })
+                        })
+                    )})
+                )
             }
-
-            classification(req.cookies.dq45o8w5);
-          
-            
-
-            // await Promise.resolve(req.cookies.dq45o8w5.map((cookieValue, cookieIndex) => {
-
-            //     return(
-            //         Promise.resolve(db.Cart.create({
-            //             quantity: cookieValue.qty,
-            //             UserId: req.user.id,
-            //         }))).then(async function(newCartResult){
-            //             return(
-            //                 Promise.resolve(db.ProductInventory.findOne({
-            //                     where: {
-            //                         id: cookieValue.id
-            //                     }
-            //                 })).then(function(productInventoryResult){
-            //                     productInventoryResult.addCart(newCartResult);
-                                
-            //                 })
-            //             )
-            //         })
-            //     }))
-            
             
         // 사용자 로그인이 되어있지 않은 경우    
         } else {
+
 
         }
 
@@ -108,7 +100,14 @@ router.post('/add', async(req, res, next) => {
 
 router.get('/get', async(req, res, next) => {
     try{
-        console.log(req.cookies);
+        // 로그인이 되어 있는 경우
+        if(req.user){
+            
+
+        // 로그인이 되어 있지 않은 경우     
+        } else {
+
+        }
         
     } catch(e) {
         console.error(e);
