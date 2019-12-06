@@ -1,11 +1,12 @@
 import { all, fork, call, put, takeEvery, takeLatest } from 'redux-saga/effects';
 import axios from 'axios';
-import { ADD_CART_REQUEST, ADD_CART_SUCCESS, LOAD_CART_REQUEST, LOAD_CART_FAILURE, LOAD_CART_SUCCESS, REMOVE_CART_REQUEST, REMOVE_CART_SUCCESS, REMOVE_CART_FAILURE } from '../reducers/cartReducer';
+import { ADD_CART_REQUEST, ADD_CART_SUCCESS, LOAD_CART_REQUEST, LOAD_CART_FAILURE, LOAD_CART_SUCCESS, REMOVE_CART_REQUEST, REMOVE_CART_SUCCESS, REMOVE_CART_FAILURE, CONFIRM_CART_QUANTITY_REQUEST, CONFIRM_CART_QUANTITY_FAILURE, CONFIRM_CART_QUANTITY_SUCCESS } from '../reducers/cartReducer';
 
 function* cartSaga(){
     yield all([
         fork(watchAddCart),
         fork(watchLoadCart),
+        fork(watchConfirmQuantity),
         fork(watchRemoveCart),
     ]);
 }
@@ -54,6 +55,29 @@ function* loadCart(){
 }
 function* watchLoadCart(){
     yield takeEvery(LOAD_CART_REQUEST, loadCart);
+}
+
+function confirmQuantityAPI(updateData){
+    return axios.patch('/cart/update', updateData, {
+        withCredentials: true,
+    })
+}
+function* confirmQuantity(action){
+    try{
+        const result = yield call(confirmQuantityAPI, action.data);
+        yield put({
+            type: CONFIRM_CART_QUANTITY_SUCCESS,
+
+        })
+    } catch(e) {
+        yield put({
+            type: CONFIRM_CART_QUANTITY_FAILURE,
+            error: e,
+        })
+    }
+}
+function* watchConfirmQuantity(){
+    yield takeLatest(CONFIRM_CART_QUANTITY_REQUEST, confirmQuantity);
 }
 
 function removeCartAPI(removeDataId) {

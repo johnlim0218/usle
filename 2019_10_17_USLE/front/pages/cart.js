@@ -21,7 +21,7 @@ import GridItem from '../components/Grid/GridItem';
 import { imgSrcUrl } from '../components/ProductItemList';
 
 import { dummyCartData } from '../dummy/dummy';
-import { LOAD_CART_REQUEST, ADD_QUANTITY, REMOVE_QUANTITY, REMOVE_CART_REQUEST } from '../reducers/cartReducer';
+import { LOAD_CART_REQUEST, ADD_QUANTITY, REMOVE_QUANTITY, REMOVE_CART_REQUEST, CONFIRM_CART_QUANTITY_REQUEST } from '../reducers/cartReducer';
 
 const StyledDivImgContainer = styled.div`
     width: 120px;
@@ -66,14 +66,24 @@ const Cart = () => {
             }
         })
     }, [cartList]);
+    const onClickConfirmQuantity = useCallback((id) => (e) => {
+        e.preventDefault();
+        let targetItem = cartList.filter((value) => value.id === id);
+        dispatch({
+            type: CONFIRM_CART_QUANTITY_REQUEST,
+            data: {
+                id: id,
+                quantity: targetItem[0].quantity,
+            }
+        })
+    }, [cartList]); 
     const onClickRemoveItem = useCallback((id) => (e) => {
         e.preventDefault();
         dispatch({
             type: REMOVE_CART_REQUEST,
             data: id,
         })
-        console.log(id);
-    })
+    }, [cartList]);
 
     return(
         <div>
@@ -138,7 +148,7 @@ const Cart = () => {
                                                         </StyledAddRemoveButton>
                                                     </div>
                                                     <div>
-                                                        <StyledAddRemoveButton>
+                                                        <StyledAddRemoveButton onClick={onClickConfirmQuantity(value.id)}>
                                                             Modify
                                                         </StyledAddRemoveButton>
                                                     </div>

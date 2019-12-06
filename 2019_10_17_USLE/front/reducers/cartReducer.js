@@ -5,6 +5,8 @@ const initialState = {
     isLoadingCart : false,
     cartList: null,
     loadCartErrorReason : '',
+    isConfirmingQuantity : false,
+    confirmQuantityErrorReason : '',
     isRemovingCart : false,
     removeCartErrorReason : '',
 }
@@ -17,6 +19,9 @@ export const LOAD_CART_SUCCESS = "LOAD_CART_SUCCESS";
 export const LOAD_CART_FAILURE = "LOAD_CART_FAILURE";
 export const ADD_QUANTITY = "ADD_QUANTITY";
 export const REMOVE_QUANTITY = "REMOVE_QUANTITY";
+export const CONFIRM_CART_QUANTITY_REQUEST = "CONFIRM_CART_QUANTITY_REQUEST";
+export const CONFIRM_CART_QUANTITY_SUCCESS = "CONFIRM_CART_QUANTITY_SUCCESS";
+export const CONFIRM_CART_QUANTITY_FAILURE = "CONFIRM_CART_QUANTITY_FAILURE";
 export const REMOVE_CART_REQUEST = "REMOVE_CART_REQUEST";
 export const REMOVE_CART_SUCCESS = "REMOVE_CART_SUCCESS";
 export const REMOVE_CART_FAILURE = "REMOVE_CART_FAILURE";
@@ -84,6 +89,26 @@ const cartReducer = (state = initialState, action) => {
             }
         }
 
+        case CONFIRM_CART_QUANTITY_REQUEST : {
+            return{
+                ...state,
+                isConfirmingQuantity: true,
+            }
+        }
+        case CONFIRM_CART_QUANTITY_SUCCESS : {
+            return{
+                ...state,
+                isConfirmingQuantity: false,
+            }
+        }
+        case CONFIRM_CART_QUANTITY_FAILURE : {
+            return{
+                ...state,
+                isConfirmingQuantity: false,
+                confirmQuantityErrorReason: action.error,
+            }
+        }
+
         case REMOVE_CART_REQUEST : {
             return {
                 ...state,
@@ -92,7 +117,6 @@ const cartReducer = (state = initialState, action) => {
         }
         case REMOVE_CART_SUCCESS : {
             const cartList = state.cartList.filter(value => value.id !== action.data);
-            
             return {
                 ...state,
                 isRemovingCart: false,

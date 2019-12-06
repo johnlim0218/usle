@@ -277,9 +277,7 @@ router.get('/get', async(req, res, next) => {
 
 router.delete('/remove/:id', async(req, res, next) => {
     try {
-        console.log(req.params.id);
-        console.log(req.cookies.dq45o8w5);
-
+       
         // 로그인이 되어 있다면 Cart DB에서 지운다.
         if(req.user){
             const targetItem = await db.Cart.findOne({
@@ -309,6 +307,34 @@ router.delete('/remove/:id', async(req, res, next) => {
            res.cookie('dq45o8w5', newCookie);
            return res.send(req.params.id);
         }
+    } catch(e) {
+        console.error(e);
+        return next(e);
+    }
+})
+
+router.patch('/update', async(req, res, next) => {
+    try{
+        if(req.user){
+            await db.Cart.update({
+                quantity: req.body.quantity,
+            }, {
+                where: {
+                    id: req.body.id,
+                }
+            })
+        } else {
+            if(req.cookies.dq45o8w5){
+                let targetCookieValue = req.cookies.dq45o8w5.filter((cookieValue) => cookieValue.id === req.body.id);
+                targetCookieValue[0].qty = req.body.quantity;
+                console.log(targetCookieValue);
+                console.log(req.cookies.dq45o8w5);
+            }
+            res.cookie('dq45o8w5', req.cookies.dq45o8w5);
+        }
+
+        return res.send(req.body);
+        
     } catch(e) {
         console.error(e);
         return next(e);

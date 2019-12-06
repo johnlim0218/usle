@@ -12,7 +12,7 @@ import Button from '../components/Button';
 const ModifiedDialog = (props) => {
     const {open, close, message, redirectLink, ...others} = props;
     return (
-        <Dialog open={open} onClose={close}>
+        <Dialog open={open}>
              <DialogTitle>Message</DialogTitle>
              <DialogContent>
                  <DialogContentText>{message}</DialogContentText>
@@ -21,11 +21,13 @@ const ModifiedDialog = (props) => {
                 <Button onClick={close}>
                     Disagree
                 </Button>
+                
                 <Link href={redirectLink}>
-                    <Button>
+                    <Button onClick={close}>
                         Agree
                     </Button>
                 </Link>
+            
              </DialogActions>
         </Dialog>
     )

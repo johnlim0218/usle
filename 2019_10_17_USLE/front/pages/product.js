@@ -283,7 +283,7 @@ const Product = () => {
     const { me } = useSelector(state => state.userReducer);
     const { addCartMessage, addCartErrorReason } = useSelector(state => state.cartReducer);
     const dispatch = useDispatch(); 
-
+    
     const onChangeOption = useCallback((index) => (e) => {
       setSelectedOption((prevState) => ({ 
           ...prevState,
@@ -293,10 +293,9 @@ const Product = () => {
     }, [selectedOption, options]);
 
     const onClickCheckCart = useCallback((e) => {
-      
       setCheckCart(!checkCart);
     }, [checkCart]);
-
+    
     useEffect(() => {
       // 카트 추가 실패 메시지
       if(addCartErrorReason !== '') {
@@ -344,7 +343,6 @@ const Product = () => {
         additionalPrice += optionValue.additionalPrice;
       })
       setAdditionalPrice(additionalPrice);
-      console.log(selectedOptionList);
     }, [selectedOptionList])
 
     // 옵션 정렬
@@ -539,7 +537,12 @@ const Product = () => {
                               >
                                 Add to Cart &nbsp; <ShoppingCart/>
                               </StyledButtonCart>
-                              <Dialog open={checkCart} close={onClickCheckCart} message={dialogMessage} redirectLink={'/cart'}/>
+                              <Dialog 
+                                open={checkCart} 
+                                close={onClickCheckCart} 
+                                message={dialogMessage} 
+                                redirectLink={'/cart'}
+                              />
 
                             </StyledGridContainerButton>
                           </GridItem>
