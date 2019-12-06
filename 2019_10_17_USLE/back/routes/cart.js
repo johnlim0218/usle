@@ -84,8 +84,7 @@ router.post('/add', async(req, res, next) => {
                 )
             }
             res.clearCookie('dq45o8w5');
-
-          
+            
         // 사용자 로그인이 되어있지 않은 경우    
         } else {
 
@@ -255,11 +254,61 @@ router.get('/get', async(req, res, next) => {
                     )
                 }))
                 
-                return res.json(cartList);
+                const returnResultArray = [];
+                cartList.map((cartValue, cartIndex) => {
+                    returnResultArray.push({
+                        id: req.cookies.dq45o8w5[cartIndex].id,
+                        quantity: req.cookies.dq45o8w5[cartIndex].qty,
+                        ProductInventory: cartValue,
+                    });
+                })
+
+
+                return res.json(returnResultArray);
             }
             return res.json();
         }
         
+    } catch(e) {
+        console.error(e);
+        return next(e);
+    }
+})
+
+router.delete('/remove/:id', async(req, res, next) => {
+    try {
+        console.log(req.params.id);
+        console.log(req.cookies.dq45o8w5);
+
+        // 로그인이 되어 있다면 Cart DB에서 지운다.
+        if(req.user){
+            const targetItem = await db.Cart.findOne({
+                where:{
+                    id: req.params.id,
+                }
+            });
+
+            if(!targetItem) {
+                return res.status(403).send('삭제되었거나 등록되지 않은 항목입니다.');
+            }
+
+            await db.Cart.destroy({
+                where:{
+                    id: req.params.id,
+                }
+            })
+            return res.send(req.params.id);
+        
+        // 로그인이 되어 있지않다면 쿠키에서 지운다.
+        } else {
+           let tempCookie = req.cookies.dq45o8w5;
+           
+           let newCookie = tempCookie.filter((cookieValue) =>
+               cookieValue.id !== parseInt(req.params.id)
+           )
+           res.cookie('dq45o8w5', newCookie);
+           return res.send(req.params.id);
+        }
     } catch(e) {
         console.error(e);
         return next(e);

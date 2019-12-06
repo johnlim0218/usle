@@ -69,20 +69,21 @@ const Brand = () => {
                         Add Brand
                     </Button>
                     <BrandAdd open={addOpen} close={onClickAdd}/>
+                    { brands ?
                     <Table
                         tableHead={[
-                            "NAME",
-                            "PHONE",
-                            "ZIPCODE",
-                            "ADDRESS",
-                            "ADDR DETAIL",
-                            "DESCRIPTION",
-                            "REGISTED",
-                            "UPDATED",
-                            "DELETE",
+                            {id:0, name:"NAME"},
+                            {id:1, name:"PHONE"},
+                            {id:2, name:"ZIPCODE"},
+                            {id:3, name:"ADDRESS"},
+                            {id:4, name:"ADDR DETAIL"},
+                            {id:5, name:"DESCRIPTION"},
+                            {id:6, name:"REGISTED"},
+                            {id:7, name:"UPDATED"},
+                            {id:8, name:"DELETE"},
                         ]}
                         tableData={
-                            brands && !brands.deletedAt && brands.map((value, index) => ([
+                            brands && brands.map((value, index) => ([
                                     <span key={value.id}>
                                         {value.brandName}
                                     </span>,
@@ -115,7 +116,30 @@ const Brand = () => {
                                 ])
                             )
                         }
-                    />
+                    /> :
+                    <Table
+                        tableHead={[
+                            {id:0, name:"NAME"},
+                            {id:1, name:"PHONE"},
+                            {id:2, name:"ZIPCODE"},
+                            {id:3, name:"ADDRESS"},
+                            {id:4, name:"ADDR DETAIL"},
+                            {id:5, name:"DESCRIPTION"},
+                            {id:6, name:"REGISTED"},
+                            {id:7, name:"UPDATED"},
+                            {id:8, name:"DELETE"},
+                        ]}
+                        tableData=
+                            {{
+                                colspan: "9",
+                                content: (
+                                    <div>
+                                        EMPTY
+                                    </div>
+                                )
+                            }}
+                    /> }
+                    
                 </CardBody>
             </Card>
         </StyledDivMain>

@@ -70,16 +70,17 @@ const Category = () => {
                         Add Category
                     </Button>
                     <CategoryAdd open={addOpen} close={onClickAdd}/>
+                    {categories ? 
                     <Table
                         tableHead={[
-                            "NAME",
-                            "DESCRIPTION",
-                            "REGISTED",
-                            "UPDATED",
-                            "DELETE",
+                            {id:0, name:"NAME"},
+                            {id:1, name:"DESCRIPTION"},
+                            {id:2, name:"REGISTED"},
+                            {id:3, name:"UPDATED"},
+                            {id:4, name:"DELETE"},
                         ]}
                         tableData={
-                            categories && !categories.deletedAt && categories.map((value, index) => ([
+                            categories && categories.map((value, index) => ([
                                     <span key={value.id}>
                                         {value.categoryName}
                                     </span>,
@@ -100,7 +101,26 @@ const Category = () => {
                                 ])
                             )
                         }
+                    /> :
+                    <Table
+                        tableHead={[
+                            {id:0, name:"NAME"},
+                            {id:1, name:"DESCRIPTION"},
+                            {id:2, name:"REGISTED"},
+                            {id:3, name:"UPDATED"},
+                            {id:4, name:"DELETE"},
+                        ]}
+                        tableData=
+                            {{
+                                colspan: "5",
+                                content: (
+                                    <div>
+                                        EMPTY
+                                    </div>
+                                )
+                            }}
                     />
+                    }
                 </CardBody>
             </Card>
         </StyledDivMain>

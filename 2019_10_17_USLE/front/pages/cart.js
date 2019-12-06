@@ -18,9 +18,10 @@ import Button from '../components/Button';
 
 import GridContainer from '../components/Grid/GridContainer';
 import GridItem from '../components/Grid/GridItem';
+import { imgSrcUrl } from '../components/ProductItemList';
 
 import { dummyCartData } from '../dummy/dummy';
-import { LOAD_CART_REQUEST } from '../reducers/cartReducer';
+import { LOAD_CART_REQUEST, ADD_QUANTITY, REMOVE_QUANTITY, REMOVE_CART_REQUEST } from '../reducers/cartReducer';
 
 const StyledDivImgContainer = styled.div`
     width: 120px;
@@ -47,6 +48,33 @@ const Cart = () => {
     const dispatch = useDispatch();
     const { cartList } = useSelector(state => state.cartReducer);
    
+    const onClickRemove = useCallback((id) => (e) => {
+        e.preventDefault();
+        dispatch({
+            type: REMOVE_QUANTITY,
+            data : {
+                id: id,
+            }
+        })
+    }, [cartList]);
+    const onClickAdd = useCallback((id) => (e) => {
+        e.preventDefault();
+        dispatch({
+            type: ADD_QUANTITY,
+            data : {
+                id: id,
+            }
+        })
+    }, [cartList]);
+    const onClickRemoveItem = useCallback((id) => (e) => {
+        e.preventDefault();
+        dispatch({
+            type: REMOVE_CART_REQUEST,
+            data: id,
+        })
+        console.log(id);
+    })
+
     return(
         <div>
             <div>
@@ -57,85 +85,142 @@ const Cart = () => {
                    <Card plain>
                        <CardBody plain>
                            <Typography variant="h4">Shopping Cart</Typography>
-                           <Table
-                                tableHead={[
-                                    "",
-                                    "PRODUCT",
-                                    "COLOR",
-                                    "SIZE",
-                                    "PRICE",
-                                    "QTY",
-                                    "AMOUNT",
-                                    ""
-                                ]}
-                                tableData={
-                                    dummyCartData.map((value, index) => ([
-                                            <StyledDivImgContainer>
-                                                <img src={value.thumbsnail}/>
-                                            </StyledDivImgContainer>,
-                                            <span>
-                                                <a href="#jacket">
-                                                    {value.name}
-                                                </a>
-                                                <br />
-                                                <StyledTdNameSmall>
-                                                    by {value.brand}
-                                                </StyledTdNameSmall>
-                                            </span>,
-                                            <span>
-                                                {value.color}
-                                            </span>,
-                                            <span>
-                                                {value.size}
-                                            </span>,
-                                            <span>
-                                                <StyledTdNumberSmall>￦ {value.price}</StyledTdNumberSmall>
-                                            </span>,
-                                            <span>
-                                                {qty}
-                                                <div>
-                                                    <StyledAddRemoveButton>
-                                                        <Remove/>
-                                                    </StyledAddRemoveButton>
-                                                    <StyledAddRemoveButton>
-                                                        <Add/>
-                                                    </StyledAddRemoveButton>
-                                                </div>
-                                            </span>,
-                                            <span>
-                                                <StyledTdNumberSmall>￦ {value.price * qty}</StyledTdNumberSmall>
-                                            </span>,
-                                            <Tooltip
-                                                id="close1"
-                                                title="Remove item"
-                                                placement="right"
-                                            >
+                           
+                           {cartList ?
+                                <Table
+                                    tableHead={[
+                                        {id:1, name:""},
+                                        {id:2, name:"PRODUCT"},
+                                        {id:3, name:"OPTION"},
+                                        {id:4, name:"PRICE"},
+                                        {id:5, name:"QTY"},
+                                        {id:6, name:"AMOUNT"},
+                                        {id:7, name:""}
+                                    ]}
+                                    tableData={
+                                        cartList && cartList.map((value, index) => ([
+                                                <StyledDivImgContainer key={value.id}>
+                                                    <img src={value && imgSrcUrl + value.ProductInventory.Product.ProductImages[0].src}/>
+                                                </StyledDivImgContainer>,
+                                                <span key={value.id}>
+                                                    <a href="#jacket">
+                                                        {value.ProductInventory.Product.productName}
+                                                    </a>
+                                                    <br />
+                                                    <StyledTdNameSmall>
+                                                        by {value.ProductInventory.Product.ProductBrand.brandName}
+                                                    </StyledTdNameSmall>
+                                                </span>,
+                                                <span key={value.id}>
+                                                    {value.ProductInventory.ProductOptionSelection0 && <span>{value.ProductInventory.ProductOptionSelection0.ProductOption.optionName} : {value.ProductInventory.ProductOptionSelection0.selectionName}<br/></span>}
+                                                    {value.ProductInventory.ProductOptionSelection1 && <span>{value.ProductInventory.ProductOptionSelection1.ProductOption.optionName} : {value.ProductInventory.ProductOptionSelection1.selectionName}<br/></span>}
+                                                    {value.ProductInventory.ProductOptionSelection2 && <span>{value.ProductInventory.ProductOptionSelection2.ProductOption.optionName} : {value.ProductInventory.ProductOptionSelection2.selectionName}<br/></span>}
+                                                    {value.ProductInventory.ProductOptionSelection3 && <span>{value.ProductInventory.ProductOptionSelection3.ProductOption.optionName} : {value.ProductInventory.ProductOptionSelection3.selectionName}<br/></span>}
+                                                    {value.ProductInventory.ProductOptionSelection4 && <span>{value.ProductInventory.ProductOptionSelection4.ProductOption.optionName} : {value.ProductInventory.ProductOptionSelection4.selectionName}<br/></span>}
+                                                    {value.ProductInventory.ProductOptionSelection5 && <span>{value.ProductInventory.ProductOptionSelection5.ProductOption.optionName} : {value.ProductInventory.ProductOptionSelection5.selectionName}<br/></span>}
+                                                </span>,
+                                                <span key={value.id}>
+                                                    <StyledTdNumberSmall>
+                                                        ￦ {value.ProductInventory.additionalPrice === 0 
+                                                            ? (value.ProductInventory.Product.price) 
+                                                            : (value.ProductInventory.Product.price + value.ProductInventory.additionalPrice)
+                                                            }
+                                                    </StyledTdNumberSmall>
+                                                </span>,
+                                                <span key={value.id}>
+                                                    {value.quantity}
+                                                    <div>
+                                                        <StyledAddRemoveButton onClick={onClickRemove(value.id)}>
+                                                            <Remove/>
+                                                        </StyledAddRemoveButton>
+                                                        <StyledAddRemoveButton onClick={onClickAdd(value.id)}>
+                                                            <Add/>
+                                                        </StyledAddRemoveButton>
+                                                    </div>
+                                                    <div>
+                                                        <StyledAddRemoveButton>
+                                                            Modify
+                                                        </StyledAddRemoveButton>
+                                                    </div>
+                                                </span>,
+                                                <span key={value.id}>
+                                                    <StyledTdNumberSmall>
+                                                        ￦ {value.ProductInventory.additionalPrice === 0 
+                                                            ? (value.ProductInventory.Product.price * value.quantity) 
+                                                            : ((value.ProductInventory.Product.price + value.ProductInventory.additionalPrice) * value.quantity)
+                                                            }
+                                                    </StyledTdNumberSmall>
+                                                </span>,
+                                                <Tooltip
+                                                    key={value.id}
+                                                    id="close1"
+                                                    title="Remove item"
+                                                    placement="right"
+                                                >
+                                                    <Button onClick={onClickRemoveItem(value.id)}>
+                                                        <Close/>
+                                                    </Button>
+                                                </Tooltip>
+                                            ])
+                                        )
+                                    }
+                                    tableFooter=
+                                        {{
+                                            purchase: true,
+                                            colspan: "3",
+                                            amount: (
+                                                <span>
+                                                    <small>￦</small>20,000
+                                                </span>
+                                            ),
+                                            col: {
+                                            colspan: "3",
+                                            text: (
                                                 <Button>
-                                                    <Close/>
+                                                    Complete Purchase <KeyboardArrowRight />
                                                 </Button>
-                                            </Tooltip>
-                                        ])
-                                    )
-                                }
-                                tableFooter=
-                                    {{
-                                        purchase: true,
-                                        colspan: "3",
-                                        amount: (
-                                          <span>
-                                            <small>￦</small>20,000
-                                          </span>
-                                        ),
-                                        col: {
-                                          colspan: "3",
-                                          text: (
-                                            <Button color="info" round>
-                                              Complete Purchase <KeyboardArrowRight />
-                                            </Button>
-                                          )
-                                        }
-                                    }}
-                            />
+                                            )
+                                            }
+                                        }}
+                                /> :
+                                <Table
+                                    tableHead={[
+                                        {id:0, name:""},
+                                        {id:1, name:"PRODUCT"},
+                                        {id:2, name:"OPTION"},
+                                        {id:3, name:"PRICE"},
+                                        {id:4, name:"QTY"},
+                                        {id:5, name:"AMOUNT"},
+                                        {id:6, name:""}
+                                    ]}
+                                    tableData=
+                                        {{
+                                            colspan: "7",
+                                            content: (
+                                                <div>
+                                                    EMPTY
+                                                </div>
+                                            )
+                                        }}
+                                    tableFooter=
+                                        {{
+                                            purchase: true,
+                                            colspan: "3",
+                                            amount: (
+                                                <span>
+                                                    <small>￦</small>20,000
+                                                </span>
+                                            ),
+                                            col: {
+                                            colspan: "3",
+                                            text: (
+                                                <Button>
+                                                    Complete Purchase <KeyboardArrowRight />
+                                                </Button>
+                                            )
+                                            }
+                                        }}
+                                />}
                        </CardBody>
                    </Card>
                 </StyledDivContainer>

@@ -5,6 +5,8 @@ const initialState = {
     isLoadingCart : false,
     cartList: null,
     loadCartErrorReason : '',
+    isRemovingCart : false,
+    removeCartErrorReason : '',
 }
 
 export const ADD_CART_REQUEST = "ADD_CART_REQUEST";
@@ -13,6 +15,11 @@ export const ADD_CART_FAILURE = "ADD_CART_FAILURE";
 export const LOAD_CART_REQUEST = "LOAD_CART_REQUEST";
 export const LOAD_CART_SUCCESS = "LOAD_CART_SUCCESS";
 export const LOAD_CART_FAILURE = "LOAD_CART_FAILURE";
+export const ADD_QUANTITY = "ADD_QUANTITY";
+export const REMOVE_QUANTITY = "REMOVE_QUANTITY";
+export const REMOVE_CART_REQUEST = "REMOVE_CART_REQUEST";
+export const REMOVE_CART_SUCCESS = "REMOVE_CART_SUCCESS";
+export const REMOVE_CART_FAILURE = "REMOVE_CART_FAILURE";
 
 const cartReducer = (state = initialState, action) => {
     switch(action.type){
@@ -48,7 +55,7 @@ const cartReducer = (state = initialState, action) => {
             return {
                 ...state,
                 isLoadingCart: false,
-                cartList: action.data,
+                cartList: action.data.length !== 0 ? action.data : null,
             }
         }
         case LOAD_CART_FAILURE : {
@@ -56,6 +63,47 @@ const cartReducer = (state = initialState, action) => {
                 ...state,
                 isLoadingCart: false,
                 loadCartErrorReason: action.error,
+            }
+        }
+
+        case ADD_QUANTITY : {
+            let targetItemIndex = state.cartList.findIndex((value) => value.id === action.data.id);
+            state.cartList[targetItemIndex].quantity ++;
+            return {
+                ...state,
+            }
+        }
+
+        case REMOVE_QUANTITY : {
+            let targetItemIndex = state.cartList.findIndex((value) => value.id === action.data.id);
+            if(state.cartList[targetItemIndex].quantity > 1){
+                state.cartList[targetItemIndex].quantity --;
+            } 
+            return {
+                ...state,
+            }
+        }
+
+        case REMOVE_CART_REQUEST : {
+            return {
+                ...state,
+                isRemovingCart: true,
+            }
+        }
+        case REMOVE_CART_SUCCESS : {
+            const cartList = state.cartList.filter(value => value.id !== action.data);
+            
+            return {
+                ...state,
+                isRemovingCart: false,
+                cartList,
+            }
+        }
+        case REMOVE_CART_FAILURE : {
+            return {
+                ...state,
+                isRemovingCart: false,
+                removeCartErrorReason: action.error,
             }
         }
 

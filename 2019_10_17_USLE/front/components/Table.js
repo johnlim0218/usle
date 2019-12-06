@@ -38,34 +38,41 @@ const ModifiedTable = (props) => {
     return(
         <StyledDivTableResponsive>
             <StyledTable>
+
                  {tableHead !== undefined ? (
                     <TableHead>
                         <TableRow>
                             {tableHead && tableHead.map((tableRowValue, index) => {
                                 return(
-                                    <StyledTableCell key={tableRowValue}>
-                                        {tableRowValue}
+                                    <StyledTableCell key={tableRowValue.id}>
+                                        {tableRowValue.name}
                                     </StyledTableCell>
                                 )
                             })}
                         </TableRow>    
                     </TableHead>
                 ) : null}
+
                 <TableBody>
-                    {tableData && Array.isArray(tableData) && tableData.map((tableRowValue, index) => {
+                    {tableData && Array.isArray(tableData) ? (tableData.map((tableRowValue, index) => {
                         return(
-                            <TableRow key={tableRowValue} hover={hover}>
+                            <TableRow key={tableRowValue[0].key} hover={hover}>
                                 {tableRowValue.map((tableCellValue, index) => {
                                     return(
-                                        <StyledTableCell key={{tableCellValue}}>
+                                        <StyledTableCell key={tableHead[index].id}>
                                             {tableCellValue}
                                         </StyledTableCell>
                                     )
                                 })}
                             </TableRow>
                         )
-                    })}
+                    })) : (
+                       <TableRow hover={hover}>
+                            <StyledTableCell colSpan={tableData.colspan}>{tableData.content}</StyledTableCell>
+                       </TableRow>
+                    )}
                 </TableBody>
+
                 <TableBody>
                     {tableFooter && tableFooter.purchase && (
                                 <TableRow hover={hover}>
@@ -81,15 +88,16 @@ const ModifiedTable = (props) => {
                             )
                     }
                 </TableBody>
+
             </StyledTable>
         </StyledDivTableResponsive>
     )
 };
 
 ModifiedTable.propTypes ={
-    tableHead: PropTypes.arrayOf(PropTypes.string),
+    tableHead: PropTypes.array,
     tableData: PropTypes.array,
-    tableFooter: PropTypes.node,
+    tableFooter: PropTypes.object,
     hover: PropTypes.bool,
 };
 
