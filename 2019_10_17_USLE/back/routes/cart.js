@@ -8,7 +8,7 @@ router.post('/add', async(req, res, next) => {
         console.log(req.cookies.dq45o8w5);
         
         let cartList = req.body;
-        console.log(cartList);
+        
         // 카트 쿠키가 없을때
         if(req.cookies.dq45o8w5 === undefined){
             res.cookie('dq45o8w5', cartList);
@@ -180,7 +180,6 @@ router.get('/get', async(req, res, next) => {
         // 로그인이 되어 있지 않은 경우     
         } else {
             if(req.cookies.dq45o8w5 !== undefined){
-                console.log(req.cookies.dq45o8w5);
                 const cartList = await Promise.all(req.cookies.dq45o8w5.map((cookieValue, cookieIndex) => {
                     return(
                         db.ProductInventory.findOne({
@@ -327,8 +326,6 @@ router.patch('/update', async(req, res, next) => {
             if(req.cookies.dq45o8w5){
                 let targetCookieValue = req.cookies.dq45o8w5.filter((cookieValue) => cookieValue.id === req.body.id);
                 targetCookieValue[0].qty = req.body.quantity;
-                console.log(targetCookieValue);
-                console.log(req.cookies.dq45o8w5);
             }
             res.cookie('dq45o8w5', req.cookies.dq45o8w5);
         }
