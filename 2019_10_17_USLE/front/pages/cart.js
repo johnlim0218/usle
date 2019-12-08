@@ -44,7 +44,8 @@ const StyledAddRemoveButton = styled(Button)`
 `
 
 const Cart = () => {
-    const [qty, setQty] = useState(1);
+    const [totalAmout, setTotalAmout] = useState(0);
+
     const dispatch = useDispatch();
     const { cartList } = useSelector(state => state.cartReducer);
    
@@ -84,6 +85,20 @@ const Cart = () => {
             data: id,
         })
     }, [cartList]);
+
+    useEffect(() => {
+        let tempTotalAmount = 0;
+        cartList && cartList.map((cartListValue, cartListIndex) => {
+            cartListValue.ProductInventory.additionalPrice !== 0 ?
+                tempTotalAmount += (cartListValue.ProductInventory.Product.price +
+                cartListValue.ProductInventory.additionalPrice)
+                * cartListValue.quantity
+                : tempTotalAmount += cartListValue.ProductInventory.Product.price        
+                * cartListValue.quantity
+        })
+
+        setTotalAmout(tempTotalAmount);
+    }, [cartList, totalAmout]);
 
     return(
         <div>
@@ -180,7 +195,7 @@ const Cart = () => {
                                             colspan: "3",
                                             amount: (
                                                 <span>
-                                                    <small>￦</small>20,000
+                                                    <small>￦</small>{totalAmout && totalAmout}
                                                 </span>
                                             ),
                                             col: {
