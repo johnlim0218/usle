@@ -44,7 +44,7 @@ const StyledAddRemoveButton = styled(Button)`
 `
 
 const Cart = () => {
-    const [totalAmout, setTotalAmout] = useState(0);
+    const [totalAmount, setTotalAmount] = useState(0);
 
     const dispatch = useDispatch();
     const { cartList } = useSelector(state => state.cartReducer);
@@ -77,6 +77,7 @@ const Cart = () => {
                 quantity: targetItem[0].quantity,
             }
         })
+        calTotalAmount();
     }, [cartList]); 
     const onClickRemoveItem = useCallback((id) => (e) => {
         e.preventDefault();
@@ -84,9 +85,10 @@ const Cart = () => {
             type: REMOVE_CART_REQUEST,
             data: id,
         })
+        calTotalAmount();
     }, [cartList]);
 
-    useEffect(() => {
+    const calTotalAmount = () => {
         let tempTotalAmount = 0;
         cartList && cartList.map((cartListValue, cartListIndex) => {
             cartListValue.ProductInventory.additionalPrice !== 0 ?
@@ -97,8 +99,12 @@ const Cart = () => {
                 * cartListValue.quantity
         })
 
-        setTotalAmout(tempTotalAmount);
-    }, [cartList, totalAmout]);
+        setTotalAmount(tempTotalAmount);
+    }
+   
+    useEffect(() => {
+        calTotalAmount();
+    }, [])
 
     return(
         <div>
@@ -195,7 +201,7 @@ const Cart = () => {
                                             colspan: "3",
                                             amount: (
                                                 <span>
-                                                    <small>￦</small>{totalAmout && totalAmout}
+                                                    <small>￦</small>{totalAmount && totalAmount}
                                                 </span>
                                             ),
                                             col: {
@@ -233,7 +239,7 @@ const Cart = () => {
                                             colspan: "3",
                                             amount: (
                                                 <span>
-                                                    <small>￦</small>20,000
+                                                    <small>￦</small>0
                                                 </span>
                                             ),
                                             col: {
