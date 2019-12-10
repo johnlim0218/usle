@@ -80,27 +80,6 @@ router.post('/', async(req, res, next) => {
                     return res.status(403).send('재고가 충분하지 않은 상품이 있습니다.');
                 }
             })
-            
-            if(req.user){
-                await Promise.all(req.body.map((value, index) => {
-                    return (
-                        db.OrderDetail.create({
-                            ProductInventoryId: value.ProductInventoryId,
-                            UserId: req.user.id,
-                            quantity: value.quantity,
-                        })
-                    )
-                }))
-            } else {
-                await Promise.all(req.body.map((value, index) => {
-                    return (
-                        db.OrderDetail.create({
-                            ProductInventoryId: value.ProductInventoryId,
-                            quantity: value.quantity,
-                        })
-                    )
-                }))
-            }
         }
 
         return res.json(productInventory);

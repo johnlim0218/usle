@@ -111,6 +111,7 @@ const Cart = () => {
         
         let purchaseList = [];
         if(checkedList.length === 0) {
+            
             return '';
         } else {
             checkedList.map((value, index) => {
@@ -254,11 +255,17 @@ const Cart = () => {
                                             col: {
                                                 colspan: "3",
                                                 text: (
-                                                    <Link href='/checkout'>
+                                                    checkedList.length !== 0 ? (
+                                                        <Link href='/checkout'>
+                                                            <Button onClick={onClickCompletePurchase}>
+                                                                Complete Purchase <KeyboardArrowRight/>
+                                                            </Button>
+                                                        </Link>
+                                                    ) : (
                                                         <Button onClick={onClickCompletePurchase}>
-                                                            Complete Purchase <KeyboardArrowRight />
+                                                                Complete Purchase <KeyboardArrowRight/>
                                                         </Button>
-                                                    </Link>
+                                                    )
                                                 )
                                             }
                                         }}
