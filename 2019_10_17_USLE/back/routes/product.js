@@ -177,7 +177,7 @@ router.get('/:id', async(req, res, next) => {
                 }]
             }],
         });
-        console.log(req.cookies);
+        
         return res.json(productDetail);
     } catch(e) {
         console.error(e);

@@ -22,6 +22,7 @@ module.exports = (sequelize, DataTypes) => {
     ProductInventory.associate = (db) => {
         db.ProductInventory.hasMany(db.Cart);
         db.ProductInventory.hasMany(db.OrderDetail);
+        // db.ProductInventory.hasMany(db.OrderTemp);
         // db.ProductInventory.hasMany(db.ProductInventory);
         // db.ProductInventory.belongsTo(db.ProductInventory);
         // db.ProductInventory.belongsTo(db.ProductOptionSelection);

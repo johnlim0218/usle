@@ -6,10 +6,10 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.INTEGER,
             allowNull: false,
         },
-        totalPrice: {
-            type: DataTypes.INTEGER,
-            allowNull: false,
-        }
+        // totalPrice: {
+        //     type: DataTypes.INTEGER,
+        //     allowNull: false,
+        // }
     },{
         timestamps: true,
         paranoid: true,
@@ -19,6 +19,7 @@ module.exports = (sequelize, DataTypes) => {
     });
 
     OrderDetail.associate = (db) => {
+        db.OrderDetail.belongsTo(db.User);
         db.OrderDetail.belongsTo(db.Coupon);
         db.OrderDetail.belongsTo(db.ProductInventory);
         db.OrderDetail.belongsTo(db.Order);

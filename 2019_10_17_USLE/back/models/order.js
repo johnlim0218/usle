@@ -18,6 +18,7 @@ module.exports = (sequelize, DataTypes) => {
         db.Order.hasOne(db.OrderPayment);
         db.Order.hasOne(db.OrderShipping);
         db.Order.hasMany(db.OrderStatus);
+        db.Order.hasMany(db.OrderTemp);
         db.Order.belongsTo(db.User);
     }
 

@@ -42,6 +42,8 @@ app.prepare().then(() => {
         return app.render(req, res, '/product', { id: req.params.id });
     })
 
+    // server.get('/checkout')
+
     server.get('*', (req, res) => {
         return handle(req, res);
     });

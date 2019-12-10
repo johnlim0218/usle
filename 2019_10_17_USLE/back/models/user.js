@@ -41,11 +41,12 @@ module.exports = (sequelize, DataTypes) => {
     });
 
     User.associate = (db) => {
-        db.User.hasMany(db.Order);
+        db.User.hasMany(db.OrderDetail);
         db.User.hasMany(db.Cart);
         db.User.hasMany(db.UserAddress);
         db.User.hasMany(db.Post);
         db.User.hasMany(db.Comment);
+        db.User.hasMany(db.OrderTemp);
         db.User.belongsToMany(db.Coupon, {through: 'OwnCoupon', as:'Owned'})
     }
 

@@ -15,6 +15,7 @@ const productsAPIRouter = require('./routes/products');
 const categoryAPIRouter = require('./routes/category');
 const brandAPIRouter = require('./routes/brand');
 const cartAPIRouter = require('./routes/cart');
+const orderAPIRouter = require('./routes/order');
 
 dotenv.config();
 const app = express();
@@ -62,6 +63,7 @@ app.use('/api/products', productsAPIRouter);
 app.use('/api/category', categoryAPIRouter);
 app.use('/api/brand', brandAPIRouter);
 app.use('/api/cart', cartAPIRouter);
+app.use('/api/order', orderAPIRouter);
 
 app.listen(3065, () => {
     console.log('usle server is running on localhost:3065');

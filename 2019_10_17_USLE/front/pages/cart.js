@@ -1,11 +1,13 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import Link from 'next/link';
 import styled from 'styled-components';
 import KeyboardArrowRight from "@material-ui/icons/KeyboardArrowRight";
 import Remove from '@material-ui/icons/Remove';
 import Add from '@material-ui/icons/Add';
 import Close from '@material-ui/icons/Close';
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
+import CheckBox from '@material-ui/core/Checkbox';
 
 import Tooltip from '../components/Tooltip';
 import Typography from '../components/Typography';
@@ -22,6 +24,7 @@ import { imgSrcUrl } from '../components/ProductItemList';
 
 import { dummyCartData } from '../dummy/dummy';
 import { LOAD_CART_REQUEST, ADD_QUANTITY, REMOVE_QUANTITY, REMOVE_CART_REQUEST, CONFIRM_CART_QUANTITY_REQUEST } from '../reducers/cartReducer';
+import { ORDER_REQUEST } from '../reducers/orderReducer';
 
 const StyledDivImgContainer = styled.div`
     width: 120px;
@@ -45,10 +48,23 @@ const StyledAddRemoveButton = styled(Button)`
 
 const Cart = () => {
     const [totalAmount, setTotalAmount] = useState(0);
+    const [checkedList, setCheckedList] = useState([]);
 
     const dispatch = useDispatch();
+    const { me } = useSelector(state => state.userReducer);
     const { cartList } = useSelector(state => state.cartReducer);
-   
+    
+    const handleCheckBoxToggle = (value) => {
+        const currentIndex = checkedList.indexOf(value);
+        const newChecked = [...checkedList];
+        if(currentIndex === -1) {
+            newChecked.push(value);
+        } else {
+            newChecked.splice(currentIndex, 1);
+        }
+        setCheckedList(newChecked);
+    }
+    
     const onClickRemove = useCallback((id) => (e) => {
         e.preventDefault();
         dispatch({
@@ -58,6 +74,7 @@ const Cart = () => {
             }
         })
     }, [cartList]);
+
     const onClickAdd = useCallback((id) => (e) => {
         e.preventDefault();
         dispatch({
@@ -67,6 +84,7 @@ const Cart = () => {
             }
         })
     }, [cartList]);
+
     const onClickConfirmQuantity = useCallback((id) => (e) => {
         e.preventDefault();
         let targetItem = cartList.filter((value) => value.id === id);
@@ -79,6 +97,7 @@ const Cart = () => {
         })
         calTotalAmount();
     }, [cartList]); 
+
     const onClickRemoveItem = useCallback((id) => (e) => {
         e.preventDefault();
         dispatch({
@@ -87,6 +106,28 @@ const Cart = () => {
         })
         calTotalAmount();
     }, [cartList]);
+
+    const onClickCompletePurchase = useCallback((e) => {
+        
+        let purchaseList = [];
+        if(checkedList.length === 0) {
+            return '';
+        } else {
+            checkedList.map((value, index) => {
+               purchaseList.push({
+                   ProductInventoryId : cartList.filter(list => list.id === value)[0].ProductInventory.id,
+                   quantity : cartList.filter(list => list.id === value)[0].quantity,
+                })
+            })
+        }
+        
+        
+        dispatch({
+            type: ORDER_REQUEST,
+            data: purchaseList,
+        })
+
+    }, [checkedList]);
 
     const calTotalAmount = () => {
         let tempTotalAmount = 0;
@@ -120,6 +161,7 @@ const Cart = () => {
                            {cartList ?
                                 <Table
                                     tableHead={[
+                                        {id:0, name:""},
                                         {id:1, name:""},
                                         {id:2, name:"PRODUCT"},
                                         {id:3, name:"OPTION"},
@@ -130,6 +172,11 @@ const Cart = () => {
                                     ]}
                                     tableData={
                                         cartList && cartList.map((value, index) => ([
+                                                <CheckBox 
+                                                    key={value.id}
+                                                    tabIndex={-1}
+                                                    onClick={() => handleCheckBoxToggle(value.id)}
+                                                />,
                                                 <StyledDivImgContainer key={value.id}>
                                                     <img src={value && imgSrcUrl + value.ProductInventory.Product.ProductImages[0].src}/>
                                                 </StyledDivImgContainer>,
@@ -201,28 +248,32 @@ const Cart = () => {
                                             colspan: "3",
                                             amount: (
                                                 <span>
-                                                    <small>￦</small>{totalAmount && totalAmount}
+                                                    <small>￦</small> {totalAmount && totalAmount}
                                                 </span>
                                             ),
                                             col: {
-                                            colspan: "3",
-                                            text: (
-                                                <Button>
-                                                    Complete Purchase <KeyboardArrowRight />
-                                                </Button>
-                                            )
+                                                colspan: "3",
+                                                text: (
+                                                    <Link href='/checkout'>
+                                                        <Button onClick={onClickCompletePurchase}>
+                                                            Complete Purchase <KeyboardArrowRight />
+                                                        </Button>
+                                                    </Link>
+                                                )
                                             }
                                         }}
-                                /> :
+                                /> 
+                                :
                                 <Table
                                     tableHead={[
                                         {id:0, name:""},
-                                        {id:1, name:"PRODUCT"},
-                                        {id:2, name:"OPTION"},
-                                        {id:3, name:"PRICE"},
-                                        {id:4, name:"QTY"},
-                                        {id:5, name:"AMOUNT"},
-                                        {id:6, name:""}
+                                        {id:1, name:""},
+                                        {id:2, name:"PRODUCT"},
+                                        {id:3, name:"OPTION"},
+                                        {id:4, name:"PRICE"},
+                                        {id:5, name:"QTY"},
+                                        {id:6, name:"AMOUNT"},
+                                        {id:7, name:""}
                                     ]}
                                     tableData=
                                         {{
@@ -239,7 +290,7 @@ const Cart = () => {
                                             colspan: "3",
                                             amount: (
                                                 <span>
-                                                    <small>￦</small>0
+                                                    <small>￦ </small>0
                                                 </span>
                                             ),
                                             col: {

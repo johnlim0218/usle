@@ -3,6 +3,7 @@ import axios from 'axios';
 import userSaga from './userSaga';
 import productSaga from './productSaga';
 import cartSaga from './cartSaga';
+import orderSaga from './orderSaga';
 import adminProductSaga from './admin/adminProductSaga';
 import adminCategorySaga from './admin/adminCategorySaga';
 import adminBrandSaga from './admin/adminBrandSaga';
@@ -14,6 +15,7 @@ function* rootSaga() {
         fork(userSaga),
         fork(productSaga),
         fork(cartSaga),
+        fork(orderSaga),
         fork(adminProductSaga),
         fork(adminCategorySaga),
         fork(adminBrandSaga),

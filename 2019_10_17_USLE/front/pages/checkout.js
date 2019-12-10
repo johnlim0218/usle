@@ -1,4 +1,5 @@
 import React, { useState, useCallback, useRef, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { Field, Form, FormSpy } from 'react-final-form';
 
@@ -60,6 +61,7 @@ const CheckOut = () => {
     const [zipCodeState, setZipCodeState] = useState('');
     const [addressState, setAddressState] = useState('');
     const [addressDetailState, setAddressDetailState] = useState('');
+    const { orderedItemList } = useSelector(state => state.orderReducer);
 
     const addressLayer = useRef();
     const closeButton = useRef();
@@ -168,13 +170,11 @@ const CheckOut = () => {
                            <Typography variant="h4">Check out</Typography>
                            <Table
                                 tableHead={[
-                                    "",
-                                    "PRODUCT",
-                                    "COLOR",
-                                    "SIZE",
-                                    "PRICE",
-                                    "QTY",
-                                    "AMOUNT",
+                                    {id:0, name:""},
+                                    {id:1, name:"PRODUCT"},
+                                    {id:2, name:"OPTION"},
+                                    {id:3, name:"QTY"},
+                                    {id:4, name:"AMOUNT"},
                                 ]}
                                 tableData={
                                     dummyCartData.map((value, index) => ([
@@ -194,12 +194,6 @@ const CheckOut = () => {
                                                 {value.color}
                                             </span>,
                                             <span>
-                                                {value.size}
-                                            </span>,
-                                            <span>
-                                                <StyledTdNumberSmall>￦ {value.price}</StyledTdNumberSmall>
-                                            </span>,
-                                            <span>
                                                 {qty}
                                             </span>,
                                             <span>
@@ -212,7 +206,7 @@ const CheckOut = () => {
                                 tableFooter=
                                     {{
                                         purchase: true,
-                                        colspan: "5",
+                                        colspan: "3",
                                         amount: (
                                           <span>
                                             <small>￦</small> 20,000
