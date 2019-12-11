@@ -83,10 +83,6 @@ router.post('/', async(req, res, next) => {
             })
         }
         
-        console.log('test');
-        console.log(req);
-        console.log(req.sessionID);
-        console.log(req.cookies);
 
         return res.json(productInventory);
     } catch(e) {

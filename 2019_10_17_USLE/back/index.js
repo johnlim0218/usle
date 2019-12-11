@@ -83,7 +83,7 @@ app.use("/session", (req, res) => {
       sessionID,
       cookies
     });
-    // console.log(req.session);
+    
   });
 
 app.listen(3065, () => {

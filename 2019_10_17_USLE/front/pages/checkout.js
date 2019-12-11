@@ -58,7 +58,7 @@ const StyledButtonSearchingAddress = styled(Button)`
 
 
 const CheckOut = () => {
-    const [qty, setQty] = useState(1);
+    const [totalAmount, setTotalAmount] = useState(0);
     const [sent, setSent] = useState(false);
     const [zipCodeState, setZipCodeState] = useState('');
     const [addressState, setAddressState] = useState('');
@@ -71,7 +71,20 @@ const CheckOut = () => {
     useEffect(() => {
         if(!orderedItemList || orderedItemList.length === 0){
             Router.push('/cart');
+        } else {
+            let tempTotalAmount = 0;
+            orderedItemList && orderedItemList.map((orderedItemListValue, orderedItemListIndex) => {
+                orderedItemListValue.ProductInventory.additionalPrice !== 0 ?
+                    tempTotalAmount += (orderedItemListValue.ProductInventory.Product.price +
+                    orderedItemListValue.ProductInventory.additionalPrice)
+                    * orderedItemListValue.quantity
+                    : tempTotalAmount += orderedItemListValue.ProductInventory.Product.price        
+                    * orderedItemListValue.quantity
+            })
+
+            setTotalAmount(tempTotalAmount);
         }
+
     }, [orderedItemList]);
 
     useEffect(() => {
@@ -190,30 +203,35 @@ const CheckOut = () => {
                                 tableData={
                                     orderedItemList ? (orderedItemList.map((value, index) => ([
                                             <StyledDivImgContainer key={value.id}>
-                                                <img src={value && imgSrcUrl + value.Product.ProductImages[0].src}/>
+                                                <img src={value && imgSrcUrl + value.ProductInventory.Product.ProductImages[0].src}/>
                                             </StyledDivImgContainer>,
                                             <span key={value.id}>
                                                 <a href="#jacket">
-                                                    {value.Product.productName}
+                                                {value.ProductInventory.Product.productName}
                                                 </a>
                                                 <br />
                                                 <StyledTdNameSmall>
-                                                    by {value.Product.ProductBrand.brandName}
+                                                    by {value.ProductInventory.Product.ProductBrand.brandName}
                                                 </StyledTdNameSmall>
                                             </span>,
                                             <span key={value.id}>
-                                                {value.ProductOptionSelection0 && <span>{value.ProductOptionSelection0.ProductOption.optionName} : {value.ProductOptionSelection0.selectionName}<br/></span>}
-                                                {value.ProductOptionSelection1 && <span>{value.ProductOptionSelection1.ProductOption.optionName} : {value.ProductOptionSelection1.selectionName}<br/></span>}
-                                                {value.ProductOptionSelection2 && <span>{value.ProductOptionSelection2.ProductOption.optionName} : {value.ProductOptionSelection2.selectionName}<br/></span>}
-                                                {value.ProductOptionSelection3 && <span>{value.ProductOptionSelection3.ProductOption.optionName} : {value.ProductOptionSelection3.selectionName}<br/></span>}
-                                                {value.ProductOptionSelection4 && <span>{value.ProductOptionSelection4.ProductOption.optionName} : {value.ProductOptionSelection4.selectionName}<br/></span>}
-                                                {value.ProductOptionSelection5 && <span>{value.ProductOptionSelection5.ProductOption.optionName} : {value.ProductOptionSelection5.selectionName}<br/></span>}
+                                                {value.ProductInventory.ProductOptionSelection0 && <span>{value.ProductInventory.ProductOptionSelection0.ProductOption.optionName} : {value.ProductInventory.ProductOptionSelection0.selectionName}<br/></span>}
+                                                {value.ProductInventory.ProductOptionSelection1 && <span>{value.ProductInventory.ProductOptionSelection1.ProductOption.optionName} : {value.ProductInventory.ProductOptionSelection1.selectionName}<br/></span>}
+                                                {value.ProductInventory.ProductOptionSelection2 && <span>{value.ProductInventory.ProductOptionSelection2.ProductOption.optionName} : {value.ProductInventory.ProductOptionSelection2.selectionName}<br/></span>}
+                                                {value.ProductInventory.ProductOptionSelection3 && <span>{value.ProductInventory.ProductOptionSelection3.ProductOption.optionName} : {value.ProductInventory.ProductOptionSelection3.selectionName}<br/></span>}
+                                                {value.ProductInventory.ProductOptionSelection4 && <span>{value.ProductInventory.ProductOptionSelection4.ProductOption.optionName} : {value.ProductInventory.ProductOptionSelection4.selectionName}<br/></span>}
+                                                {value.ProductInventory.ProductOptionSelection5 && <span>{value.ProductInventory.ProductOptionSelection5.ProductOption.optionName} : {value.ProductInventory.ProductOptionSelection5.selectionName}<br/></span>}
                                             </span>,
-                                            <span>
-                                                {qty}
+                                            <span key={value.id}>
+                                                {value.quantity}
                                             </span>,
-                                            <span>
-                                                <StyledTdNumberSmall>￦ {value.price * qty}</StyledTdNumberSmall>
+                                            <span key={value.id}>
+                                                <StyledTdNumberSmall>
+                                                    ￦ {value.ProductInventory.additionalPrice === 0 
+                                                        ? (value.ProductInventory.Product.price * value.quantity) 
+                                                        : ((value.ProductInventory.Product.price + value.ProductInventory.additionalPrice) * value.quantity)
+                                                        }
+                                                </StyledTdNumberSmall>
                                             </span>
                                         
                                         ])
@@ -234,9 +252,9 @@ const CheckOut = () => {
                                         purchase: true,
                                         colspan: "3",
                                         amount: (
-                                          <span>
-                                            <small>￦</small> 20,000
-                                          </span>
+                                            <span>
+                                                <small>￦</small> {totalAmount && totalAmount}
+                                            </span>
                                         )
                                     }}
                             />

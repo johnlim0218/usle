@@ -24,7 +24,7 @@ import { imgSrcUrl } from '../components/ProductItemList';
 
 import { dummyCartData } from '../dummy/dummy';
 import { LOAD_CART_REQUEST, ADD_QUANTITY, REMOVE_QUANTITY, REMOVE_CART_REQUEST, CONFIRM_CART_QUANTITY_REQUEST } from '../reducers/cartReducer';
-import { ORDER_REQUEST } from '../reducers/orderReducer';
+import { MAKE_ORDER_FORM } from '../reducers/orderReducer';
 
 const StyledDivImgContainer = styled.div`
     width: 120px;
@@ -115,16 +115,15 @@ const Cart = () => {
             return '';
         } else {
             checkedList.map((value, index) => {
-               purchaseList.push({
-                   ProductInventoryId : cartList.filter(list => list.id === value)[0].ProductInventory.id,
-                   quantity : cartList.filter(list => list.id === value)[0].quantity,
-                })
+               purchaseList.push(
+                   cartList.filter(list => list.id === value)[0],
+                   
+                )
             })
         }
         
-        
         dispatch({
-            type: ORDER_REQUEST,
+            type: MAKE_ORDER_FORM,
             data: purchaseList,
         })
 
