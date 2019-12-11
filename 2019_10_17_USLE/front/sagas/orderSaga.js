@@ -9,7 +9,6 @@ function* orderSaga() {
 }
 
 function orderAPI(orderData){
-    console.log(orderData);
     return axios.post('/order', orderData, {
         withCredentials: true
     })

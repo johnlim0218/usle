@@ -2,6 +2,7 @@ import React, { useState, useCallback, useRef, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { Field, Form, FormSpy } from 'react-final-form';
+import Router from 'next/router';
 
 // import Grid from '@material-ui/core/Grid';
 import Typography from '../components/Typography';
@@ -19,6 +20,7 @@ import RFTextField from '../form/RFTextField';
 import FormButton from '../form/FormButton';
 import FormFeedback from '../form/FormFeedback';
 
+import { imgSrcUrl } from '../components/ProductItemList';
 import { dummyCartData } from '../dummy/dummy';
 
 const StyledDivImgContainer = styled.div`
@@ -66,11 +68,20 @@ const CheckOut = () => {
     const addressLayer = useRef();
     const closeButton = useRef();
   
+    useEffect(() => {
+        if(!orderedItemList || orderedItemList.length === 0){
+            Router.push('/cart');
+        }
+    }, [orderedItemList]);
+
+    useEffect(() => {
+        console.log(orderedItemList);
+    }, [orderedItemList]);
 
     const validate = values => {
         const errors = required(['name', 'phone', 'email', 'zipcode', 'address', 'addressDetail'], values);
         if(!errors.email) {
-            const emailError =email(values.email, values);
+            const emailError = email(values.email, values);
             if(emailError) {
                 errors.email = email(values.email, values);
             }
@@ -177,21 +188,26 @@ const CheckOut = () => {
                                     {id:4, name:"AMOUNT"},
                                 ]}
                                 tableData={
-                                    dummyCartData.map((value, index) => ([
-                                            <StyledDivImgContainer>
-                                                <img src={value.thumbsnail}/>
+                                    orderedItemList ? (orderedItemList.map((value, index) => ([
+                                            <StyledDivImgContainer key={value.id}>
+                                                <img src={value && imgSrcUrl + value.Product.ProductImages[0].src}/>
                                             </StyledDivImgContainer>,
-                                            <span>
+                                            <span key={value.id}>
                                                 <a href="#jacket">
-                                                    {value.name}
+                                                    {value.Product.productName}
                                                 </a>
                                                 <br />
                                                 <StyledTdNameSmall>
-                                                    by {value.brand}
+                                                    by {value.Product.ProductBrand.brandName}
                                                 </StyledTdNameSmall>
                                             </span>,
-                                            <span>
-                                                {value.color}
+                                            <span key={value.id}>
+                                                {value.ProductOptionSelection0 && <span>{value.ProductOptionSelection0.ProductOption.optionName} : {value.ProductOptionSelection0.selectionName}<br/></span>}
+                                                {value.ProductOptionSelection1 && <span>{value.ProductOptionSelection1.ProductOption.optionName} : {value.ProductOptionSelection1.selectionName}<br/></span>}
+                                                {value.ProductOptionSelection2 && <span>{value.ProductOptionSelection2.ProductOption.optionName} : {value.ProductOptionSelection2.selectionName}<br/></span>}
+                                                {value.ProductOptionSelection3 && <span>{value.ProductOptionSelection3.ProductOption.optionName} : {value.ProductOptionSelection3.selectionName}<br/></span>}
+                                                {value.ProductOptionSelection4 && <span>{value.ProductOptionSelection4.ProductOption.optionName} : {value.ProductOptionSelection4.selectionName}<br/></span>}
+                                                {value.ProductOptionSelection5 && <span>{value.ProductOptionSelection5.ProductOption.optionName} : {value.ProductOptionSelection5.selectionName}<br/></span>}
                                             </span>,
                                             <span>
                                                 {qty}
@@ -201,6 +217,16 @@ const CheckOut = () => {
                                             </span>
                                         
                                         ])
+                                    ))
+                                    :
+                                    (
+                                        {
+                                            colspan: "5",
+                                            content: (
+                                                <div>
+                                                </div>
+                                            )
+                                        }
                                     )
                                 }
                                 tableFooter=

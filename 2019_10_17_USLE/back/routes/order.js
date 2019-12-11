@@ -4,6 +4,7 @@ const router = express.Router();
 const db = require('../models');
 
 router.post('/', async(req, res, next) => {
+    
     try {
         const productInventory = await Promise.all(req.body.map((value, index) => {
             return(
@@ -81,6 +82,11 @@ router.post('/', async(req, res, next) => {
                 }
             })
         }
+        
+        console.log('test');
+        console.log(req);
+        console.log(req.sessionID);
+        console.log(req.cookies);
 
         return res.json(productInventory);
     } catch(e) {

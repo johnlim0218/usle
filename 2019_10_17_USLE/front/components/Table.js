@@ -39,7 +39,7 @@ const ModifiedTable = (props) => {
         <StyledDivTableResponsive>
             <StyledTable>
 
-                 {tableHead !== undefined ? (
+                {tableHead !== undefined ? (
                     <TableHead>
                         <TableRow>
                             {tableHead && tableHead.map((tableRowValue, index) => {
@@ -68,7 +68,9 @@ const ModifiedTable = (props) => {
                         )
                     })) : (
                        <TableRow hover={hover}>
-                            <StyledTableCell colSpan={tableData.colspan}>{tableData.content}</StyledTableCell>
+                            <StyledTableCell colSpan={tableData.colspan}>
+                                {tableData.content}
+                            </StyledTableCell>
                        </TableRow>
                     )}
                 </TableBody>

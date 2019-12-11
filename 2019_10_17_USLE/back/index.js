@@ -6,6 +6,8 @@ const expressSession = require('express-session');
 const dotenv = require('dotenv');
 const passport = require('passport');
 
+const uuid = require('uuid/v4');
+
 const passportConfig = require('./passport');
 
 const db = require('./models');
@@ -44,14 +46,17 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(cookieParser(process.env.COOKIE_SECRET));
 app.use(expressSession({
+    genid: function(req){ // 커스텀 sessionId 생성
+        return uuid();
+    },
     resave: false,
-    saveUninitialized: false,
+    saveUninitialized: true,
     secret: process.env.COOKIE_SECRET,
     cookie: {
         httpOnly: true,
         secure: false,
     },
-    name: '1q2w3e',
+    name: 'aq2w3e',
 }))
 
 app.use(passport.initialize());
@@ -64,6 +69,22 @@ app.use('/api/category', categoryAPIRouter);
 app.use('/api/brand', brandAPIRouter);
 app.use('/api/cart', cartAPIRouter);
 app.use('/api/order', orderAPIRouter);
+
+app.use("/session", (req, res) => {
+    const { sessionID, cookies } = req;
+  
+    // 서버가 생성한 sessionID
+    console.log('sessionID:', sessionID);
+    // 클라이언트가 보유한 cookie
+    console.log('cookies.yourCookieName', cookies);
+    
+  
+    res.json({
+      sessionID,
+      cookies
+    });
+    // console.log(req.session);
+  });
 
 app.listen(3065, () => {
     console.log('usle server is running on localhost:3065');

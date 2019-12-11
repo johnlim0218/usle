@@ -159,7 +159,7 @@ const Cart = () => {
                        <CardBody plain>
                            <Typography variant="h4">Shopping Cart</Typography>
                            
-                           {cartList ?
+                           
                                 <Table
                                     tableHead={[
                                         {id:0, name:""},
@@ -171,8 +171,9 @@ const Cart = () => {
                                         {id:6, name:"AMOUNT"},
                                         {id:7, name:""}
                                     ]}
+                                      
                                     tableData={
-                                        cartList && cartList.map((value, index) => ([
+                                            cartList ? (cartList.map((value, index) => ([
                                                 <CheckBox 
                                                     key={value.id}
                                                     tabIndex={-1}
@@ -241,6 +242,17 @@ const Cart = () => {
                                                     </Button>
                                                 </Tooltip>
                                             ])
+                                        ))
+                                        :
+                                        (
+                                            {
+                                                colspan: "7",
+                                                content: (
+                                                    <div>
+                                                        EMPTY
+                                                    </div>
+                                                )
+                                            }
                                         )
                                     }
                                     tableFooter=
@@ -270,46 +282,7 @@ const Cart = () => {
                                             }
                                         }}
                                 /> 
-                                :
-                                <Table
-                                    tableHead={[
-                                        {id:0, name:""},
-                                        {id:1, name:""},
-                                        {id:2, name:"PRODUCT"},
-                                        {id:3, name:"OPTION"},
-                                        {id:4, name:"PRICE"},
-                                        {id:5, name:"QTY"},
-                                        {id:6, name:"AMOUNT"},
-                                        {id:7, name:""}
-                                    ]}
-                                    tableData=
-                                        {{
-                                            colspan: "7",
-                                            content: (
-                                                <div>
-                                                    EMPTY
-                                                </div>
-                                            )
-                                        }}
-                                    tableFooter=
-                                        {{
-                                            purchase: true,
-                                            colspan: "3",
-                                            amount: (
-                                                <span>
-                                                    <small>￦ </small>0
-                                                </span>
-                                            ),
-                                            col: {
-                                            colspan: "3",
-                                            text: (
-                                                <Button>
-                                                    Complete Purchase <KeyboardArrowRight />
-                                                </Button>
-                                            )
-                                            }
-                                        }}
-                                />}
+                               }
                        </CardBody>
                    </Card>
                 </StyledDivContainer>
