@@ -12,6 +12,7 @@ import Card from '../components/Card/Card';
 import CardBody from '../components/Card/CardBody';
 import Table from '../components/Table';
 import Button from '../components/Button';
+import CheckBox from '../components/CheckBox';
 import GridContainer from '../components/Grid/GridContainer';
 import GridItem from '../components/Grid/GridItem';
 import AppForm from '../views/AppForm';
@@ -63,6 +64,7 @@ const CheckOut = () => {
     const [zipCodeState, setZipCodeState] = useState('');
     const [addressState, setAddressState] = useState('');
     const [addressDetailState, setAddressDetailState] = useState('');
+    const [term, setTerm] = useState(false);
     const { orderedItemList } = useSelector(state => state.orderReducer);
 
     const addressLayer = useRef();
@@ -92,7 +94,7 @@ const CheckOut = () => {
     }, [orderedItemList]);
 
     const validate = values => {
-        const errors = required(['name', 'phone', 'email', 'zipcode', 'address', 'addressDetail'], values);
+        const errors = required(['name', 'phone', 'email', 'zipcode', 'address', 'addressDetail', 'term'], values);
         if(!errors.email) {
             const emailError = email(values.email, values);
             if(emailError) {
@@ -178,6 +180,10 @@ const CheckOut = () => {
         element_layer.style.display = 'none';
     };
 
+    const onClickTerm = useCallback(() => {
+        setTerm(!term);
+    }, [term]);
+
     const onSubmit = useCallback(() => {
         setSent(false);
     },[sent])
@@ -206,9 +212,7 @@ const CheckOut = () => {
                                                 <img src={value && imgSrcUrl + value.ProductInventory.Product.ProductImages[0].src}/>
                                             </StyledDivImgContainer>,
                                             <span key={value.id}>
-                                                <a href="#jacket">
                                                 {value.ProductInventory.Product.productName}
-                                                </a>
                                                 <br />
                                                 <StyledTdNameSmall>
                                                     by {value.ProductInventory.Product.ProductBrand.brandName}
@@ -280,6 +284,7 @@ const CheckOut = () => {
                                         required
                                         size="large"
                                         noBorder={false}
+                                        disabled={submitting || sent}
                                     />
                                     <GridContainer checkout>
                                         <GridItem left sm={6}>
@@ -292,6 +297,7 @@ const CheckOut = () => {
                                                 fullWidth
                                                 size="large"
                                                 noBorder={false}
+                                                disabled={submitting || sent}
                                             />
                                         </GridItem>  
                                         <GridItem right sm={6}>
@@ -304,6 +310,7 @@ const CheckOut = () => {
                                                 fullWidth
                                                 size="large"
                                                 noBorder={false}
+                                                disabled={submitting || sent}
                                             />
                                         </GridItem> 
                                     </GridContainer>
@@ -320,6 +327,7 @@ const CheckOut = () => {
                                         required
                                         size="large"
                                         noBorder={false}
+                                        disabled={submitting || sent}
                                     />
                                     <GridContainer checkout>
                                         <GridItem left sm={6}>
@@ -332,6 +340,7 @@ const CheckOut = () => {
                                                 fullWidth
                                                 size="large"
                                                 noBorder={false}
+                                                disabled={submitting || sent}
                                             />
                                         </GridItem>  
                                         <GridItem right sm={6}>
@@ -344,6 +353,7 @@ const CheckOut = () => {
                                                 fullWidth
                                                 size="large"
                                                 noBorder={false}
+                                                disabled={submitting || sent}
                                             />
                                         </GridItem> 
                                     </GridContainer>
@@ -359,12 +369,14 @@ const CheckOut = () => {
                                                 size="large"
                                                 noBorder={false}
                                                 initialValue={zipCodeState}
+                                                disabled={submitting || sent}
                                             />
                                         </GridItem>
                                        <StyledGridItemZIPCodeButton right sm={6}>
                                             <StyledButtonSearchingAddress 
-                                                onClick={onClickSearchingAddress}>
-                                                Searching Address
+                                                onClick={onClickSearchingAddress}
+                                                disabled={submitting || sent}>
+                                                    Searching Address
                                             </StyledButtonSearchingAddress>
                                             <div 
                                                 ref={addressLayer} 
@@ -386,6 +398,7 @@ const CheckOut = () => {
                                         size="large"
                                         noBorder={false}
                                         initialValue={addressState}
+                                        disabled={submitting || sent}
                                     />
                                     <Field
                                         component={RFTextField}
@@ -397,6 +410,7 @@ const CheckOut = () => {
                                         size="large"
                                         noBorder={false}
                                         initialValue={addressDetailState}
+                                        disabled={submitting || sent}
                                     />
                                     <Field
                                         component={RFTextField}
@@ -405,7 +419,25 @@ const CheckOut = () => {
                                         fullWidth
                                         size="large"
                                         noBorder={false}
+                                        disabled={submitting || sent}
                                         />
+                                    <Field
+                                        type="checkbox"
+                                        initialValue={term}
+                                        onClick={onClickTerm} 
+                                        component={CheckBox}
+                                        disabled={submitting || sent}
+                                        fullWidth        
+                                        label={<>
+                                                    I agree to the{" "}
+                                                    <a href="#pablo">terms and conditions</a>.
+                                                </>}
+                                        margin="normal"
+                                        name="term"
+                                        required
+                                        size="large"
+                                        noBorder={false}
+                                    />
                                 </StyledDivFormInner>
                                 <FormSpy
                                     subscription={{ submitError:true }}

@@ -28,7 +28,7 @@ import Dialog from '../components/Dialog';
 import ProductItemList from '../components/ProductItemList';
 import { imgSrcUrl } from '../components/ProductItemList';
 import { LOAD_PRODUCT_DETAIL_REQUEST } from '../reducers/productReducer';
-import { ADD_CART_REQUEST } from '../reducers/cartReducer';
+import { ADD_CART_REQUEST, INITIALIZING_ADD_CART_MESSAGE } from '../reducers/cartReducer';
 
 // images
 export const cardProduct1 = "https://demos.creative-tim.com/material-kit-pro-react/static/media/product1.629c7883.jpg";
@@ -293,9 +293,35 @@ const Product = () => {
     }, [selectedOption, options]);
 
     const onClickCheckCart = useCallback((e) => {
+      dispatch({
+        type: INITIALIZING_ADD_CART_MESSAGE,
+      })
       setCheckCart(!checkCart);
     }, [checkCart]);
+
+    const onClickAddCart = useCallback((e) => {
+      e.preventDefault();
+     
+      let listForAddCart = [];
+      if(selectedOptionList.length === 0) {
+        return '';
+      } else {
+        selectedOptionList.map((optionListValue, optionListIndex) => {
+          listForAddCart.push({
+            id: optionListValue.id,
+            qty: 1,
+          });
+        })
+        
+        dispatch({
+          type: ADD_CART_REQUEST,
+          data: listForAddCart, 
+        })
+      }
+      
+    }, [selectedOptionList]);
     
+
     useEffect(() => {
       // 카트 추가 실패 메시지
       if(addCartErrorReason !== '') {
@@ -397,30 +423,7 @@ const Product = () => {
       }
     }, [productDetail && productDetail.description]);
 
-    const onClickAddCart = useCallback((e) => {
-      e.preventDefault();
-     
-      let listForAddCart = [];
-      if(selectedOptionList.length === 0) {
-        return '';
-      } else {
-        selectedOptionList.map((optionListValue, optionListIndex) => {
-          listForAddCart.push({
-            id: optionListValue.id,
-            qty: 1,
-          });
-        })
-        
-        dispatch({
-          type: ADD_CART_REQUEST,
-          data: listForAddCart, 
-        })
-      }
-
-    }, [selectedOptionList]);
-
     
-
     return(
        <div>
            {/* upper */}
@@ -499,8 +502,8 @@ const Product = () => {
 
                             <StyledGridContainerSelection>
                               {options && options.map((optionsValue, optionsIndex) => (
-                              
-                                <GridItem xs={12}>
+                                
+                                <GridItem xs={12} key={optionsValue[0].ProductOption.id}>
                                   <label>
                                     <Typography>Select {optionsValue[0].ProductOption.optionName}</Typography>
                                   </label>
@@ -513,7 +516,9 @@ const Product = () => {
                                       >
                                         {optionsValue.map((optionValue, optionIndex) => (
                                           <StyledMenuItem
-                                            value={optionValue}>
+                                            key={optionValue.id}
+                                            value={optionValue}
+                                          >
                                               {optionValue.selectionName}
                                           </StyledMenuItem>  
                                         ))}

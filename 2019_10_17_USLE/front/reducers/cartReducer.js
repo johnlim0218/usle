@@ -11,6 +11,7 @@ const initialState = {
     removeCartErrorReason : '',
 }
 
+export const INITIALIZING_ADD_CART_MESSAGE = "INITIALIZING_ADD_CART_MESSAGE";
 export const ADD_CART_REQUEST = "ADD_CART_REQUEST";
 export const ADD_CART_SUCCESS = "ADD_CART_SUCCESS";
 export const ADD_CART_FAILURE = "ADD_CART_FAILURE";
@@ -28,6 +29,13 @@ export const REMOVE_CART_FAILURE = "REMOVE_CART_FAILURE";
 
 const cartReducer = (state = initialState, action) => {
     switch(action.type){
+        case INITIALIZING_ADD_CART_MESSAGE : {
+            return {
+                ...state,
+                addCartMessage: '',
+                addCartErrorReason : '',
+            }
+        }
         case ADD_CART_REQUEST : {
             return {
                 ...state,

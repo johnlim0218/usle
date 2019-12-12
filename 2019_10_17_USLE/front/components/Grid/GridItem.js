@@ -32,7 +32,7 @@ const GridItem = (props) => {
     )
 }
 
-GridItem.PropTypes = {
+GridItem.propTypes = {
     children: PropTypes.node,
     left: PropTypes.bool,
     right: PropTypes.bool,

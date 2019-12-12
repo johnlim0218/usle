@@ -56,11 +56,11 @@ const SignUp = () => {
     };
 
     const onClickMailing = useCallback(() => {
-        mailing ? setMailing(false) : setMailing(true);
+        setMailing(!mailing);
     }, [mailing]);
 
     const onClickTerm = useCallback(() => {
-        term ? setTerm(false) : setTerm(true);
+        setTerm(!term);
     }, [term]);
 
     const onSubmit = useCallback((values) => {

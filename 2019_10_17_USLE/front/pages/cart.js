@@ -7,7 +7,7 @@ import Remove from '@material-ui/icons/Remove';
 import Add from '@material-ui/icons/Add';
 import Close from '@material-ui/icons/Close';
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
-import CheckBox from '@material-ui/core/Checkbox';
+import CheckBox from '@material-ui/core/CheckBox';
 
 import Tooltip from '../components/Tooltip';
 import Typography from '../components/Typography';
@@ -117,7 +117,6 @@ const Cart = () => {
             checkedList.map((value, index) => {
                purchaseList.push(
                    cartList.filter(list => list.id === value)[0],
-                   
                 )
             })
         }
@@ -281,7 +280,7 @@ const Cart = () => {
                                             }
                                         }}
                                 /> 
-                               }
+                               
                        </CardBody>
                    </Card>
                 </StyledDivContainer>

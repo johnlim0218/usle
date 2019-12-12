@@ -1,6 +1,7 @@
 const express = require('express');
 const bcrypt = require('bcrypt');
 const passport = require('passport');
+const uuidv1 = require('uuid/v1');
 
 const db = require('../models');
 const { isLoggedIn, isNotLoggedIn } = require('../middlewares/userMiddleware');
@@ -65,10 +66,19 @@ router.post('/signup', async(req, res, next) => {
         if(checkDupEmail){
             return res.status(403).send('이미 사용중인 아이디입니다.');
         }
+
         // 중복된 아이디가 DB에 없을 경우
         // 회원가입 진행
+        // 회원등록번호 (year + month + date + milliseconds 뒤 네 자리 + uuid 뒤 세 자리)
+        const year = new Date().getFullYear() + '';
+        const month = (new Date().getMonth() + 1) + '';
+        const date = new Date().getDate() + '';
+        const milliseconds = (new Date().getTime() + '').slice(-4);
+        const uuid = uuidv1().slice(-3);
+
         const hashedPassword = await bcrypt.hash(req.body.password, 12);
         const newUser = await db.User.create({
+            userRegNum: year + month + date + milliseconds + uuid,
             email: req.body.email,
             password: hashedPassword,
             nickname: req.body.nickname,

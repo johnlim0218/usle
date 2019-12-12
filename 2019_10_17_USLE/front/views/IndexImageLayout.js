@@ -5,7 +5,7 @@ import breakpoint from 'styled-components-breakpoint';
 import Container from '@material-ui/core/Container';
 
 export const backgroundImage =
-  'https://images.unsplash.com/photo-1534854638093-bada1813ca19?auto=format&fit=crop&w=1400&q=80';
+  'https://shop-phinf.pstatic.net/20190220_230/beaglez_1550634780469YvwEq_JPEG/38688883864434602_842573459.jp';
 
 const StyledSection = styled.section`
     color: ${props => props.theme.palette.common.white};

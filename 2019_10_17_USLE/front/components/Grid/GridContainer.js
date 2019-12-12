@@ -34,7 +34,7 @@ const GridContainer = (props) => {
 
 }
 
-GridContainer.PropTypes = {
+GridContainer.propTypes = {
     children: PropTypes.node,
     checkout: PropTypes.bool,
     signUp: PropTypes.bool,

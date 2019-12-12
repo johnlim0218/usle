@@ -11,6 +11,7 @@ import Button from '../components/Button';
 
 const ModifiedDialog = (props) => {
     const {open, close, message, redirectLink, ...others} = props;
+    
     return (
         <Dialog open={open}>
              <DialogTitle>Message</DialogTitle>
@@ -35,7 +36,7 @@ const ModifiedDialog = (props) => {
 
 ModifiedDialog.propTypes = {
     open: PropTypes.bool,
-    close: PropTypes.node,
+    close: PropTypes.func,
     message: PropTypes.string,
     redirectLink: PropTypes.string,
 }

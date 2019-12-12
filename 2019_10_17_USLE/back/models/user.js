@@ -2,6 +2,11 @@
 
 module.exports = (sequelize, DataTypes) => {
     const User = sequelize.define('User', {
+        userRegNum: {
+            type: DataTypes.STRING(15),
+            unique: true,
+            allowNull: false,
+        },
         email: {
             type: DataTypes.STRING(30),
             allowNull: false,
