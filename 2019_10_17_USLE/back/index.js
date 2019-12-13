@@ -71,19 +71,46 @@ app.use('/api/cart', cartAPIRouter);
 app.use('/api/order', orderAPIRouter);
 
 app.use("/session", (req, res) => {
-    const { sessionID, cookies } = req;
+    // const { sessionID, cookies } = req;
   
-    // 서버가 생성한 sessionID
-    console.log('sessionID:', sessionID);
-    // 클라이언트가 보유한 cookie
-    console.log('cookies.yourCookieName', cookies);
+    // // 서버가 생성한 sessionID
+    // console.log('sessionID:', sessionID);
+    // // 클라이언트가 보유한 cookie
+    // console.log('cookies.yourCookieName', cookies);
     
   
-    res.json({
-      sessionID,
-      cookies
-    });
+    // res.json({
+    //   sessionID,
+    //   cookies
+    // });
     
+
+    /////////////////////////////
+    // const milliseconds = (new Date().getTime() + '').slice(-9);
+
+    // let newUserId = 123 + '';
+
+    // if(newUserId.length < 6){
+    //     for(let i = 0; i < (6 - newUserId.length); i ++){
+    //         newUserId = '0' + newUserId; 
+    //     }
+    // }
+    // console.log(milliseconds);
+    // console.log(newUserId);
+
+    /////////////////////////////
+
+    const year = new Date().getFullYear() + '';
+    const month = (new Date().getMonth() + 1) + '';
+    const date = new Date().getDate() + '';
+    const milliseconds = (new Date().getTime() + '').slice(-6);
+    const millisecondss = (new Date().getTime() + '');
+    let randomNum = '';
+    for(let i = 0; i < 3; i++){
+        randomNum = (randomNum + '') + (Math.floor(Math.random() * 10) + '');
+    }
+    console.log(millisecondss);
+    res.json(year + month + date + milliseconds + randomNum);
   });
 
 app.listen(3065, () => {

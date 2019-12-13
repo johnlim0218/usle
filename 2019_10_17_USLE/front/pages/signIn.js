@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import Link from 'next/link';
 import Router from 'next/router';
 import { Field, Form, FormSpy } from 'react-final-form';
+import { useCookies } from 'react-cookie';
 
 import { email, required } from '../form/validation';
 import Typography from '../components/Typography';
@@ -21,9 +22,14 @@ export const StyledFormButton = styled(FormButton)`
     margin-bottom: ${props => props.theme.spacing(2)}px;
 `;
 
+const StyledDivMarginTop = styled.div`
+    margin-top: ${props => props.theme.spacing(10)}px;
+`
+
 const SignIn = () => {
     const [submitErrorTest, setSubmitErrorTest] = useState(false);
     const { me, isLoggingIn, logInErrorReason } = useSelector(state => state.userReducer);
+    const [cartCookies, setCartCookies] = useCookies(['dq45o8w5']);
     const dispatch = useDispatch();
     
     useEffect(() => {
@@ -51,8 +57,18 @@ const SignIn = () => {
         })
         
     }, []);
+
+    const onClickNonMemberCheckOut = useCallback(() => {
+        if(cartCookies.dq45o8w5.length === 0) {
+            
+            return '';
+        };
+            Router.push('/checkout')
+
+    }, []);
     
     return(
+        
         <AppForm signIn>
             <Typography gutterBottom variant="h3" marked="center" align="center">
                 Sign In
@@ -126,8 +142,24 @@ const SignIn = () => {
                         </a>
                     </Link>
                 </Typography>
-            
+
+                <StyledDivMarginTop>
+                    <Typography gutterBottom variant="h4" marked="center" align="center">
+                        NonMember CheckOut
+                    </Typography>
+                                        
+                    <StyledFormButton
+                        type="submit"
+                        onClick={onClickNonMemberCheckOut}
+                        size="large"
+                        color="secondary"
+                        fullWidth
+                    >
+                      {'NonMember CheckOut'}
+                    </StyledFormButton>
+                </StyledDivMarginTop>
         </AppForm>
+        
     )
 }
 

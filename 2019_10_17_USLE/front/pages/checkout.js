@@ -104,6 +104,7 @@ const CheckOut = () => {
         return errors;
     }
     
+    // 주소 검색(daum 주소 검색 API)
     const onClickSearchingAddress = useCallback(() => {
         
         const element_layer = addressLayer.current;
@@ -180,10 +181,12 @@ const CheckOut = () => {
         element_layer.style.display = 'none';
     };
 
+    // 약관 동의
     const onClickTerm = useCallback(() => {
         setTerm(!term);
     }, [term]);
 
+    // 구입 양식 제출
     const onSubmit = useCallback(() => {
         setSent(false);
     },[sent])

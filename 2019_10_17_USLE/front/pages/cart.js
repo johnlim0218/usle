@@ -266,7 +266,7 @@ const Cart = () => {
                                                 colspan: "3",
                                                 text: (
                                                     checkedList.length !== 0 ? (
-                                                        <Link href='/checkout'>
+                                                        <Link href={me ? '/checkout' : '/signIn'}>
                                                             <Button onClick={onClickCompletePurchase}>
                                                                 Complete Purchase <KeyboardArrowRight/>
                                                             </Button>

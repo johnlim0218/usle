@@ -69,22 +69,35 @@ router.post('/signup', async(req, res, next) => {
 
         // 중복된 아이디가 DB에 없을 경우
         // 회원가입 진행
-        // 회원등록번호 (year + month + date + milliseconds 뒤 네 자리 + uuid 뒤 세 자리)
-        const year = new Date().getFullYear() + '';
-        const month = (new Date().getMonth() + 1) + '';
-        const date = new Date().getDate() + '';
-        const milliseconds = (new Date().getTime() + '').slice(-4);
-        const uuid = uuidv1().slice(-3);
-
+        
+        // 회원등록번호 (milliseconds 뒤 아홉 자리 + id 다섯자리)
+       
+        const milliseconds = (new Date().getTime() + '').slice(-9);
+        
         const hashedPassword = await bcrypt.hash(req.body.password, 12);
-        const newUser = await db.User.create({
-            userRegNum: year + month + date + milliseconds + uuid,
+       
+        await Promise.resolve(db.User.create({
             email: req.body.email,
             password: hashedPassword,
             nickname: req.body.nickname,
-        });
+        })).then(async function(newUser){
+            let newUserId = newUser.id + '';
+            if(newUserId.length < 6){
+                for(let i = 0; i < (6 - newUserId.length); i ++){
+                    newUserId = '0' + newUserId; 
+                }
+            }
+            
+            await db.User.update({
+                userRegNum: milliseconds + newUserId, 
+            }, {
+                where:{
+                    id: newUser.id,
+                }
+            })
+        })
 
-        return res.status(200).json(newUser);
+        return res.status(200).json();
     } catch(e) {
         return next(e);
     }

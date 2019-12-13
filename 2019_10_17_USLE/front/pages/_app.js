@@ -9,6 +9,7 @@ import { applyMiddleware, compose, createStore } from 'redux';
 import createSagaMiddleware from 'redux-saga';
 import { StylesProvider } from '@material-ui/styles';
 import { ThemeProvider } from 'styled-components';
+import { CookiesProvider } from 'react-cookie';
 
 import rootReducer from '../reducers';
 import rootSaga from '../sagas';
@@ -38,21 +39,25 @@ const Usle = ({ Component, store, pageProps }) => {
             <Provider store={store}>
                 <ThemeProvider theme={theme}>
                     <StylesProvider injectFirst>
-                        
-                        <Head>
-                            <title>Usle</title>
-                            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/antd/3.16.2/antd.css"/>
-                            <link rel="stylesheet" href="/image-gallery/css/image-gallery-no-icon.css"/>
-                        </Head>
-                        {!isAdmin ? 
-                            <AppLayout> 
-                                <Component {...pageProps}/>
-                            </AppLayout>
-                        : 
-                            <AdminLayout>
-                                 <Component {...pageProps}/>
-                            </AdminLayout>
-                        }
+
+                        <CookiesProvider>
+
+                            <Head>
+                                <title>Usle</title>
+                                <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/antd/3.16.2/antd.css"/>
+                                <link rel="stylesheet" href="/image-gallery/css/image-gallery-no-icon.css"/>
+                            </Head>
+                            {!isAdmin ? 
+                                <AppLayout> 
+                                    <Component {...pageProps}/>
+                                </AppLayout>
+                            : 
+                                <AdminLayout>
+                                    <Component {...pageProps}/>
+                                </AdminLayout>
+                            }
+
+                        </CookiesProvider>
                     
                     </StylesProvider>
                 </ThemeProvider>
@@ -69,6 +74,7 @@ Usle.propTypes = {
 
 Usle.getInitialProps = async (context) => {
     const { ctx, Component, router } = context;
+    
     let pageProps = {};
     let pageUrl = '';
     const state = ctx.store.getState();

@@ -2,6 +2,11 @@
 
 module.exports = (sequelize, DataTypes) => {
     const Order = sequelize.define('Order', {
+        orderRegNum: {
+            type: DataTypes.STRING(18),
+            unique: true,
+            allowNull: false,
+        },
         totalPrice: {
             type: DataTypes.INTEGER,
             allowNull: false,
@@ -20,6 +25,7 @@ module.exports = (sequelize, DataTypes) => {
         db.Order.hasMany(db.OrderStatus);
         db.Order.hasMany(db.OrderTemp);
         db.Order.belongsTo(db.User);
+        db.Order.belongsTo(db.UserNonMember);
     }
 
     return Order;

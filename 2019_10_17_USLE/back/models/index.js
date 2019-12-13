@@ -7,6 +7,7 @@ const sequelize = new Sequelize(config.database, config.username, config.passwor
 
 db.User = require('./user')(sequelize, Sequelize);
 db.UserAddress = require('./userAddress')(sequelize, Sequelize);
+db.UserNonMember = require('./userNonMember')(sequelize, Sequelize);
 
 db.Product = require('./product')(sequelize, Sequelize);
 db.ProductBrand = require('./productBrand')(sequelize, Sequelize);
