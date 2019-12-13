@@ -177,7 +177,14 @@ router.get('/:id', async(req, res, next) => {
                 }]
             }],
         });
-        
+
+        await db.Product.update({
+            hit: productDetail.hit+1
+        },{
+            where:{
+                id: req.params.id
+            },
+        })
         return res.json(productDetail);
     } catch(e) {
         console.error(e);

@@ -1,9 +1,11 @@
+import ALL_RESET_STATE from './index';
+
 const initialState = {
     isAddingCart : false,
     addCartMessage: '',
     addCartErrorReason : '',
     isLoadingCart : false,
-    cartList: null,
+    cartList: [],
     loadCartErrorReason : '',
     isConfirmingQuantity : false,
     confirmQuantityErrorReason : '',
@@ -28,6 +30,7 @@ export const REMOVE_CART_SUCCESS = "REMOVE_CART_SUCCESS";
 export const REMOVE_CART_FAILURE = "REMOVE_CART_FAILURE";
 
 const cartReducer = (state = initialState, action) => {
+    
     switch(action.type){
         case INITIALIZING_ADD_CART_MESSAGE : {
             return {
@@ -62,13 +65,14 @@ const cartReducer = (state = initialState, action) => {
             return {
                 ...state,
                 isLoadingCart: true,
+                cartList: [],
             }
         }
         case LOAD_CART_SUCCESS : {
             return {
                 ...state,
                 isLoadingCart: false,
-                cartList: action.data.length !== 0 ? action.data : null,
+                cartList: action.data,
             }
         }
         case LOAD_CART_FAILURE : {
@@ -138,6 +142,7 @@ const cartReducer = (state = initialState, action) => {
                 removeCartErrorReason: action.error,
             }
         }
+
 
         default : {
             return {

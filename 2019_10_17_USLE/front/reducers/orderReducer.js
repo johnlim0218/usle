@@ -1,5 +1,5 @@
 const initialState = {
-    orderedItemList: null,
+    orderedItemList: [],
     isCheckingOut: false,
     ordered: null,
     errorReasonSaveTempOrder: '',

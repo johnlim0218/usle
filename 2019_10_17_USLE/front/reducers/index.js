@@ -7,6 +7,8 @@ import adminProductReducer from './admin/adminProductReducer';
 import adminCategoryReducer from './admin/adminCategoryReducer';
 import adminBrandReducer from './admin/adminBrandReducer';
 
+export const ALL_RESET_STATE = "ALL_RESET_STATE";
+
 const rootReducer = combineReducers({
     userReducer,
     productReducer,
@@ -17,5 +19,19 @@ const rootReducer = combineReducers({
     adminBrandReducer,
 
 });
+
+// const rootReducer = (state, action) => {
+    // console.log(state);
+    // switch(action.type){
+    //     case ALL_RESET_STATE: {
+    //         return {
+    //             state : undefined
+    //         }
+            
+    //     }
+    // }
+
+    // return appReducer(state, action);
+// }
 
 export default rootReducer;

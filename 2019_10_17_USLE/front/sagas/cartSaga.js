@@ -44,7 +44,7 @@ function* loadCart(){
         const result = yield call(loadCartAPI);
         yield put({
             type: LOAD_CART_SUCCESS,
-            data: result.data !== '' ? result.data : null,
+            data: result.data !== '' ? result.data : [],
         })
     } catch(e) {
         yield put({

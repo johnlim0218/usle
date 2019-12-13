@@ -13,6 +13,7 @@ import {
     LOG_OUT_REQUEST,
     LOG_OUT_SUCCESS,
 } from '../reducers/userReducer';
+import { ALL_RESET_STATE } from '../reducers';
 
 
 function* userSaga() {
@@ -83,6 +84,9 @@ function* logOut(){
         yield call(logOutAPI);
         yield put({
             type: LOG_OUT_SUCCESS,
+        });
+        yield put({
+            type: ALL_RESET_STATE,
         })
     } catch(e){
         console.error(e);

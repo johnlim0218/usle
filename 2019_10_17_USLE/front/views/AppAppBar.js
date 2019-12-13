@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 import Link from 'next/link';
+import Router from 'next/router';
 import styled from 'styled-components';
 import breakpoint from 'styled-components-breakpoint';
 import List from "@material-ui/core/List";
@@ -117,6 +118,8 @@ const AppAppBar = () => {
         dispatch({
             type: LOG_OUT_REQUEST,
         })
+
+        Router.push('/');
     }
 
     const handleSubmit = () => {

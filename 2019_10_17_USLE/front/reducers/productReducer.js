@@ -1,5 +1,5 @@
 const initialState = {
-    products: null,
+    products: [],
     isLoadingProducts: false,
     loadProductsErrorReason: '',
     productDetail: null,
@@ -21,6 +21,7 @@ const productReducer = (state = initialState, action) => {
             return{
                 ...state,
                 isLoadingProducts: true,
+                products: [],
             }
         }
         case LOAD_PRODUCTS_SUCCESS: {
@@ -42,6 +43,7 @@ const productReducer = (state = initialState, action) => {
             return{
                 ...state,
                 isLoadingProductDetail: true,
+                productDetail: null,
             }
         }
         case LOAD_PRODUCT_DETAIL_SUCCESS:{

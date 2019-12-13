@@ -320,20 +320,11 @@ const Product = () => {
           type: ADD_CART_REQUEST,
           data: listForAddCart, 
         })
-
-        
-          // setCartCookies('dq45o8w5', [{
-          //       ...cartCookies.dq45o8w5, ...listForAddCart
-          // }]);
-        
+     
       }
       
     }, [selectedOptionList]);
     
-    useEffect(() => {
-      console.log(cartCookies);
-    }, [cartCookies]);
-
     useEffect(() => {
       // 카트 추가 실패 메시지
       if(addCartErrorReason !== '') {

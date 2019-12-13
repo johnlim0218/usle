@@ -126,11 +126,11 @@ const Cart = () => {
             data: purchaseList,
         })
 
-    }, [checkedList]);
+    }, [checkedList, me]);
 
     const calTotalAmount = () => {
         let tempTotalAmount = 0;
-        cartList && cartList.map((cartListValue, cartListIndex) => {
+        cartList.length !== 0 && cartList.map((cartListValue, cartListIndex) => {
             cartListValue.ProductInventory.additionalPrice !== 0 ?
                 tempTotalAmount += (cartListValue.ProductInventory.Product.price +
                 cartListValue.ProductInventory.additionalPrice)
@@ -144,7 +144,7 @@ const Cart = () => {
    
     useEffect(() => {
         calTotalAmount();
-    }, [])
+    }, [cartList])
 
     return(
         <div>
@@ -171,7 +171,7 @@ const Cart = () => {
                                     ]}
                                       
                                     tableData={
-                                            cartList ? (cartList.map((value, index) => ([
+                                            cartList.length !== 0 ? (cartList.map((value, index) => ([
                                                 <CheckBox 
                                                     key={value.id}
                                                     tabIndex={-1}

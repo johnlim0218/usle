@@ -2,7 +2,7 @@ const initialState = {
     newCategory: null,
     isPostingNewCategory: false, // 새 카테고리 등록 시도
     postNewCategoryErrorReason: '', // 새 카테고리 등록 실패 이유
-    categories: null,
+    categories: [],
     isLoadingCategories: false,
     loadCategoriesErrorReason: '',
   };

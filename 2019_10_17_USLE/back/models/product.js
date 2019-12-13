@@ -13,6 +13,10 @@ module.exports = (sequelize, DataTypes) => {
         description: {
             type: DataTypes.TEXT,
             allowNull: true,
+        },
+        hit: {
+            type: DataTypes.INTEGER,
+            defaultValue: 0,
         }
     },{
         timestamps: true,

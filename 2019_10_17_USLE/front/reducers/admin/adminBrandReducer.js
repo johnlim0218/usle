@@ -2,7 +2,7 @@ const initialState = {
     newBrand: null,
     isPostingNewBrand: false,
     postNewBrandErrorReason: '',
-    brands: null,
+    brands: [],
     isLoadingBrands: false,
     loadBrandsErrorReason: '',
 };
