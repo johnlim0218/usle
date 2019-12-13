@@ -9,29 +9,31 @@ router.post('/add', async(req, res, next) => {
         
         let cartList = req.body;
         
-        // 카트 쿠키가 없을때
-        if(req.cookies.dq45o8w5 === undefined){
-            res.cookie('dq45o8w5', cartList);
-        
-        // 카트 쿠키가 있을때
-        } else {
-           cartList.map((cartValue, cartIndex) => {
-                if(req.cookies.dq45o8w5.map((thisValue, thisIndex) => {
-                    return thisValue.id
-                }).indexOf(cartValue.id) < 0){
-                    req.cookies.dq45o8w5.push(cartValue);
-                } else {
-                    let filteredData = req.cookies.dq45o8w5.filter((innerArrayValue) => innerArrayValue.id === cartValue.id);
-                    filteredData[0].qty += cartValue.qty;
-                }
-            })
-
-            res.cookie('dq45o8w5', req.cookies.dq45o8w5);
-        }
-        
-        // 사용자 로그인이 되어있는 경우 - cart DB에 저장 후 쿠키 초기화
-        if(req.user){
+        // 사용자 로그인이 되어있지 않은 경우    
+        if(!req.user){
+            // 카트 쿠키가 없을때
+            if(req.cookies.dq45o8w5 === undefined){
+                res.cookie('dq45o8w5', cartList);
             
+            // 카트 쿠키가 있을때
+            } else {
+                cartList.map((cartValue, cartIndex) => {
+                    if(req.cookies.dq45o8w5.map((thisValue, thisIndex) => {
+                        return thisValue.id
+                    }).indexOf(cartValue.id) < 0){
+                        req.cookies.dq45o8w5.push(cartValue);
+                    } else {
+                        let filteredData = req.cookies.dq45o8w5.filter((innerArrayValue) => innerArrayValue.id === cartValue.id);
+                        filteredData[0].qty += cartValue.qty;
+                    }
+                })
+
+                res.cookie('dq45o8w5', req.cookies.dq45o8w5);
+            }
+
+        // 사용자 로그인이 되어있는 경우    
+        // 쿠키는 로그인과 동시에 초기화
+        } else {
             const cart = await Promise.resolve(db.Cart.findAll({
                 where: {
                     UserId: req.user.id,
@@ -40,14 +42,14 @@ router.post('/add', async(req, res, next) => {
             
             let newCartValue = [];
 
-            req.cookies.dq45o8w5.map((cookieValue, cookieIndex) => {
+            cartList.map((cartListValue, cartListIndex) => {
                 if(cart.map((cartValue, cartIndex) => {
                     return cartValue.ProductInventoryId
-                }).indexOf(cookieValue.id) < 0) {
-                    newCartValue.push(cookieValue);
+                }).indexOf(cartListValue.id) < 0) {
+                    newCartValue.push(cartListValue);
                 } else {
-                    let filteredCartData = cart.filter((innerCartValue) => innerCartValue.ProductInventoryId === cookieValue.id);
-                    filteredCartData[0].quantity += cookieValue.qty;
+                    let filteredCartData = cart.filter((innerCartValue) => innerCartValue.ProductInventoryId === cartListValue.id);
+                    filteredCartData[0].quantity += cartListValue.qty;
                 }
             })
             
@@ -83,13 +85,7 @@ router.post('/add', async(req, res, next) => {
                     )})
                 )
             }
-            res.clearCookie('dq45o8w5');
-            
-        // 사용자 로그인이 되어있지 않은 경우    
-        } else {
-
-            
-        }
+        } 
 
         return res.send('addCartList');
 

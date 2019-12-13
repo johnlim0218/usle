@@ -26,7 +26,7 @@ const StyledDivMarginTop = styled.div`
     margin-top: ${props => props.theme.spacing(10)}px;
 `
 
-const SignIn = () => {
+const SignIn = (props) => {
     const [submitErrorTest, setSubmitErrorTest] = useState(false);
     const { me, isLoggingIn, logInErrorReason } = useSelector(state => state.userReducer);
     const [cartCookies, setCartCookies] = useCookies(['dq45o8w5']);
@@ -35,8 +35,9 @@ const SignIn = () => {
     useEffect(() => {
         // 로그인 성공
         if(me){
-            Router.push('/');
+            Router.back();
         }
+
     }, [me]);
 
     const validate = (values) => {
@@ -59,8 +60,7 @@ const SignIn = () => {
     }, []);
 
     const onClickNonMemberCheckOut = useCallback(() => {
-        if(cartCookies.dq45o8w5.length === 0) {
-            
+        if(cartCookies.dq45o8w5 && cartCookies.dq45o8w5.length === 0) {
             return '';
         };
             Router.push('/checkout')

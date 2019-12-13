@@ -37,6 +37,61 @@ router.post('/login', isNotLoggedIn, (req, res, next) => {
                     attributes: ['id', 'email', 'nickname'],
                 });
 
+                // 카트 쿠키가 있다면 카트 쿠키의 데이터를 카트 DB에 저장
+                if(req.cookies.dq45o8w5 && (req.cookies.dq45o8w5 !== undefined || req.cookies.dq45o8w5.length !== 0)){
+                    const cart = await Promise.resolve(db.Cart.findAll({
+                        where: {
+                            UserId: req.user.id,
+                        }
+                    }))
+                    let newCartValue = [];
+
+                    req.cookies.dq45o8w5.map((cookieValue, cookieIndex) => {
+                        if(cart.map((cartValue, cartIndex) => {
+                            return cartValue.ProductInventoryId
+                        }).indexOf(cookieValue.id) < 0) {
+                            newCartValue.push(cookieValue);
+                        } else {
+                            let filteredCartData = cart.filter((innerCartValue) => innerCartValue.ProductInventoryId === cookieValue.id);
+                            filteredCartData[0].quantity += cookieValue.qty;
+                        }
+                    })
+                    
+                    // Cart DB에 이미 존재하는 값 update
+                    await Promise.all(cart.map((cartValue, cartIndex) => {
+                        return(
+                            db.Cart.update({
+                                quantity: cartValue.quantity,
+                            }, {
+                                where: {
+                                    id: cartValue.id
+                                },
+                            })
+                        )
+                    }))
+                    
+                    // 새로운 값 create(카트 쿠키에 추가된 내용 중 DB에 존재하지 않는 값)
+                    if(newCartValue.length > 0){
+                        await Promise.all(newCartValue.map((newValue, newIndex) => {
+                            return(
+                                Promise.resolve(db.ProductInventory.findOne({
+                                    where:{
+                                        id: newValue.id
+                                    }
+                                })).then(function(inventoryResult){
+                                    Promise.resolve(db.Cart.create({
+                                        quantity: newValue.qty,
+                                        UserId: req.user.id,
+                                    })).then(function(createNewCartResult){
+                                        inventoryResult.addCart(createNewCartResult);
+                                    })
+                                })
+                            )})
+                        )
+                    }
+                    res.clearCookie('dq45o8w5');
+                }
+
                 return res.json(fullUser);
 
             } catch(e) {

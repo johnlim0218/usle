@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useRef, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { Field, Form, FormSpy } from 'react-final-form';
 import Router from 'next/router';
@@ -20,6 +20,7 @@ import { email, required } from '../form/validation';
 import RFTextField from '../form/RFTextField';
 import FormButton from '../form/FormButton';
 import FormFeedback from '../form/FormFeedback';
+import { ORDER_REQUEST } from '../reducers/orderReducer';
 
 import { imgSrcUrl } from '../components/ProductItemList';
 import { dummyCartData } from '../dummy/dummy';
@@ -66,10 +67,12 @@ const CheckOut = () => {
     const [addressDetailState, setAddressDetailState] = useState('');
     const [term, setTerm] = useState(false);
     const { orderedItemList } = useSelector(state => state.orderReducer);
-
+    
     const addressLayer = useRef();
     const closeButton = useRef();
   
+    const dispatch = useDispatch();
+
     useEffect(() => {
         if(!orderedItemList || orderedItemList.length === 0){
             Router.push('/cart');
@@ -94,13 +97,21 @@ const CheckOut = () => {
     }, [orderedItemList]);
 
     const validate = values => {
-        const errors = required(['name', 'phone', 'email', 'zipcode', 'address', 'addressDetail', 'term'], values);
-        if(!errors.email) {
-            const emailError = email(values.email, values);
-            if(emailError) {
-                errors.email = email(values.email, values);
+        const errors = required(['senderName', 'senderPhone', 'senderEmail', 'receiverName', 'receiverPhone', 'receiverEmail', 'zipcode', 'address', 'addressDetail', 'term'], values);
+        if(!errors.senderEmail) {
+            const senderEmailError = email(values.senderEmail, values);
+            if(senderEmailError) {
+                errors.receiverEmail = email(values.senderEmail, values);
             }
         }
+
+        if(!errors.receiverEmail) {
+            const receiverEmailError = email(values.receiverEmail, values);
+            if(receiverEmailError) {
+                errors.receiverEmail = email(values.receiverEmail, values);
+            }
+        }
+        
         return errors;
     }
     
@@ -187,9 +198,16 @@ const CheckOut = () => {
     }, [term]);
 
     // 구입 양식 제출
-    const onSubmit = useCallback(() => {
-        setSent(false);
-    },[sent])
+    const onSubmit = useCallback((values) => {
+        // setSent(false);
+        dispatch({
+            type: ORDER_REQUEST,
+            data: {
+                orderedItemList,
+                values,
+            }
+        })
+    },[])
     
     return(
         <div>
@@ -283,7 +301,7 @@ const CheckOut = () => {
                                         component={RFTextField}   
                                         autoComplete="Name"
                                         label="Name"
-                                        name="name"
+                                        name="senderName"
                                         required
                                         size="large"
                                         noBorder={false}
@@ -295,7 +313,7 @@ const CheckOut = () => {
                                                 component={RFTextField}   
                                                 autoComplete="Phone"
                                                 label="Phone"
-                                                name="phone"
+                                                name="senderPhone"
                                                 required
                                                 fullWidth
                                                 size="large"
@@ -308,7 +326,7 @@ const CheckOut = () => {
                                                 component={RFTextField}   
                                                 autoComplete="Email"
                                                 label="Email"
-                                                name="email"
+                                                name="senderEmail"
                                                 required
                                                 fullWidth
                                                 size="large"
@@ -326,7 +344,7 @@ const CheckOut = () => {
                                         component={RFTextField}   
                                         autoComplete="Name"
                                         label="Name"
-                                        name="name"
+                                        name="receiverName"
                                         required
                                         size="large"
                                         noBorder={false}
@@ -338,7 +356,7 @@ const CheckOut = () => {
                                                 component={RFTextField}   
                                                 autoComplete="Phone"
                                                 label="Phone"
-                                                name="phone"
+                                                name="receiverPhone"
                                                 required
                                                 fullWidth
                                                 size="large"
@@ -351,7 +369,7 @@ const CheckOut = () => {
                                                 component={RFTextField}   
                                                 autoComplete="Email"
                                                 label="Email"
-                                                name="email"
+                                                name="receiverEmail"
                                                 required
                                                 fullWidth
                                                 size="large"

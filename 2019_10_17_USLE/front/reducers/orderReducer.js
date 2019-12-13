@@ -1,6 +1,7 @@
 const initialState = {
     orderedItemList: null,
-    isSavingTempOrder: false,
+    isCheckingOut: false,
+    ordered: null,
     errorReasonSaveTempOrder: '',
 }
 
@@ -20,19 +21,19 @@ const orderReducer = (state = initialState, action) => {
         case ORDER_REQUEST: {
             return {
                 ...state,
-                isSavingTempOrder: true,
+                isCheckingOut: true,
             }
         }
         case ORDER_SUCCESS: {
             return {
                 ...state,
-                isSavingTempOrder: false,
+                isCheckingOut: false,
             }
         }
         case ORDER_FAILURE: {
             return {
                 ...state,
-                isSavingTempOrder: false,
+                isCheckingOut: false,
                 errorReasonSaveTempOrder: action.error,
             }
         }

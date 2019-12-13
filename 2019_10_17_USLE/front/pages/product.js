@@ -1,5 +1,6 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { useCookies } from 'react-cookie';
 import styled, { css } from 'styled-components';
 import ImageGallery from 'react-image-gallery';
 import { Editor, EditorState, convertFromRaw } from 'draft-js';
@@ -282,7 +283,9 @@ const Product = () => {
     const { productDetail, isLoadingProductDetail } = useSelector(state => state.productReducer);
     const { me } = useSelector(state => state.userReducer);
     const { addCartMessage, addCartErrorReason } = useSelector(state => state.cartReducer);
+    const [cartCookies, setCartCookies] = useCookies(['dq45o8w5']);
     const dispatch = useDispatch(); 
+    
     
     const onChangeOption = useCallback((index) => (e) => {
       setSelectedOption((prevState) => ({ 
@@ -317,10 +320,19 @@ const Product = () => {
           type: ADD_CART_REQUEST,
           data: listForAddCart, 
         })
+
+        
+          // setCartCookies('dq45o8w5', [{
+          //       ...cartCookies.dq45o8w5, ...listForAddCart
+          // }]);
+        
       }
       
     }, [selectedOptionList]);
     
+    useEffect(() => {
+      console.log(cartCookies);
+    }, [cartCookies]);
 
     useEffect(() => {
       // 카트 추가 실패 메시지
