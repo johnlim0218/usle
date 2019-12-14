@@ -1,4 +1,3 @@
-import ALL_RESET_STATE from './index';
 
 const initialState = {
     isAddingCart : false,

@@ -7,8 +7,6 @@ import adminProductReducer from './admin/adminProductReducer';
 import adminCategoryReducer from './admin/adminCategoryReducer';
 import adminBrandReducer from './admin/adminBrandReducer';
 
-export const ALL_RESET_STATE = "ALL_RESET_STATE";
-
 const rootReducer = combineReducers({
     userReducer,
     productReducer,

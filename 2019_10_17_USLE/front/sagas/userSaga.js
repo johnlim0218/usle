@@ -85,9 +85,6 @@ function* logOut(){
         yield put({
             type: LOG_OUT_SUCCESS,
         });
-        yield put({
-            type: ALL_RESET_STATE,
-        })
     } catch(e){
         console.error(e);
         yield put({

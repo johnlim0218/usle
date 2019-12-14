@@ -1,6 +1,7 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Link from 'next/link';
+import Router from 'next/router';
 import styled from 'styled-components';
 import KeyboardArrowRight from "@material-ui/icons/KeyboardArrowRight";
 import Remove from '@material-ui/icons/Remove';
@@ -125,6 +126,8 @@ const Cart = () => {
             type: MAKE_ORDER_FORM,
             data: purchaseList,
         })
+
+        Router.push(me ? '/checkout' : '/signIn');
 
     }, [checkedList, me]);
 
@@ -266,13 +269,12 @@ const Cart = () => {
                                                 colspan: "3",
                                                 text: (
                                                     checkedList.length !== 0 ? (
-                                                        <Link href={me ? '/checkout' : '/signIn'}>
-                                                            <Button onClick={onClickCompletePurchase}>
-                                                                Complete Purchase <KeyboardArrowRight/>
-                                                            </Button>
-                                                        </Link>
-                                                    ) : (
                                                         <Button onClick={onClickCompletePurchase}>
+                                                            Complete Purchase <KeyboardArrowRight/>
+                                                        </Button>
+                                                        
+                                                    ) : (
+                                                        <Button disabled>
                                                                 Complete Purchase <KeyboardArrowRight/>
                                                         </Button>
                                                     )
