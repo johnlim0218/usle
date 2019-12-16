@@ -16,7 +16,7 @@ module.exports = (sequelize, DataTypes) => {
 
     OrderStatus.associate = (db) => {
         db.OrderStatus.hasOne(db.OrderReturn);
-        db.OrderStatus.belongsTo(db.Order);
+        db.OrderStatus.belongsTo(db.OrderDetail);
     }
 
     return OrderStatus;

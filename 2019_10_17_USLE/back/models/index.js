@@ -18,7 +18,6 @@ db.ProductOptionSelection = require('./productOptionSelection')(sequelize, Seque
 db.ProductInventory = require('./productInventory')(sequelize, Sequelize);
 
 db.Order = require('./order')(sequelize, Sequelize);
-db.OrderTemp = require('./orderTemp')(sequelize, Sequelize);
 db.OrderDetail = require('./orderDetail')(sequelize, Sequelize);
 db.OrderPayment = require('./orderPayment')(sequelize, Sequelize);
 db.OrderReturn = require('./orderReturn')(sequelize, Sequelize);

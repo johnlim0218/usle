@@ -65,7 +65,7 @@ router.post('/add', upload.none(), async(req, res, next) => {
                     })
                 }    
             ));
-        // option을 기입하지 않았을 때 (1개 이상)
+        // option을 기입하지 않았을 때
         } else {
             const newInventoryResult = await Promise.resolve(db.ProductInventory.create({
                 quantity: 100,
@@ -179,7 +179,7 @@ router.get('/:id', async(req, res, next) => {
         });
 
         await db.Product.update({
-            hit: productDetail.hit+1
+            hit: productDetail.hit + 1
         },{
             where:{
                 id: req.params.id

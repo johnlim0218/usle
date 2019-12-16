@@ -6,8 +6,9 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.STRING(18),
             unique: true,
             allowNull: false,
+            
         },
-        totalPrice: {
+        totalAmount: {
             type: DataTypes.INTEGER,
             allowNull: false,
         },
@@ -21,9 +22,7 @@ module.exports = (sequelize, DataTypes) => {
 
     Order.associate = (db) => {
         db.Order.hasOne(db.OrderPayment);
-        db.Order.hasOne(db.OrderShipping);
-        db.Order.hasMany(db.OrderStatus);
-        db.Order.hasMany(db.OrderTemp);
+        db.Order.hasMany(db.OrderDetail);
         db.Order.belongsTo(db.User);
         db.Order.belongsTo(db.UserNonMember);
     }

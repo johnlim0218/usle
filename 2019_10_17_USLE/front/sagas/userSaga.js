@@ -106,13 +106,16 @@ function loadUserAPI() {
 function* loadUser(action){
     try{
         const result = yield call(loadUserAPI, action.data);
-        console.log(result);
+        
         yield put({
             type: LOAD_USER_SUCCESS,
-            data: result.data,
+            data: result.data !== '' ? result.data : null,
         })
     } catch(e) {
-
+        yield put({
+            type: LOAD_USER_FAILURE,
+            error: e
+        })
     }
 }
 function* watchLoadUser() {

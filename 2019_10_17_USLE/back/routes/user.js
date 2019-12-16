@@ -7,10 +7,14 @@ const db = require('../models');
 const { isLoggedIn, isNotLoggedIn } = require('../middlewares/userMiddleware');
 const router = express.Router();
 
-router.get('/', isLoggedIn, (req, res, next) => {
-    const user = Object.assign({}, req.user.toJSON());
-    delete user.password;
-    return res.json(user);
+router.get('/', (req, res, next) => {
+    if(req.user) {
+        const user = Object.assign({}, req.user.toJSON());
+        delete user.password;
+        return res.json(user);
+    } else {
+        return res.json('');
+    }
 })
 
 router.post('/login', isNotLoggedIn, (req, res, next) => {

@@ -100,17 +100,29 @@ app.use("/session", (req, res) => {
 
     /////////////////////////////
 
-    const year = new Date().getFullYear() + '';
-    const month = (new Date().getMonth() + 1) + '';
-    const date = new Date().getDate() + '';
-    const milliseconds = (new Date().getTime() + '').slice(-6);
-    const millisecondss = (new Date().getTime() + '');
-    let randomNum = '';
-    for(let i = 0; i < 3; i++){
-        randomNum = (randomNum + '') + (Math.floor(Math.random() * 10) + '');
+    // let testArray = [];
+
+    // for(let i = 0; i < 1000; i++){
+    //     let year = new Date().getFullYear() + '';
+    //     let month = (new Date().getMonth() + 1) + '';
+    //     let date = new Date().getDate() + '';
+    //     let milliseconds = (new Date().getTime() + '').slice(-7);
+    //     let randomNum = '';
+    //     for(let i = 0; i < 3; i++){
+    //         randomNum = (randomNum + '') + (Math.floor(Math.random() * 10) + '');
+    //     }
+    //     testArray.push(year + month + date + milliseconds + randomNum);
+    // }
+    // console.log(req.sessionID);
+    // res.json(testArray);
+    ///////////////////////////////////////////////////
+    let test = [];
+    for(let i = 0; i < 10000; i++) {
+        let uuidTest = uuid();
+        let temp = uuidTest.replace(/[^0-9]/g,'').substring(0, 6);
+        test.push(temp);
     }
-    console.log(millisecondss);
-    res.json(year + month + date + milliseconds + randomNum);
+    res.json(test);
   });
 
 app.listen(3065, () => {

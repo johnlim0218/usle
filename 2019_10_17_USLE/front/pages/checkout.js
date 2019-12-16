@@ -86,7 +86,7 @@ const CheckOut = () => {
                     : tempTotalAmount += orderedItemListValue.ProductInventory.Product.price        
                     * orderedItemListValue.quantity
             })
-
+            console.log(tempTotalAmount);
             setTotalAmount(tempTotalAmount);
         }
 
@@ -204,10 +204,11 @@ const CheckOut = () => {
             type: ORDER_REQUEST,
             data: {
                 orderedItemList,
+                totalAmount,
                 values,
             }
         })
-    },[])
+    },[orderedItemList, totalAmount])
     
     return(
         <div>

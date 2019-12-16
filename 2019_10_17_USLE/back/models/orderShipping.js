@@ -22,7 +22,7 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.STRING(100),
             allowNull: false,
         },
-        message: {
+        comment: {
             type: DataTypes.STRING(150),
             allowNull: true,
         },
@@ -36,7 +36,7 @@ module.exports = (sequelize, DataTypes) => {
     
     OrderShipping.associate = (db) => {
         db.OrderShipping.hasOne(db.Delievery);
-        db.OrderShipping.belongsTo(db.Order);
+        db.OrderShipping.belongsTo(db.OrderDetail);
     }
 
     return OrderShipping;

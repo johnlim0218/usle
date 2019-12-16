@@ -26,7 +26,7 @@ const StyledDivMarginTop = styled.div`
     margin-top: ${props => props.theme.spacing(10)}px;
 `
 
-const SignIn = (props) => {
+const SignIn = () => {
     const [submitErrorTest, setSubmitErrorTest] = useState(false);
     const { me, isLoggingIn, logInErrorReason } = useSelector(state => state.userReducer);
     const [cartCookies, setCartCookies] = useCookies(['dq45o8w5']);
