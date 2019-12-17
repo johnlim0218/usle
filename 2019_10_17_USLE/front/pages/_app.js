@@ -60,9 +60,11 @@ const Usle = ({ Component, store, pageProps }) => {
                                   }, {
                                     property: 'og:type', content: 'website',
                                   }, {
-                                    property: 'og:image', content: '',
+                                    property: 'og:image', content: 'http://localhost:3060/usle_ico.ico',
                                   }]}
                                   link={[{
+                                      rel: 'shortcut icon', href: "/usle_ico.ico",
+                                  },{
                                       rel: 'stylesheet', href: "https://cdnjs.cloudflare.com/ajax/libs/antd/3.16.2/antd.css"
                                   }, {
                                       rel: 'stylesheet', href: "/image-gallery/css/image-gallery-no-icon.css"
