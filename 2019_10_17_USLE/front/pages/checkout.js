@@ -1,5 +1,6 @@
 import React, { useState, useCallback, useRef, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import Helmet from 'react-helmet';
 import styled from 'styled-components';
 import { Field, Form, FormSpy } from 'react-final-form';
 import Router from 'next/router';
@@ -211,7 +212,12 @@ const CheckOut = () => {
     },[orderedItemList, totalAmount])
     
     return(
-        <div>
+        <>
+            <Helmet
+                 script={[{
+                    src: "https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"
+                }]}
+            />
             <div>
 
             </div>
@@ -487,7 +493,7 @@ const CheckOut = () => {
             </StyledDivMain>
             
                                  
-        </div>
+        </>
     )
 }
 

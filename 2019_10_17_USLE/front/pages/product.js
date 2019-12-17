@@ -4,6 +4,7 @@ import { useCookies } from 'react-cookie';
 import styled, { css } from 'styled-components';
 import ImageGallery from 'react-image-gallery';
 import { Editor, EditorState, convertFromRaw } from 'draft-js';
+import Helmet from 'react-helmet';
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 
@@ -424,10 +425,27 @@ const Product = () => {
         const description = convertFromRaw(JSON.parse(productDetail.description));
         setEditorState(EditorState.createWithContent(description));
       }
+      
     }, [productDetail && productDetail.description]);
-
-    
+ 
     return(
+      <>
+       <Helmet
+        title={productDetail && `${productDetail.productName} 상세페이지`}
+        description={productDetail && productDetail.description}
+        meta={[{
+          name: 'description', content: productDetail && JSON.parse(productDetail.description).blocks[0].text,
+        }, {
+          property: 'og:title', content: productDetail && `${productDetail.productName} 상세페이지`
+        }, {
+          property: 'og:description', content: productDetail && JSON.parse(productDetail.description).blocks[0].text,
+        }, {
+          property: 'og:image', content: productDetail && productDetail.ProductImages[0] && imgSrcUrl + productDetail.ProductImages[0].src,
+        }, {
+          property: 'og:url', content: productDetail && `http://localhost:3060/product/${productDetail.id}`,
+        }
+        ]}
+       />
        <div>
            {/* upper */}
            <div>
@@ -608,7 +626,7 @@ const Product = () => {
                 </StyledDivContainer>
            </StyledDivProductLowerSection>
        </div> 
-       
+      </>
     )
 }
 

@@ -1,8 +1,12 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import Document, { Head, Main, NextScript } from 'next/document';
+import Helmet from 'react-helmet';
 import { ServerStyleSheet } from 'styled-components'
 import { ServerStyleSheets } from '@material-ui/styles';
+
 import theme from '../src/theme';
+
 
 class MyDocument extends Document {
   static async getInitialProps (ctx) {
@@ -17,6 +21,7 @@ class MyDocument extends Document {
         const initialProps = await Document.getInitialProps(ctx)
         return {
           ...initialProps,
+          helmet: Helmet.renderStatic(),
           styles: (
             <React.Fragment>
               {initialProps.styles}
@@ -31,34 +36,38 @@ class MyDocument extends Document {
   }
 
   render() {
+    const { htmlAttributes, bodyAttributes, ...helmet } = this.props.helmet;
+    const htmlAttrs = htmlAttributes.toComponent();
+    const bodyAttrs = bodyAttributes.toComponent();
+
     return (
-      <html lang="en" dir="ltr">
+      <html {...htmlAttrs}>
         <Head>
-          <meta charSet="utf-8" />
+          {Object.values(helmet).map(el => el.toComponent())}
+          {/* <meta charSet="utf-8" /> */}
           {/* Use minimum-scale=1 to enable GPU rasterization */}
-          <meta
+          {/* <meta
             name="viewport"
             content="minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no"
-          />
+          /> */}
           {/* PWA primary color */}
           <meta
             name="theme-color"
             content={theme.palette.primary.main}
           />
-          <link
-            rel="stylesheet"
-            href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
-          />
-          <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
           
         </Head>
-        <body>
+        <body {...bodyAttrs}>
           <Main />
           <NextScript />
         </body>
       </html>
     );
   }
+}
+
+MyDocument.propTypes = {
+  helmet: PropTypes.object.isRequired,
 }
 
 export default MyDocument;

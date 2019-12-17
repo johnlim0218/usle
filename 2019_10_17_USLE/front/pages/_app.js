@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import Head from 'next/head';
+import Helmet from 'react-helmet';
 import Router from'next/router';
 import withRedux from 'next-redux-wrapper';
 import withReduxSaga from 'next-redux-saga';
@@ -41,12 +41,37 @@ const Usle = ({ Component, store, pageProps }) => {
                     <StylesProvider injectFirst>
 
                         <CookiesProvider>
-
-                            <Head>
-                                <title>Usle</title>
-                                <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/antd/3.16.2/antd.css"/>
-                                <link rel="stylesheet" href="/image-gallery/css/image-gallery-no-icon.css"/>
-                            </Head>
+                            <Helmet
+                                title="Usle"
+                                htmlAttributes={{ lang: 'ko' }}
+                                meta={[{
+                                    charset: 'UTF-8',
+                                },{
+                                    name: 'viewport',
+                                    content: 'width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=yes,viewport-fit=cover',
+                                  }, {
+                                    'http-equiv': 'X-UA-Compatible', content: 'IE=edge',
+                                  }, {
+                                    name: 'description', content: 'Usle 웹페이지',
+                                  }, {
+                                    name: 'og:title', content: 'Usle',
+                                  }, {
+                                    name: 'og:description', content: 'Usle 웹페이지',
+                                  }, {
+                                    property: 'og:type', content: 'website',
+                                  }, {
+                                    property: 'og:image', content: '',
+                                  }]}
+                                  link={[{
+                                      rel: 'stylesheet', href: "https://cdnjs.cloudflare.com/ajax/libs/antd/3.16.2/antd.css"
+                                  }, {
+                                      rel: 'stylesheet', href: "/image-gallery/css/image-gallery-no-icon.css"
+                                  }, {
+                                      rel: 'stylesheet', href: "https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
+                                  }]}
+                                 
+                            />
+                           
                             {!isAdmin ? 
                                 <AppLayout> 
                                     <Component {...pageProps}/>
@@ -80,6 +105,7 @@ Usle.getInitialProps = async (context) => {
     const state = ctx.store.getState();
     const cookie = ctx.isServer ? ctx.req.headers.cookie : '';
     
+    // 서버사이드렌더링일 때는 쿠키를 직접 넣어줘야한다.
     if(ctx.isServer && cookie) {
         axios.defaults.headers.Cookie = '';
         axios.defaults.headers.Cookie = cookie;
