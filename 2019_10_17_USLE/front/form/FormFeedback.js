@@ -6,7 +6,7 @@ import Typography from '../components/Typography';
 
 const FormFeedback = (props) => {
     const { children } = props;
-    console.log(children);
+    
     return(
         <div>
             {children}

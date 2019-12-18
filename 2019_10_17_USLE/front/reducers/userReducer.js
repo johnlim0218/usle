@@ -8,6 +8,9 @@ const initialState = {
     signUpErrorReason : '', // 회원가입 실패 이유
     isLoadingUser : false,
     loadUserErrorReason : '',
+    isLoadingMyOrder : false,
+    myOrderList : [],
+    loadMyOrderErrorReason : '',
 };
 
 export const SIGN_UP_REQUEST = "SIGN_UP_REQUEST";
@@ -25,6 +28,10 @@ export const LOG_OUT_FAILURE = "LOG_OUT_FAILURE";
 export const LOAD_USER_REQUEST = "LOAD_USER_REQUEST";
 export const LOAD_USER_SUCCESS = "LOAD_USER_SUCCESS";
 export const LOAD_USER_FAILURE = "LOAD_USER_FAILURE";
+
+export const LOAD_MY_ORDER_REQUEST = "LOAD_MY_ORDER_REQUEST";
+export const LOAD_MY_ORDER_SUCCESS = "LOAD_MY_ORDER_SUCCESS";
+export const LOAD_MY_ORDER_FAILURE = "LOAD_MY_ORDER_FAILURE";
 
 const userReducer = (state = initialState, action) => {
     switch(action.type){
@@ -108,6 +115,28 @@ const userReducer = (state = initialState, action) => {
                 ...state,
                 isLoadingUser: false,
                 loadUserErrorReason: action.error.response.data,
+            }
+        }
+        case LOAD_MY_ORDER_REQUEST:{
+            return{
+                ...state,
+                isLoadingMyOrder: true,
+                myOrderList: [],
+            }
+        }
+        case LOAD_MY_ORDER_SUCCESS:{
+            console.log(action.data);
+            return{
+                ...state,
+                isLoadingMyOrder: false,
+                myOrderList: action.data,
+            }
+        }
+        case LOAD_MY_ORDER_FAILURE:{
+            return{
+                ...state,
+                isLoadingMyOrder: true,
+                loadMyOrderErrorReason: action.error,
             }
         }
         

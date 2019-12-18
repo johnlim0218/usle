@@ -162,5 +162,83 @@ router.post('/signup', async(req, res, next) => {
     }
 })
 
+router.get('/myOrder', isLoggedIn, async(req, res, next) => {
+    console.log()
+    try{
+        const myOrderResult = await db.Order.findAll({
+            where: {
+                UserId: req.user.id,
+            },
+            include:[{
+                model: db.OrderDetail,
+                attributes: ['id', 'quantity', 'createdAt'],
+                include: [{
+                    model: db.ProductInventory,
+                    include: [{
+                        model: db.Product,
+                        attributes: ['id', 'productName'],
+                        include: [{
+                            model: db.ProductImage,
+                        }]
+                    },{
+                        model: db.ProductOptionSelection,
+                        as: 'ProductOptionSelection0',
+                        attributes: ['id', 'selectionName'],
+                        include: [{
+                            model: db.ProductOption,
+                            attributes: ['id','optionName'],
+                        }]
+                    },{
+                        model: db.ProductOptionSelection,
+                        as: 'ProductOptionSelection1',
+                        attributes: ['id','selectionName'],
+                        include: [{
+                            model: db.ProductOption,
+                            attributes: ['id','optionName'],
+                        }]
+                    },{
+                        model: db.ProductOptionSelection,
+                        as: 'ProductOptionSelection2',
+                        attributes: ['id','selectionName'],
+                        include: [{
+                            model: db.ProductOption,
+                            attributes: ['id','optionName'],
+                        }]
+                    },{
+                        model: db.ProductOptionSelection,
+                        as: 'ProductOptionSelection3',
+                        attributes: ['id','selectionName'],
+                        include: [{
+                            model: db.ProductOption,
+                            attributes: ['id','optionName'],
+                        }]
+                    },{
+                        model: db.ProductOptionSelection,
+                        as: 'ProductOptionSelection4',
+                        attributes: ['id','selectionName'],
+                        include: [{
+                            model: db.ProductOption,
+                            attributes: ['id','optionName'],
+                        }]
+                    },{
+                        model: db.ProductOptionSelection,
+                        as: 'ProductOptionSelection5',
+                        attributes: ['id','selectionName'],
+                        include: [{
+                            model: db.ProductOption,
+                            attributes: ['id','optionName'],
+                        }]
+                    }]
+                }]
+            }],
+            order: [['createdAt', 'DESC']],
+        });
+        
+        return res.json(myOrderResult);
+        
+    } catch(e) {
+        return next(e);
+    }
+})
 
 module.exports = router;

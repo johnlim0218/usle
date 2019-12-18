@@ -1,4 +1,6 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
+import { useSelector } from 'react-redux'
+import Router from 'next/router';
 import styled from 'styled-components';
 import KeyboardArrowRight from "@material-ui/icons/KeyboardArrowRight";
 import Remove from '@material-ui/icons/Remove';
@@ -17,6 +19,7 @@ import Button from '../components/Button';
 import GridContainer from '../components/Grid/GridContainer';
 import GridItem from '../components/Grid/GridItem';
 
+import { LOAD_MY_ORDER_REQUEST } from '../reducers/userReducer';
 import { dummyCartData } from '../dummy/dummy';
 
 const StyledDivImgContainer = styled.div`
@@ -38,6 +41,13 @@ const StyledTdNumberSmall = styled.small`
 
 const MyPage = () => {
     const [qty, setQty] = useState(1);
+    const { me } = useSelector(state => state.userReducer);
+
+    useEffect(() => {
+        if(!me){
+            Router.push('/');
+        }
+    }, [me]);
 
     return(
         <div>
@@ -108,6 +118,12 @@ const MyPage = () => {
         </div>
     )
 }
+
+MyPage.getInitialProps = async (context) => {
+    context.store.dispatch({
+        type: LOAD_MY_ORDER_REQUEST,
+    });
+};
 
 export default MyPage;
 

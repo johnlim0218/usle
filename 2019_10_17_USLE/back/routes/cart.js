@@ -169,7 +169,7 @@ router.get('/get', async(req, res, next) => {
                     }]
                 }],
                 order: [['createdAt', 'ASC']],
-            })
+            });
             
             return res.json(cartList);
 

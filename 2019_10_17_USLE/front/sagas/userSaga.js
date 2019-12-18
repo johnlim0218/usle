@@ -12,6 +12,9 @@ import {
     LOAD_USER_FAILURE,
     LOG_OUT_REQUEST,
     LOG_OUT_SUCCESS,
+    LOAD_MY_ORDER_REQUEST,
+    LOAD_MY_ORDER_SUCCESS,
+    LOAD_MY_ORDER_FAILURE,
 } from '../reducers/userReducer';
 import { ALL_RESET_STATE } from '../reducers';
 
@@ -22,6 +25,7 @@ function* userSaga() {
         fork(watchLogOut),
         fork(watchSignUp),
         fork(watchLoadUser),
+        fork(watchLoadMyOrder),
     ]);
 }
 
@@ -122,5 +126,28 @@ function* watchLoadUser() {
     yield takeEvery(LOAD_USER_REQUEST, loadUser);
 }
 
+function loadMyOrderAPI(){
+    return axios.get('/user/myOrder', {
+        withCredentials: true,
+    })
+}
+function* loadMyOrder(action){
+    try{
+        const result = yield call(loadMyOrderAPI);
+        console.log(result);
+        yield put({
+            type: LOAD_MY_ORDER_SUCCESS,
+            data: result.data,
+        })
+    } catch(e) {
+        yield put({
+            type: LOAD_MY_ORDER_FAILURE,
+            error: e,
+        })
+    }
+}
+function* watchLoadMyOrder(){
+    yield takeEvery(LOAD_MY_ORDER_REQUEST, loadMyOrder);
+}
 
 export default userSaga;

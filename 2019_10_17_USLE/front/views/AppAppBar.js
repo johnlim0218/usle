@@ -133,8 +133,11 @@ const AppAppBar = () => {
                 <StyeldDivInfoBar>
                     <a>FREE ZERO WASTE + PLASTIC FREE SHIPPING ON ALL USA ORDERS OVER $25*</a>
                     <StyledBreadCrumbs aria-label="breadcrumb">
-                        <StyledPersonIcon/>
-                            MyAccount
+                        <Link href='/myPage'>
+                            <StyledPersonIcon>
+                                MyAccount
+                            </StyledPersonIcon>
+                        </Link>
                         <StyledFavoriteIcon/>
                             Favorite
                         <Link href='/cart'>
