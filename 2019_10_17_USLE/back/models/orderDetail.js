@@ -10,6 +10,10 @@ module.exports = (sequelize, DataTypes) => {
         //     type: DataTypes.INTEGER,
         //     allowNull: false,
         // }
+        amount: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+        }
     },{
         timestamps: true,
         paranoid: true,

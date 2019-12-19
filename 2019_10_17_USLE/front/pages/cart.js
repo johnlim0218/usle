@@ -126,7 +126,7 @@ const Cart = () => {
             type: MAKE_ORDER_FORM,
             data: purchaseList,
         })
-
+        console.log(me);
         Router.push(me ? '/checkout' : '/signIn');
 
     }, [checkedList, me]);
@@ -147,7 +147,7 @@ const Cart = () => {
    
     useEffect(() => {
         calTotalAmount();
-    }, [cartList])
+    }, [cartList]);
 
     return(
         <div>

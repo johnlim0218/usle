@@ -86,7 +86,7 @@ router.post('/', async(req, res, next) => {
         
 
         // orderRegNum (year + month + date + uuid에서 여섯자리 숫자 추출 + 세자리 난수)
-        console.log(req.body);
+        
         const year = new Date().getFullYear() + '';
         const month = (new Date().getMonth() + 1) + '';
         const date = new Date().getDate() + '';
@@ -94,8 +94,7 @@ router.post('/', async(req, res, next) => {
         const minutes = new Date().getMinutes() + '';
         let seconds = new Date().getSeconds() + '';
         const uuid = uuidv4().replace(/[^0-9]/g,'').substring(0, 5);
-        console.log('test');
-        console.log(seconds.length);
+        
         if(seconds.length !== 2){
             seconds = '0' + seconds;
         }
@@ -115,6 +114,7 @@ router.post('/', async(req, res, next) => {
                     Promise.resolve(req.body.orderedItemList.map((orderedItemValue, orederedItemIndex) => {
                         Promise.resolve(db.OrderDetail.create({
                             quantity: orderedItemValue.quantity,
+                            amount: orderedItemValue.amount,
                             ProductInventoryId: orderedItemValue.ProductInventoryId,
                             OrderId: newOrderResult.id,
                         })).then(function(newOrderDetailResult){

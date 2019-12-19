@@ -21,7 +21,7 @@ import { email, required } from '../form/validation';
 import RFTextField from '../form/RFTextField';
 import FormButton from '../form/FormButton';
 import FormFeedback from '../form/FormFeedback';
-import { ORDER_REQUEST } from '../reducers/orderReducer';
+import { ORDER_REQUEST, MAKE_AMOUNT_PER_ITEM } from '../reducers/orderReducer';
 
 import { imgSrcUrl } from '../components/ProductItemList';
 import { dummyCartData } from '../dummy/dummy';
@@ -74,23 +74,53 @@ const CheckOut = () => {
   
     const dispatch = useDispatch();
 
+    // useEffect(() => {
+    //     if(!orderedItemList || orderedItemList.length === 0){
+    //         Router.push('/cart');
+    //     } else {
+    //         let tempTotalAmount = 0;
+    //         // orderedItemList && orderedItemList.map((orderedItemListValue, orderedItemListIndex) => {
+    //         //     orderedItemListValue.ProductInventory.additionalPrice !== 0 ?
+    //         //         tempTotalAmount += (orderedItemListValue.ProductInventory.Product.price +
+    //         //         orderedItemListValue.ProductInventory.additionalPrice)
+    //         //         * orderedItemListValue.quantity
+    //         //         : tempTotalAmount += orderedItemListValue.ProductInventory.Product.price        
+    //         //         * orderedItemListValue.quantity
+    //         // })
+    //         orderedItemList.map((value, index) => {
+    //             tempTotalAmount += value.amount;
+    //         })
+            
+    //         setTotalAmount(tempTotalAmount);
+    //     }
+
+    // }, [orderedItemList]);
+    
     useEffect(() => {
         if(!orderedItemList || orderedItemList.length === 0){
             Router.push('/cart');
+
         } else {
             let tempTotalAmount = 0;
-            orderedItemList && orderedItemList.map((orderedItemListValue, orderedItemListIndex) => {
-                orderedItemListValue.ProductInventory.additionalPrice !== 0 ?
-                    tempTotalAmount += (orderedItemListValue.ProductInventory.Product.price +
-                    orderedItemListValue.ProductInventory.additionalPrice)
-                    * orderedItemListValue.quantity
-                    : tempTotalAmount += orderedItemListValue.ProductInventory.Product.price        
-                    * orderedItemListValue.quantity
+            orderedItemList.map((value, index) => {
+                
+                let amountPerItem = value.ProductInventory.additionalPrice === 0 
+                    ? (value.ProductInventory.Product.price * value.quantity) 
+                    : ((value.ProductInventory.Product.price + value.ProductInventory.additionalPrice) * value.quantity)
+                   
+                dispatch({
+                    type: MAKE_AMOUNT_PER_ITEM,
+                    data: {
+                        id : value.id,
+                        amount : amountPerItem,
+                    }
+                });
+                
+                tempTotalAmount += amountPerItem;
+                setTotalAmount(tempTotalAmount);
             })
-            console.log(tempTotalAmount);
-            setTotalAmount(tempTotalAmount);
         }
-
+        
     }, [orderedItemList]);
 
     useEffect(() => {
@@ -259,10 +289,7 @@ const CheckOut = () => {
                                             </span>,
                                             <span key={value.id}>
                                                 <StyledTdNumberSmall>
-                                                    ￦ {value.ProductInventory.additionalPrice === 0 
-                                                        ? (value.ProductInventory.Product.price * value.quantity) 
-                                                        : ((value.ProductInventory.Product.price + value.ProductInventory.additionalPrice) * value.quantity)
-                                                        }
+                                                    ￦ { value.amount && value.amount }
                                                 </StyledTdNumberSmall>
                                             </span>
                                         

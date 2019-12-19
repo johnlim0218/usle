@@ -60,10 +60,8 @@ const MyPage = () => {
                                 tableHead={[
                                     "",
                                     "PRODUCT",
-                                    "COLOR",
-                                    "SIZE",
-                                    "PRICE",
-                                    "QTY",
+                                    "ORDER NUMBER",
+                                    "PRICE(QTY)",
                                     "AMOUNT",
                                     "SHIPPING"
                                 ]}
