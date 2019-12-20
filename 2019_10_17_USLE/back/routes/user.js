@@ -134,7 +134,8 @@ router.post('/signup', async(req, res, next) => {
         const milliseconds = (new Date().getTime() + '').slice(-9);
         
         const hashedPassword = await bcrypt.hash(req.body.password, 12);
-       
+        let newUserResult = null;
+
         await Promise.resolve(db.User.create({
             email: req.body.email,
             password: hashedPassword,
@@ -154,86 +155,93 @@ router.post('/signup', async(req, res, next) => {
                     id: newUser.id,
                 }
             })
-        })
-
-        return res.status(200).json();
+            newUserResult = newUser;
+        })  
+        
+        return res.json(newUserResult);
     } catch(e) {
         return next(e);
     }
 })
 
 router.get('/myOrder', isLoggedIn, async(req, res, next) => {
-    console.log()
+    
     try{
-        const myOrderResult = await db.Order.findAll({
-            where: {
-                UserId: req.user.id,
-            },
-            include:[{
-                model: db.OrderDetail,
-                attributes: ['id', 'quantity', 'createdAt'],
+
+        const myOrderResult = await db.OrderDetail.findAll({
+            attributes: ['id', 'quantity', 'amount', 'createdAt'],
+            include: [{
+                model: db.Order,
+                where: {
+                    UserId: req.user.id,
+                }
+            },{
+                model: db.ProductInventory,
                 include: [{
-                    model: db.ProductInventory,
+                    model: db.Product,
+                    attributes: ['id', 'productName'],
                     include: [{
-                        model: db.Product,
-                        attributes: ['id', 'productName'],
-                        include: [{
-                            model: db.ProductImage,
-                        }]
+                        model: db.ProductCategory,
+                        attributes: ['id', 'categoryName', 'description']
                     },{
-                        model: db.ProductOptionSelection,
-                        as: 'ProductOptionSelection0',
-                        attributes: ['id', 'selectionName'],
-                        include: [{
-                            model: db.ProductOption,
-                            attributes: ['id','optionName'],
-                        }]
+                        model: db.ProductBrand,
+                        attributes: ['id', 'brandName', 'description']
                     },{
-                        model: db.ProductOptionSelection,
-                        as: 'ProductOptionSelection1',
-                        attributes: ['id','selectionName'],
-                        include: [{
-                            model: db.ProductOption,
-                            attributes: ['id','optionName'],
-                        }]
-                    },{
-                        model: db.ProductOptionSelection,
-                        as: 'ProductOptionSelection2',
-                        attributes: ['id','selectionName'],
-                        include: [{
-                            model: db.ProductOption,
-                            attributes: ['id','optionName'],
-                        }]
-                    },{
-                        model: db.ProductOptionSelection,
-                        as: 'ProductOptionSelection3',
-                        attributes: ['id','selectionName'],
-                        include: [{
-                            model: db.ProductOption,
-                            attributes: ['id','optionName'],
-                        }]
-                    },{
-                        model: db.ProductOptionSelection,
-                        as: 'ProductOptionSelection4',
-                        attributes: ['id','selectionName'],
-                        include: [{
-                            model: db.ProductOption,
-                            attributes: ['id','optionName'],
-                        }]
-                    },{
-                        model: db.ProductOptionSelection,
-                        as: 'ProductOptionSelection5',
-                        attributes: ['id','selectionName'],
-                        include: [{
-                            model: db.ProductOption,
-                            attributes: ['id','optionName'],
-                        }]
+                        model: db.ProductImage,
+                    }]
+                },{
+                    model: db.ProductOptionSelection,
+                    as: 'ProductOptionSelection0',
+                    attributes: ['id', 'selectionName'],
+                    include: [{
+                        model: db.ProductOption,
+                        attributes: ['id','optionName'],
+                    }]
+                },{
+                    model: db.ProductOptionSelection,
+                    as: 'ProductOptionSelection1',
+                    attributes: ['id','selectionName'],
+                    include: [{
+                        model: db.ProductOption,
+                        attributes: ['id','optionName'],
+                    }]
+                },{
+                    model: db.ProductOptionSelection,
+                    as: 'ProductOptionSelection2',
+                    attributes: ['id','selectionName'],
+                    include: [{
+                        model: db.ProductOption,
+                        attributes: ['id','optionName'],
+                    }]
+                },{
+                    model: db.ProductOptionSelection,
+                    as: 'ProductOptionSelection3',
+                    attributes: ['id','selectionName'],
+                    include: [{
+                        model: db.ProductOption,
+                        attributes: ['id','optionName'],
+                    }]
+                },{
+                    model: db.ProductOptionSelection,
+                    as: 'ProductOptionSelection4',
+                    attributes: ['id','selectionName'],
+                    include: [{
+                        model: db.ProductOption,
+                        attributes: ['id','optionName'],
+                    }]
+                },{
+                    model: db.ProductOptionSelection,
+                    as: 'ProductOptionSelection5',
+                    attributes: ['id','selectionName'],
+                    include: [{
+                        model: db.ProductOption,
+                        attributes: ['id','optionName'],
                     }]
                 }]
             }],
             order: [['createdAt', 'DESC']],
-        });
-        
+        })
+ 
         return res.json(myOrderResult);
         
     } catch(e) {

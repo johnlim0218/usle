@@ -28,7 +28,7 @@ const StyledFormButton = styled(FormButton)`
 const SignUp = () => {
     const [term, setTerm] = useState(false);
     const [mailing, setMailing] = useState(false);
-    const { me, isSigningUp, signUpErrorReason } = useSelector(state => state.userReducer);
+    const { me, isSigningUp, signUpErrorReason, signUpResult } = useSelector(state => state.userReducer);
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -37,6 +37,13 @@ const SignUp = () => {
             Router.push('/');
         }
     }, [me]);
+
+    useEffect(() =>{
+        // 회원가입 성공
+        if(signUpResult){
+            Router.push('/');
+        }
+    }, [signUpResult]);
 
     const validate = values => {
         const errors = required(['nickname', 'email', 'password', 'checkPassword', 'term'], values);

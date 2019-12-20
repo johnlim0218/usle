@@ -134,7 +134,6 @@ function loadMyOrderAPI(){
 function* loadMyOrder(action){
     try{
         const result = yield call(loadMyOrderAPI);
-        console.log(result);
         yield put({
             type: LOAD_MY_ORDER_SUCCESS,
             data: result.data,

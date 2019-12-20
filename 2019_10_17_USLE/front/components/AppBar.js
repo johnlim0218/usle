@@ -50,7 +50,7 @@ const StyledAppBar = styled(AppBar)`
 `
 
 const StyledToolBar = styled(Toolbar)`
-    ${props => props.theme.container};
+    // ${props => props.theme.container};
     min-height: 110px;
     flex: 1;
     align-items: center;

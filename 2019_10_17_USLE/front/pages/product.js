@@ -74,7 +74,7 @@ const StyledDivProductLowerSection = styled.div`
     padding: 70px 0;
 `
 export const StyledDivContainer = styled.div`
-    ${props => props.theme.container};
+    // ${props => props.theme.container};
     z-index: 2;
 `;
 const MainRaised = css`

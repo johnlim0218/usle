@@ -19,6 +19,8 @@ import Button from '../components/Button';
 import GridContainer from '../components/Grid/GridContainer';
 import GridItem from '../components/Grid/GridItem';
 
+import { imgSrcUrl } from '../components/ProductItemList';
+
 import { LOAD_MY_ORDER_REQUEST } from '../reducers/userReducer';
 import { dummyCartData } from '../dummy/dummy';
 
@@ -41,12 +43,13 @@ const StyledTdNumberSmall = styled.small`
 
 const MyPage = () => {
     const [qty, setQty] = useState(1);
-    const { me } = useSelector(state => state.userReducer);
-
+    const { me, myOrderList } = useSelector(state => state.userReducer);
+    
     useEffect(() => {
         if(!me){
             Router.push('/');
         }
+        console.log(myOrderList);
     }, [me]);
 
     return(
@@ -58,43 +61,38 @@ const MyPage = () => {
                            <Typography variant="h4">Order History</Typography>
                            <Table
                                 tableHead={[
-                                    "",
-                                    "PRODUCT",
-                                    "ORDER NUMBER",
-                                    "PRICE(QTY)",
-                                    "AMOUNT",
-                                    "SHIPPING"
+                                    {id:0, name:""},
+                                    {id:1, name:"PRODUCT"},
+                                    {id:2, name:"ORDER NUMBER"},
+                                    {id:3, name:"ORDERED DATE"},
+                                    {id:4, name:"PRICE(QTY)"},
+                                    {id:5, name:"STATUS"},
                                 ]}
                                 tableData={
-                                    dummyCartData.map((value, index) => ([
-                                            <StyledDivImgContainer>
-                                                <img src={value.thumbsnail}/>
+                                    myOrderList.length !== 0 ? (myOrderList.map((value, index) => (([
+                                            <StyledDivImgContainer key={value.id}>
+                                                <img src={value && imgSrcUrl + value.ProductInventory.Product.ProductImages[0].src}/>
                                             </StyledDivImgContainer>,
-                                            <span>
+                                            <span key={value.id}>
                                                 <a href="#jacket">
-                                                    {value.name}
+                                                    {value.ProductInventory.Product.productName}
                                                 </a>
                                                 <br />
                                                 <StyledTdNameSmall>
-                                                    by {value.brand}
+                                                    by {value.ProductInventory.Product.ProductBrand.brandName}
                                                 </StyledTdNameSmall>
                                             </span>,
-                                            <span>
-                                                {value.color}
+                                            <span key={value.id}>
+                                                {value.Order.orderRegNum}
                                             </span>,
-                                            <span>
-                                                {value.size}
+                                            <span key={value.id}>
+                                                {value.Order.createdAt}
                                             </span>,
-                                            <span>
-                                                <StyledTdNumberSmall>￦ {value.price}</StyledTdNumberSmall>
-                                            </span>,
-                                            <span>
-                                                {qty}
-                                            </span>,
-                                            <span>
-                                                <StyledTdNumberSmall>￦ {value.price * qty}</StyledTdNumberSmall>
+                                            <span key={value.id}>
+                                                <StyledTdNumberSmall>￦ {value.amount} ({value.quantity})</StyledTdNumberSmall>
                                             </span>,
                                             <Tooltip
+                                                key={value.id}
                                                 id="close1"
                                                 title="Shipping tracking"
                                                 placement="right"
@@ -103,7 +101,18 @@ const MyPage = () => {
                                                     {"Tracking"}
                                                 </Button>
                                             </Tooltip>
-                                        ])
+                                        ]))
+                                    ))
+                                    :
+                                    (
+                                        {
+                                            colspan: "6",
+                                            content: (
+                                                <div>
+                                                    EMPTY
+                                                </div>
+                                            )
+                                        }
                                     )
                                 }
                                 

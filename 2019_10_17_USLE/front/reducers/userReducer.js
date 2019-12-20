@@ -5,6 +5,7 @@ const initialState = {
     isLoggingOut: false, // 로그아웃 시도
     logOutErrorReason: '', // 로그아웃 실패 이유
     isSigningUp : false, // 회원가입 시도
+    signUpResult: null,
     signUpErrorReason : '', // 회원가입 실패 이유
     isLoadingUser : false,
     loadUserErrorReason : '',
@@ -45,6 +46,7 @@ const userReducer = (state = initialState, action) => {
             return {
                 ...state,
                 isSigningUp: false,
+                signUpResult: action.data,
             }
         }
         case SIGN_UP_FAILURE: {
@@ -125,7 +127,6 @@ const userReducer = (state = initialState, action) => {
             }
         }
         case LOAD_MY_ORDER_SUCCESS:{
-            console.log(action.data);
             return{
                 ...state,
                 isLoadingMyOrder: false,
