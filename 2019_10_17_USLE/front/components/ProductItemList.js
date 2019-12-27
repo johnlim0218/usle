@@ -96,7 +96,7 @@ const ProductItemList = (props) => {
                   id='tooltip-top'
                   title='Save to Wishlist'
                   placement='top'>
-                  <StyledButton justIcon link>
+                  <StyledButton justIcon link="true">
                     <Favorite />
                   </StyledButton>
                 </Tooltip>

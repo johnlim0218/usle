@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from 'react';
-import CheckBox from '@material-ui/core/CheckBox';
+import Checkbox from '@material-ui/core/Checkbox';
 
 
 const ModifiedCheckBox = (props) => {
@@ -18,7 +18,7 @@ const ModifiedCheckBox = (props) => {
     
     return(
         <>
-            <CheckBox
+            <Checkbox
                 onClick={() => onClickCheckBox(1)}
                 // checked={checked.indexOf(1) !== -1 ? true : false}
                 checked={value ? true : false}

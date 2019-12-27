@@ -5,7 +5,6 @@ import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 
 import ProductItemList from '../components/ProductItemList';
-import { dummyItem } from '../dummy/dummy';
 import { LOAD_PRODUCTS_REQUEST } from '../reducers/productReducer';
 
 const StyledContainer = styled(Container)`

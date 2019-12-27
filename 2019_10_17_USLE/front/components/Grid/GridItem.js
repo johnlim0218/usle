@@ -34,8 +34,8 @@ const GridItem = (props) => {
 
 GridItem.propTypes = {
     children: PropTypes.node,
-    left: PropTypes.bool,
-    right: PropTypes.bool,
+    left: PropTypes.string,
+    right: PropTypes.string,
 };
 
 export default GridItem;

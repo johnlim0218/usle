@@ -8,7 +8,7 @@ import Remove from '@material-ui/icons/Remove';
 import Add from '@material-ui/icons/Add';
 import Close from '@material-ui/icons/Close';
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
-import CheckBox from '@material-ui/core/CheckBox';
+import Checkbox from '@material-ui/core/Checkbox';
 
 import Tooltip from '../components/Tooltip';
 import Typography from '../components/Typography';
@@ -175,7 +175,7 @@ const Cart = () => {
                                       
                                     tableData={
                                             cartList.length !== 0 ? (cartList.map((value, index) => ([
-                                                <CheckBox 
+                                                <Checkbox 
                                                     key={value.id}
                                                     tabIndex={-1}
                                                     onClick={() => handleCheckBoxToggle(value.id)}

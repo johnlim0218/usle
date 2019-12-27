@@ -75,7 +75,7 @@ const SignIn = () => {
             </Typography>
             <Typography variant="body2" align="center">
                 {'Not a member yet? '}
-                <Link href="/signUp" align="center" underline="always">
+                <Link href="/signUp">
                     Sign up here
                 </Link>
             </Typography>

@@ -1,34 +1,39 @@
 const dotenv = require('dotenv');
 dotenv.config();
 
+const username = "root";
+const host = "127.0.0.1";
+const port = "3307";
+const dialect = "mariadb"
+
 module.exports = {
     "development" : {
-        "username" : "root",
+        "username" : username,
         "password" : process.env.DB_PASSWORD,
         "database" : "usle_db",
-        "host" : "127.0.0.1",
-        "port" : "3306",
-        "dialect" : "mariadb",
+        "host" : host,
+        "port" : port,
+        "dialect" : dialect,
         "timezone": "+09:00",
         "operatorsAliases": false
     },
     "test" : {
-        "username" : "root",
+        "username" : username,
         "password" : process.env.DB_PASSWORD,
         "database" : "usle_db",
-        "host" : "127.0.0.1",
-        "port" : "3306",
-        "dialect" : "mariadb",
+        "host" : host,
+        "port" : port,
+        "dialect" : dialect,
         "timezone": "+09:00",
         "operatorsAliases": false
     },
     "production" : {
-        "username" : "root",
+        "username" : username,
         "password" : process.env.DB_PASSWORD,
         "database" : "usle_db",
-        "host" : "127.0.0.1",
-        "port" : "3306",
-        "dialect" : "mariadb",
+        "host" : host,
+        "port" : port,
+        "dialect" : dialect,
         "timezone": "+09:00",
         "operatorsAliases": false
     }

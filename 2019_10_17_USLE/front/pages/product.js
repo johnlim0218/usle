@@ -32,37 +32,6 @@ import { imgSrcUrl } from '../components/ProductItemList';
 import { LOAD_PRODUCT_DETAIL_REQUEST } from '../reducers/productReducer';
 import { ADD_CART_REQUEST, INITIALIZING_ADD_CART_MESSAGE } from '../reducers/cartReducer';
 
-// images
-export const cardProduct1 = "https://demos.creative-tim.com/material-kit-pro-react/static/media/product1.629c7883.jpg";
-export const cardProduct2 = "https://demos.creative-tim.com/material-kit-pro-react/static/media/product2.77917eb4.jpg";
-export const cardProduct3 = "https://demos.creative-tim.com/material-kit-pro-react/static/media/product3.17b8d773.jpg";
-export const cardProduct4 = "https://demos.creative-tim.com/material-kit-pro-react/static/media/product4.aeca8662.jpg";
-export const product1 = "https://demos.creative-tim.com/material-kit-pro-react/static/media/product1.629c7883.jpg";
-export const product2 = "https://demos.creative-tim.com/material-kit-pro-react/static/media/product2.77917eb4.jpg";
-export const product3 = "https://demos.creative-tim.com/material-kit-pro-react/static/media/product3.17b8d773.jpg";
-export const product4 = "https://demos.creative-tim.com/material-kit-pro-react/static/media/product4.aeca8662.jpg";
-
-
-const products = [1,2,3,4];
-const images = [
-    {
-        original: product3,
-        thumbnail: product3
-      },
-      {
-        original: product4,
-        thumbnail: product4
-      },
-      {
-        original: product1,
-        thumbnail: product1
-      },
-      {
-        original: product2,
-        thumbnail: product2
-      }
-]
-
 const StyledDivProductPage = styled.div`
   
 `;

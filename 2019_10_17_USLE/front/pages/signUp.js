@@ -85,7 +85,7 @@ const SignUp = () => {
                 Sign Up
             </Typography>
             <Typography variant="body2" align="center">
-                <Link href="/signIn" align="center" underline="always">
+                <Link href="/signIn">
                     Already have an account?
                 </Link>
             </Typography>
@@ -120,11 +120,10 @@ const SignUp = () => {
                             label="Mailing Service."
                             margin="normal"
                             name="mailing"
-                            size="large"
                             noBorder={false}
                         />
                          <GridContainer signUp>
-                            <GridItem left sm={6}>
+                            <GridItem left="true" sm={6}>
                                 <Field
                                     type='password'
                                     autoComplete="Password"
@@ -139,7 +138,7 @@ const SignUp = () => {
                                     noBorder={false}
                                 />
                             </GridItem>
-                            <GridItem right sm={6}>
+                            <GridItem right="true" sm={6}>
                                 <Field
                                     type='password'
                                     autoComplete="Check Password"
@@ -181,7 +180,6 @@ const SignUp = () => {
                             margin="normal"
                             name="term"
                             required
-                            size="large"
                             noBorder={false}
                         />
                         <StyledFormButton
