@@ -19,7 +19,7 @@ const ModifiedCheckBox = (props) => {
     return(
         <>
             <Checkbox
-                onClick={() => onClickCheckBox(1)}
+                onChange={() => onClickCheckBox(1)}
                 // checked={checked.indexOf(1) !== -1 ? true : false}
                 checked={value ? true : false}
                 inputProps={{
