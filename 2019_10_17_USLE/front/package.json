@@ -53,7 +53,7 @@
     "slick": "^1.12.2",
     "styled-components": "^4.4.0",
     "styled-components-breakpoint": "^2.1.1",
-    "validator": "^11.1.0"
+    "validator": "^13.7.0"
   },
   "devDependencies": {
     "css-loader": "^3.2.0",
